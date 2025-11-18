@@ -31,6 +31,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
+    
     [Fact]
     public void Si_AgregoUnJugadorConUnDestructorEnLaPosicion0_8_0_9_0_10Debe_ArrojarExcepcion()
     {
@@ -73,6 +74,20 @@ public class AcorazadosTest
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     } 
     
+    [Fact]
+    public void Si_AgregoUnJugadorConUnCanoneroEnDosCoordenadasDebe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        List<(int x, int y)> canonero = new List<(int x, int y)>();
+        canonero.Add((0,8));
+        canonero.Add((0,9));
+        listaBarcos.Add((canonero,TipoBarco.Canonero));
+        
+        Action result = () => juego.AgregarJugador(listaBarcos);
+
+        result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
+    }  
 }
 
 public enum TipoBarco
