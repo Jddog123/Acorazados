@@ -1,9 +1,40 @@
-﻿namespace Acorazados;
+﻿using FluentAssertions;
+
+namespace Acorazados;
 
 public class AcorazadosTest
 {
+    
     [Fact]
-    public void Test1()
+    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion0_10_Debe_ArrojarExcepcion()
     {
+        var juego = new Juego();
+        List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        List<(int x, int y)> coordenadasPrimerCañonero = new List<(int x, int y)>();
+        coordenadasPrimerCañonero.Add((0,10));
+        listaBarcos.Add((coordenadasPrimerCañonero,TipoBarco.Canonero));
+        
+        Action result = () => juego.AgregarJugador(listaBarcos);
+
+        result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
+    }
+}
+
+public enum TipoBarco
+{
+    Canonero
+}
+
+public class Juego
+{
+    private char[,] _plataforma;
+    public Juego()
+    {
+        _plataforma = new char[10, 10];
+    }
+
+    public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos)
+    {
+        throw new NotImplementedException();
     }
 }
