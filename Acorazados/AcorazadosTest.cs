@@ -27,6 +27,8 @@ public enum TipoBarco
 
 public class Juego
 {
+    private const int LimiteSuperiorPlataforma = 9;
+    private const int LimiteInferiorPlataforma = 0;
     private char[,] _plataforma;
     public Juego()
     {
@@ -35,10 +37,9 @@ public class Juego
 
     public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos)
     {
-        if (listaBarcos[0].coordenadas[0].x < 0 || listaBarcos[0].coordenadas[0].y > 9)
+        if (listaBarcos[0].coordenadas[0].x < LimiteInferiorPlataforma || listaBarcos[0].coordenadas[0].y > LimiteSuperiorPlataforma)
         {
             throw new ArgumentException("Barco fuera del limite de la plataforma");
         }
-
     }
 }
