@@ -9,6 +9,7 @@
 
 #Juego
 - Se puede agregar un jugador
+- Los comandos disponibles son AgregarJugador, IniciarPartida, FinalizarTurno y Imprimir
 - Se inicia partida con los barcos asignadas
 - Se finaliza el turno (realizar un disparo)
 - Debe imprimir el tablero del juego
