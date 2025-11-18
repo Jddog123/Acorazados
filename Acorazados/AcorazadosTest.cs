@@ -140,7 +140,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco destructor es de tres coordenadas");
     }
-    
+
     [Fact]
     public void Si_AgregoUnJugadorConUnPortaavionesConTresCoordenadasDebe_ArrojarExcepcion()
     {
@@ -152,13 +152,13 @@ public class AcorazadosTest
             (0, 7),
             (0, 8)
         };
-        listaBarcos.Add((portaaviones, TipoBarco.Poortaviones));
+        listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
 
         Action result = () => juego.AgregarJugador(listaBarcos);
 
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco portaaviones es de cuatro coordenadas");
-     }
-    
+    }
+
     [Fact]
     public void Si_AgregoUnJugadorConUnPortaavionesConCincoCoordenadasDebe_ArrojarExcepcion()
     {
@@ -171,13 +171,38 @@ public class AcorazadosTest
             (0, 2),
             (0, 3),
             (0, 4),
-            
         };
-        listaBarcos.Add((portaaviones, TipoBarco.Poortaviones));
+        listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
 
         Action result = () => juego.AgregarJugador(listaBarcos);
 
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco portaaviones es de cuatro coordenadas");
     }
-    
+
+    [Fact]
+    public void Si_AgregoUnJugadorConTresBarcosCañonerosDebe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (0, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (0, 2)
+        };
+
+        listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
+
+        Action result = () => juego.AgregarJugador(listaBarcos);
+
+        result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
+    }
 }

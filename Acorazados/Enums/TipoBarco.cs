@@ -4,5 +4,5 @@ public enum TipoBarco
 {
     Canonero,
     Destructor,
-    Poortaviones
+    Portaaviones
 }
