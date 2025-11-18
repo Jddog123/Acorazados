@@ -93,7 +93,11 @@ public class Juego
 
     public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos)
     {
-        if(listaBarcos[0].coordenadas.Any(coor => coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma || coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
-            throw new ArgumentException("Barco fuera del limite de la plataforma");
+        foreach (var barco in listaBarcos)
+        {
+            if(barco.coordenadas.Any(coor => coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma || coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
+                throw new ArgumentException("Barco fuera del limite de la plataforma");
+        }
+        
     }
 }
