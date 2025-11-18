@@ -109,12 +109,12 @@ public class AcorazadosTest
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var canonero = new List<(int x, int y)>
+        var destructor = new List<(int x, int y)>
         {
             (0, 8),
             (0, 9)
         };
-        listaBarcos.Add((canonero, TipoBarco.Destructor));
+        listaBarcos.Add((destructor, TipoBarco.Destructor));
 
         Action result = () => juego.AgregarJugador(listaBarcos);
 
