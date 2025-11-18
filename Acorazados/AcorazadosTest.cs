@@ -50,6 +50,11 @@ public class Juego
 
     public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos)
     {
+        if (listaBarcos[0].coordenadas[0].x > LimiteSuperiorPlataforma || listaBarcos[0].coordenadas[0].y < LimiteInferiorPlataforma)
+        {
+            throw new ArgumentException("Barco fuera del limite de la plataforma");
+        }
+        
         if (listaBarcos[0].coordenadas[0].x < LimiteInferiorPlataforma || listaBarcos[0].coordenadas[0].y > LimiteSuperiorPlataforma)
         {
             throw new ArgumentException("Barco fuera del limite de la plataforma");
