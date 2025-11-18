@@ -160,7 +160,7 @@ public class Juego
 
     public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> listaBarcos)
     {
-        if (listaBarcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() < 3))
+        if (listaBarcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3))
             throw new ArgumentException("El tipo de barco destructor es de una coordenada");
 
         if (listaBarcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1))
