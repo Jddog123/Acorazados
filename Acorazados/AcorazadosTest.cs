@@ -18,6 +18,19 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
+    [Fact]
+    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion10_0_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        List<(int x, int y)> coordenadasPrimerCañonero = new List<(int x, int y)>();
+        coordenadasPrimerCañonero.Add((10,0));
+        listaBarcos.Add((coordenadasPrimerCañonero,TipoBarco.Canonero));
+        
+        Action result = () => juego.AgregarJugador(listaBarcos);
+
+        result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
+    }
 }
 
 public enum TipoBarco
