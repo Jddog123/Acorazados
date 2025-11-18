@@ -104,7 +104,22 @@ public class AcorazadosTest
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
     }  
 
-    
+    [Fact]
+    public void Si_AgregoUnJugadorConUnDestructorConDosCoordenadasDebe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canonero = new List<(int x, int y)>
+        {
+            (0, 8),
+            (0, 9)
+        };
+        listaBarcos.Add((canonero,TipoBarco.Destructor));
+        
+        Action result = () => juego.AgregarJugador(listaBarcos);
+
+        result.Should().ThrowExactly<ArgumentException>("El tipo de barco destructor es de tres coordenadas");
+    }  
 }
 
 public enum TipoBarco
