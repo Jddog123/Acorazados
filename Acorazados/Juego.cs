@@ -58,6 +58,15 @@ public class Juego
             _plataforma[_tripulacionJugadorDos[5].coordenadas[1].x, _tripulacionJugadorDos[5].coordenadas[1].y] = 'd';
             _plataforma[_tripulacionJugadorDos[5].coordenadas[2].x, _tripulacionJugadorDos[5].coordenadas[2].y] = 'd';
         }
+        
+        if (_tripulacionJugadorDos[6].tipoBarco == TipoBarco.Portaaviones)
+        {
+            _plataforma[_tripulacionJugadorDos[6].coordenadas[0].x, _tripulacionJugadorDos[6].coordenadas[0].y] = 'c';
+            _plataforma[_tripulacionJugadorDos[6].coordenadas[1].x, _tripulacionJugadorDos[6].coordenadas[1].y] = 'c';
+            _plataforma[_tripulacionJugadorDos[6].coordenadas[2].x, _tripulacionJugadorDos[6].coordenadas[2].y] = 'c';
+            _plataforma[_tripulacionJugadorDos[6].coordenadas[3].x, _tripulacionJugadorDos[6].coordenadas[3].y] = 'c';
+
+        }
     }
     
     public string Disparar(int coordenadaX, int coordenadaY)
@@ -84,6 +93,28 @@ public class Juego
                 _plataforma[3, 7] = 'X';
                 _plataforma[4, 7] = 'X';
                 _plataforma[5, 7] = 'X';
+                return "Barco hundido";
+            }
+        }
+        
+        if (_plataforma[coordenadaX, coordenadaY] == 'c')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'x';
+
+            if (_plataforma[9, 0] == 'x' && _plataforma[8, 0] == 'x' && _plataforma[7, 0] == 'x')
+            {
+                _plataforma[9, 0] = 'X';
+                _plataforma[8, 9] = 'X';
+                _plataforma[7, 0] = 'X';
+                return "Barco hundido";
+            }
+            
+            if (_plataforma[1, 3] == 'x' && _plataforma[1, 4] == 'x' && _plataforma[1, 5] == 'x' && _plataforma[1,6] == 'x')
+            {
+                _plataforma[1, 3] = 'X';
+                _plataforma[1, 4] = 'X';
+                _plataforma[1, 5] = 'X';
+                _plataforma[1, 6] = 'X';
                 return "Barco hundido";
             }
         }
