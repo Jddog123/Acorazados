@@ -106,4 +106,9 @@ public class Juego
         barcos.Any(barco => barco.coordenadas.Any(coor =>
             coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
             coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma));
+
+    public string Disparar(int coordenadaX, int coordenadaY)
+    {
+        throw new NotImplementedException();
+    }
 }

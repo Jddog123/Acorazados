@@ -1003,4 +1003,25 @@ public class AcorazadosTest
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Deben existir 1 portaavion en la plataforma");
     }
+
+    [Fact]
+    public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion0_0YElJugadorUnoDisparaEnLaPosicion0_0_Mensaje_Debe_SerBarcoHundido()
+    {
+        var juego = new Juego();
+        
+        var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        juego.AgregarJugadorUno(listaBarcosJugadorUno);
+        
+        var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+        listaBarcosJugadorDos.Add((canoneroUno, TipoBarco.Canonero));
+        juego.AgregarJugadorDos(listaBarcosJugadorDos);
+
+        string mensaje = juego.Disparar(0,0);
+
+        mensaje.Should().Be("Barco hundido");
+    }
 }
