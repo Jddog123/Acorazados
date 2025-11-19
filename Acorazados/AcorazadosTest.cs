@@ -246,4 +246,19 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
     }
+    
+    [Fact]
+    public void Si_AgregoUnJugadorConUnCañoneroFueraDeLaPlataformaEInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var coordenadasPrimerCañonero = new List<(int x, int y)> { (0, 10) };
+        listaBarcos.Add((coordenadasPrimerCañonero, TipoBarco.Canonero));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
+
+        result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
+    }
 }
