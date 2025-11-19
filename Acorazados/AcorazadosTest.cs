@@ -1,4 +1,5 @@
-﻿using Acorazados.Enums;
+﻿using Acorazados.ClassData;
+using Acorazados.Enums;
 using FluentAssertions;
 
 namespace Acorazados;
@@ -912,51 +913,13 @@ public class AcorazadosTest
             .WithMessage("Deben existir 2 destructores en la plataforma");
     }
     
-    [Fact]
-    public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosPortaavionesDiferentesA1EInicioJuego_Debe_ArrojarExcepcion()
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosPortaavionesDiferentesA1EInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var canoneroUno = new List<(int x, int y)>
-        {
-            (2, 0)
-        };
-        var canoneroDos = new List<(int x, int y)>
-        {
-            (2, 1)
-        };
-        var canoneroTres = new List<(int x, int y)>
-        {
-            (2, 2)
-        };
-        var canoneroCuatro = new List<(int x, int y)>
-        {
-            (2, 3)
-        };
-        listaBarcosJugadorUno.Add((canoneroUno, TipoBarco.Canonero));
-        listaBarcosJugadorUno.Add((canoneroDos, TipoBarco.Canonero));
-        listaBarcosJugadorUno.Add((canoneroTres, TipoBarco.Canonero));
-        listaBarcosJugadorUno.Add((canoneroCuatro, TipoBarco.Canonero));
-
-        var destructor1 = new List<(int x, int y)>
-        {
-            (3, 0), (3, 2), (3, 3)
-        };
-        var destructor2 = new List<(int x, int y)>
-        {
-            (4, 0), (4, 2), (4, 3)
-        };
-
-        listaBarcosJugadorUno.Add((destructor1, TipoBarco.Destructor));
-        listaBarcosJugadorUno.Add((destructor2, TipoBarco.Destructor));
-
-        var portaAvion1 = new List<(int x, int y)>
-        {
-            (0, 0), (0, 2), (0, 3), (0, 4)
-        };
-
-        listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
-        juego.AgregarJugadorUno(listaBarcosJugadorUno);
+        
+        juego.AgregarJugadorUno(datosTripulacionJugadores.tripulacionJugadorUno);    
 
         var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var canoneroUnoJugadorDos = new List<(int x, int y)>
@@ -1004,22 +967,16 @@ public class AcorazadosTest
             .WithMessage("Deben existir 1 portaavion en la plataforma");
     }
 
-    [Fact]
-    public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion0_0YElJugadorUnoDisparaEnLaPosicion0_0_Mensaje_Debe_SerBarcoHundido()
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion0_0YElJugadorUnoDisparaEnLaPosicion0_0_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         
-        var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        juego.AgregarJugadorUno(listaBarcosJugadorUno);
-        
-        var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var canoneroUno = new List<(int x, int y)>
-        {
-            (0, 0)
-        };
-        listaBarcosJugadorDos.Add((canoneroUno, TipoBarco.Canonero));
-        juego.AgregarJugadorDos(listaBarcosJugadorDos);
-
+        juego.AgregarJugadorUno(datosTripulacionJugadores.tripulacionJugadorUno);
+        juego.AgregarJugadorDos(datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.Iniciar();
+       
         string mensaje = juego.Disparar(0,0);
 
         mensaje.Should().Be("Barco hundido");
