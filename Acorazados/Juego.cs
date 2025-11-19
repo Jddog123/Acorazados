@@ -67,6 +67,9 @@ public class Juego
 
         if (ValidarCantidadBarcosDestructores(_jugadorDos))
             throw new ArgumentException(MensajeCantidadBarcosDestructores);
+        
+        if (_jugadorDos.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1)
+            throw new ArgumentException("Deben existir 1 portaavion en la plataforma");
         throw new NotImplementedException();
     }
 
