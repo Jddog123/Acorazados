@@ -80,7 +80,7 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class AcorazadosTest
         juego.AgregarJugador(listaBarcos);
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public class AcorazadosTest
         juego.AgregarJugador(listaBarcos);
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public class AcorazadosTest
 
         Action result = () => juego.AgregarJugador(listaBarcos);
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco portaaviones es de cuatro coordenadas");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
 
     [Fact]
@@ -190,7 +190,7 @@ public class AcorazadosTest
 
         Action result = () => juego.AgregarJugador(listaBarcos);
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco portaaviones es de cuatro coordenadas");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
     
     [Fact]
@@ -258,7 +258,7 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
     
     [Fact]
@@ -273,7 +273,7 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
     
     [Fact]
@@ -287,7 +287,7 @@ public class AcorazadosTest
         juego.AgregarJugador(listaBarcos);
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
     }
     
     [Fact]
