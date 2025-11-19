@@ -336,4 +336,23 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
+    
+    [Fact]
+    public void Si_AgregoUnJugadorConUnDestructorEInicioElJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var destructor = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+
+        listaBarcos.Add((destructor, TipoBarco.Destructor));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 2 destructores en la plataforma");
+    }
 }
