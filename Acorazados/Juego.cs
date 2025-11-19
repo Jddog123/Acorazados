@@ -48,4 +48,9 @@ public class Juego
 
         throw new NotImplementedException();
     }
+
+    public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
+    {
+        throw new NotImplementedException();
+    }
 }
