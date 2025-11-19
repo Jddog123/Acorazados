@@ -40,7 +40,9 @@ public class Juego
         if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
             throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
 
-
+        if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Destructor) < 2)
+            throw new ArgumentException("Deben existir 2 destructores en la plataforma");
+        
         throw new NotImplementedException();
     }
 }

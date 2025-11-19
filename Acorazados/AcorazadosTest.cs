@@ -338,13 +338,36 @@ public class AcorazadosTest
     }
     
     [Fact]
-    public void Si_AgregoUnJugadorConUnDestructorEInicioElJuego_Debe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorCon4CañoerosYUnDestructorEInicioElJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (0, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (0, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (0, 3)
+        };
+        listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroCuatro, TipoBarco.Canonero));
+        
         var destructor = new List<(int x, int y)>
         {
             (0, 0)
+            ,(0, 2)
+            ,(0, 3)
         };
 
         listaBarcos.Add((destructor, TipoBarco.Destructor));
