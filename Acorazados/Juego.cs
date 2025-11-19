@@ -6,6 +6,7 @@ public class Juego
 {
     private const int LimiteSuperiorPlataforma = 9;
     private const int LimiteInferiorPlataforma = 0;
+    private const string MensajeBarcoFueraDelLimiteDeLaPlataforma = "Barco fuera del limite de la plataforma";
     private char[,] _plataforma;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorDos;
@@ -22,12 +23,9 @@ public class Juego
 
     public void Iniciar()
     {
-        if (_jugadorUno.Any(barco => barco.coordenadas.Any(coor =>
-                coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
-                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
-            )
+        if (ValidarLimitesPlataforma(_jugadorUno))
         {
-            throw new ArgumentException("Barco fuera del limite de la plataforma");
+            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
         }
 
         if (_jugadorUno.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1))
@@ -49,15 +47,19 @@ public class Juego
             throw new ArgumentException("Deben existir 1 portaavion en la plataforma");
 
 
-        if (_jugadorDos.Any(barco => barco.coordenadas.Any(coor =>
-                coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
-                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
-           )
+        if (ValidarLimitesPlataforma(_jugadorDos))
         {
-            throw new ArgumentException("Barco fuera del limite de la plataforma");
+            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
         }
         
         throw new NotImplementedException();
+    }
+
+    private bool ValidarLimitesPlataforma(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
+    {
+        return barcos.Any(barco => barco.coordenadas.Any(coor =>
+            coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
+            coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma));
     }
 
     public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
