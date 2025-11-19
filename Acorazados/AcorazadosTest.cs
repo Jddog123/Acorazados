@@ -84,7 +84,7 @@ public class AcorazadosTest
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConUnCanoneroEnDosCoordenadasDebe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConUnCanoneroEnDosCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -95,20 +95,22 @@ public class AcorazadosTest
         };
         listaBarcos.Add((canonero, TipoBarco.Canonero));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConUnCanoneroSinCoordenadasDebe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConUnCanoneroSinCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var canonero = new List<(int x, int y)>();
         listaBarcos.Add((canonero, TipoBarco.Canonero));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("El tipo de barco cañonero es de una coordenada");
     }
