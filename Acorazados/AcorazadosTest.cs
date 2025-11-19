@@ -426,7 +426,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 2 destructores en la plataforma");
     }
-    
+
     [Fact]
     public void Si_AgregoUnJugadorCon4CañoerosDosDestructorYNingunPortaavionEInicioElJuego_Debe_ArrojarExcepcion()
     {
@@ -465,6 +465,62 @@ public class AcorazadosTest
         listaBarcos.Add((destructor1, TipoBarco.Destructor));
         listaBarcos.Add((destructor2, TipoBarco.Destructor));
 
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 1 portaavion en la plataforma");
+    }
+
+    [Fact]
+    public void Si_AgregoUnJugadorCon4CañoerosDosDestructorYDosPortaavionEInicioElJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (2, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (2, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (2, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (2, 3)
+        };
+        listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroCuatro, TipoBarco.Canonero));
+
+        var destructor1 = new List<(int x, int y)>
+        {
+            (3, 0), (3, 2), (3, 3)
+        };
+        var destructor2 = new List<(int x, int y)>
+        {
+            (4, 0), (4, 2), (4, 3)
+        };
+
+        listaBarcos.Add((destructor1, TipoBarco.Destructor));
+        listaBarcos.Add((destructor2, TipoBarco.Destructor));
+
+        var portaAvion1 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3), (0, 4)
+        };
+        var portaAvion2 = new List<(int x, int y)>
+        {
+            (1, 0), (1, 2), (1, 3), (1, 3)
+        };
+
+        listaBarcos.Add((portaAvion1, TipoBarco.Portaaviones));
+        listaBarcos.Add((portaAvion2, TipoBarco.Portaaviones));
         juego.AgregarJugador(listaBarcos);
 
         Action result = () => juego.Iniciar();
