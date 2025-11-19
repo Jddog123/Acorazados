@@ -10,6 +10,7 @@ public class Juego
     private const string MensajeLogitudBarcoCanonero = "El tipo de barco cañonero es de una coordenada";
     private const string MensajeLogitudBarcoDestructor = "El tipo de barco destructor es de tres coordenadas";
     private const string MensajeLogitudBarcoPortaaviones = "El tipo de barco portaaviones es de cuatro coordenadas";
+    private const string MensajeCantidadBarcosCanoneros1 = "Deben existir 4 cañoreros en la plataforma";
     private char[,] _plataforma;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorDos;
@@ -38,8 +39,8 @@ public class Juego
         if (ValidarLongitudBarcoPortaAviones(_jugadorUno))
             throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
 
-        if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
-            throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
+        if (ValidarCantidadBarcosCanoneros(_jugadorUno))
+            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
 
         if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Destructor) != 2)
             throw new ArgumentException("Deben existir 2 destructores en la plataforma");
@@ -60,10 +61,15 @@ public class Juego
         if (ValidarLongitudBarcoPortaAviones(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
         
-        if (_jugadorDos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
-            throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
+        if (ValidarCantidadBarcosCanoneros(_jugadorDos))
+            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
 
         throw new NotImplementedException();
+    }
+
+    private bool ValidarCantidadBarcosCanoneros(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
+    {
+        return barcos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4;
     }
 
     private bool ValidarLongitudBarcoPortaAviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
