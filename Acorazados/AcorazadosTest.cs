@@ -167,8 +167,9 @@ public class AcorazadosTest
             (0, 8)
         };
         listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
@@ -187,8 +188,9 @@ public class AcorazadosTest
             (0, 4),
         };
         listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }

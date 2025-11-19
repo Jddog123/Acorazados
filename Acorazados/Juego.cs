@@ -16,9 +16,7 @@ public class Juego
 
     public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> listaBarcos)
     {
-        if (listaBarcos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4))
-            throw new ArgumentException("El tipo de barco portaaviones es de cuatro coordenadas");
-        
+
         _jugadorUno = listaBarcos;
     }
 
@@ -37,9 +35,13 @@ public class Juego
         if (_jugadorUno.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3))
             throw new ArgumentException("El tipo de barco destructor es de tres coordenadas");
         
+        if (_jugadorUno.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4))
+            throw new ArgumentException("El tipo de barco portaaviones es de cuatro coordenadas");
+        
         if(_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
             throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
-        
+       
+     
         throw new NotImplementedException();
     }
 }
