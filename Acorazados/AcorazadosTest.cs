@@ -1,4 +1,5 @@
-﻿using Acorazados.ClassData;
+﻿using System.Runtime.InteropServices;
+using Acorazados.ClassData;
 using Acorazados.Enums;
 using FluentAssertions;
 
@@ -1027,4 +1028,20 @@ public class AcorazadosTest
 
         mensaje.Should().Be("Barco hundido");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresYElJugadorDosTieneBarcosCanonerosYElJugadorUnoDisparaEImpactaAUnoDeEllosElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        
+        juego.AgregarJugadorUno(datosTripulacionJugadores.tripulacionJugadorUno);
+        juego.AgregarJugadorDos(datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.Iniciar();
+       
+        string mensaje = juego.Disparar(5,2);
+
+        mensaje.Should().Be("Barco hundido");
+    }
+    
 }

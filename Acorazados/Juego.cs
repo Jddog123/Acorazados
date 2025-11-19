@@ -45,6 +45,17 @@ public class Juego
             }
         }
     }
+    
+    public string Disparar(int coordenadaX, int coordenadaY)
+    {
+        if (_plataforma[coordenadaX, coordenadaY] == 'g')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'X';
+            return "Barco hundido";
+        }
+        
+        throw new NotImplementedException();
+    }
 
     private void ValidacionTripulacionJugadorDos()
     {
@@ -119,32 +130,4 @@ public class Juego
         barcos.Any(barco => barco.coordenadas.Any(coor =>
             coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
             coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma));
-
-    public string Disparar(int coordenadaX, int coordenadaY)
-    {
-        if (coordenadaX == 0 && coordenadaY == 0 && _plataforma[coordenadaX, coordenadaY] == 'g')
-        {
-            _plataforma[coordenadaX, coordenadaY] = 'X';
-            return "Barco hundido";
-        }
-
-        if (coordenadaX == 0 && coordenadaY == 1 && _plataforma[coordenadaX, coordenadaY] == 'g')
-        {
-            _plataforma[coordenadaX, coordenadaY] = 'X';
-            return "Barco hundido";
-        }
-        
-        if (coordenadaX == 5 && coordenadaY == 1 && _plataforma[coordenadaX, coordenadaY] == 'g')
-        {
-            _plataforma[coordenadaX, coordenadaY] = 'X';
-            return "Barco hundido";
-        }
-        if (coordenadaX == 5 && coordenadaY == 2 && _plataforma[coordenadaX, coordenadaY] == 'g')
-        {
-            _plataforma[coordenadaX, coordenadaY] = 'X';
-            return "Barco hundido";
-        }
-
-        throw new NotImplementedException();
-    }
 }
