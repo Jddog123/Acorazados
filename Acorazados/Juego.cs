@@ -12,102 +12,98 @@ public class Juego
     private const string MensajeLogitudBarcoPortaaviones = "El tipo de barco portaaviones es de cuatro coordenadas";
     private const string MensajeCantidadBarcosCanoneros1 = "Deben existir 4 cañoreros en la plataforma";
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
+    private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private char[,] _plataforma;
-    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
-    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorDos;
+    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _tripulacionJugadorUno;
+    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _tripulacionJugadorDos;
 
     public Juego()
     {
         _plataforma = new char[10, 10];
     }
 
-    public void AgregarJugador(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> listaBarcos)
+    public void AgregarJugadorUno(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> listaBarcosJugadorUno)
     {
-        _jugadorUno = listaBarcos;
+        _tripulacionJugadorUno = listaBarcosJugadorUno;
+    }
+    
+    public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
+    {
+        _tripulacionJugadorDos = listaBarcosJugadorDos;
     }
 
     public void Iniciar()
     {
-        if (ValidarLimitesPlataforma(_jugadorUno))
-            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
+        ValidacionesTripulacionJugadorUno();
+        ValidacionTripulacionJugadorDos();
 
-        if (ValidarLongitudBarcoCanonero(_jugadorUno))
-            throw new ArgumentException(MensajeLogitudBarcoCanonero);
-
-        if (ValidarLongitudBarcoDestructor(_jugadorUno))
-            throw new ArgumentException(MensajeLogitudBarcoDestructor);
-
-        if (ValidarLongitudBarcoPortaAviones(_jugadorUno))
-            throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
-
-        if (ValidarCantidadBarcosCanoneros(_jugadorUno))
-            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
-
-        if (ValidarCantidadBarcosDestructores(_jugadorUno))
-            throw new ArgumentException(MensajeCantidadBarcosDestructores);
-
-        if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1)
-            throw new ArgumentException("Deben existir 1 portaavion en la plataforma");
-
-
-        if (ValidarLimitesPlataforma(_jugadorDos))
-            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
-
-        if (ValidarLongitudBarcoCanonero(_jugadorDos))
-            throw new ArgumentException(MensajeLogitudBarcoCanonero);
-
-        if (ValidarLongitudBarcoDestructor(_jugadorDos))
-            throw new ArgumentException(MensajeLogitudBarcoDestructor);
-
-        if (ValidarLongitudBarcoPortaAviones(_jugadorDos))
-            throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
-
-        if (ValidarCantidadBarcosCanoneros(_jugadorDos))
-            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
-
-        if (ValidarCantidadBarcosDestructores(_jugadorDos))
-            throw new ArgumentException(MensajeCantidadBarcosDestructores);
-        
-        if (_jugadorDos.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1)
-            throw new ArgumentException("Deben existir 1 portaavion en la plataforma");
         throw new NotImplementedException();
     }
 
+    private void ValidacionTripulacionJugadorDos()
+    {
+        if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
+
+        if (ValidarLongitudBarcoCanonero(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeLogitudBarcoCanonero);
+
+        if (ValidarLongitudBarcoDestructor(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeLogitudBarcoDestructor);
+
+        if (ValidarLongitudBarcoPortaAviones(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
+
+        if (ValidarCantidadBarcosCanoneros(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
+
+        if (ValidarCantidadBarcosDestructores(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeCantidadBarcosDestructores);
+        
+        if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
+    }
+
+    private void ValidacionesTripulacionJugadorUno()
+    {
+        if (ValidarLimitesPlataforma(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
+
+        if (ValidarLongitudBarcoCanonero(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeLogitudBarcoCanonero);
+
+        if (ValidarLongitudBarcoDestructor(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeLogitudBarcoDestructor);
+
+        if (ValidarLongitudBarcoPortaAviones(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
+
+        if (ValidarCantidadBarcosCanoneros(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
+
+        if (ValidarCantidadBarcosDestructores(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeCantidadBarcosDestructores);
+
+        if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
+    }
+
+    private bool ValidarCantidadBarcosPortaaviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1;
+
     private bool ValidarCantidadBarcosDestructores(
-        List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Count(barco => barco.tipoBarco == TipoBarco.Destructor) != 2;
-    }
+        List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Count(barco => barco.tipoBarco == TipoBarco.Destructor) != 2;
 
-    private bool ValidarCantidadBarcosCanoneros(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4;
-    }
+    private bool ValidarCantidadBarcosCanoneros(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4;
 
-    private bool ValidarLongitudBarcoPortaAviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4);
-    }
+    private bool ValidarLongitudBarcoPortaAviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4);
 
-    private bool ValidarLongitudBarcoDestructor(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3);
-    }
+    private bool ValidarLongitudBarcoDestructor(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3);
 
-    private bool ValidarLongitudBarcoCanonero(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1);
-    }
+    private bool ValidarLongitudBarcoCanonero(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1);
 
-    private bool ValidarLimitesPlataforma(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
-    {
-        return barcos.Any(barco => barco.coordenadas.Any(coor =>
+    private bool ValidarLimitesPlataforma(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Any(barco => barco.coordenadas.Any(coor =>
             coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
             coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma));
-    }
-
-    public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
-    {
-        _jugadorDos = listaBarcosJugadorDos;
-    }
 }
