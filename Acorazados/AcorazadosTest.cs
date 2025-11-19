@@ -1080,4 +1080,32 @@ public class AcorazadosTest
 
         mensaje.Should().Be("Barco hundido");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresYElJugadorDosTieneUnPortaavionEn9_9_8_9_7_9Y_6_9YElJugadorUnoDisparaTodasLasCoordenadasElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        
+        juego.AgregarJugadorUno(datosTripulacionJugadores.tripulacionJugadorUno);
+
+        var tripulacionJugadorDosClonada = datosTripulacionJugadores.tripulacionJugadorDos.Select(item =>
+            (item.coordenadas.Select(c => (c.x, c.y)).ToList(), item.tipoBarco)
+        ).ToList();
+
+        tripulacionJugadorDosClonada[6].Item1[0] = (9, 9);
+        tripulacionJugadorDosClonada[6].Item1[1] = (8, 9);
+        tripulacionJugadorDosClonada[6].Item1[2] = (7, 9);
+        tripulacionJugadorDosClonada[6].Item1[2] = (6, 9);
+        
+        juego.AgregarJugadorDos(tripulacionJugadorDosClonada);
+        juego.Iniciar();
+        juego.Disparar(9,9);
+        juego.Disparar(8,9);
+        juego.Disparar(7,9);
+        
+        string mensaje = juego.Disparar(6,9);
+
+        mensaje.Should().Be("Barco hundido");
+    }
 }
