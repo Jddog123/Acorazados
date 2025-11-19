@@ -60,10 +60,12 @@ public class Juego
 
         if (ValidarLongitudBarcoPortaAviones(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
-        
+
         if (ValidarCantidadBarcosCanoneros(_jugadorDos))
             throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
 
+        if (_jugadorDos.Count(barco => barco.tipoBarco == TipoBarco.Destructor) != 2)
+            throw new ArgumentException("Deben existir 2 destructores en la plataforma");
         throw new NotImplementedException();
     }
 
