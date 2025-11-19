@@ -52,6 +52,8 @@ public class Juego
         if (ValidarLongitudBarcoCanonero(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoCanonero);
 
+        if (_jugadorDos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3))
+            throw new ArgumentException("El tipo de barco destructor es de tres coordenadas");
 
         throw new NotImplementedException();
     }
