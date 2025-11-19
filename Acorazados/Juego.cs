@@ -8,6 +8,7 @@ public class Juego
     private const int LimiteInferiorPlataforma = 0;
     private char[,] _plataforma;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
+    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorDos;
 
     public Juego()
     {
@@ -23,7 +24,8 @@ public class Juego
     {
         if (_jugadorUno.Any(barco => barco.coordenadas.Any(coor =>
                 coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
-                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma)))
+                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
+            )
         {
             throw new ArgumentException("Barco fuera del limite de la plataforma");
         }
@@ -46,11 +48,20 @@ public class Juego
         if (_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1)
             throw new ArgumentException("Deben existir 1 portaavion en la plataforma");
 
+
+        if (_jugadorDos.Any(barco => barco.coordenadas.Any(coor =>
+                coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
+                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma))
+           )
+        {
+            throw new ArgumentException("Barco fuera del limite de la plataforma");
+        }
+        
         throw new NotImplementedException();
     }
 
     public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
     {
-        throw new NotImplementedException();
+        _jugadorDos = listaBarcosJugadorDos;
     }
 }
