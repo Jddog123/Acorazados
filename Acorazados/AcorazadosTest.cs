@@ -56,7 +56,8 @@ public class AcorazadosTest
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConDosDestructorEnLaPosicion_0_8_0_9_0_10_Y_8_0_9_0_10_0_EInicioJuego_Debe_ArrojarExcepcion()
+    public void
+        Si_AgregoUnJugadorConDosDestructorEnLaPosicion_0_8_0_9_0_10_Y_8_0_9_0_10_0_EInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -75,6 +76,21 @@ public class AcorazadosTest
             (10, 0)
         };
         listaBarcos.Add((destructor2, TipoBarco.Destructor));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
+    }
+
+    [Fact]
+    public void Si_AgregoUnJugadorConUnCañoneroFueraDeLaPlataformaEInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var coordenadasPrimerCañonero = new List<(int x, int y)> { (0, 10) };
+        listaBarcos.Add((coordenadasPrimerCañonero, TipoBarco.Canonero));
 
         juego.AgregarJugador(listaBarcos);
 
@@ -116,6 +132,20 @@ public class AcorazadosTest
     }
 
     [Fact]
+    public void Si_AgregoUnJugadorConUnCanoneroConCordenadaDiferenteA1EInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canonero = new List<(int x, int y)>();
+        listaBarcos.Add((canonero, TipoBarco.Canonero));
+
+        juego.AgregarJugador(listaBarcos);
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
+    }
+
+    [Fact]
     public void Si_AgregoUnJugadorConUnDestructorConDosCoordenadasDebe_ArrojarExcepcion()
     {
         var juego = new Juego();
@@ -131,7 +161,8 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
 
     [Fact]
@@ -152,7 +183,28 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco destructor es de tres coordenadas");
+    }
+
+    [Fact]
+    public void Si_AgregoUnJugadorConUnDestructorConCoordenadasDiferenteATresEInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var destructor = new List<(int x, int y)>
+        {
+            (0, 8),
+            (0, 9)
+        };
+        listaBarcos.Add((destructor, TipoBarco.Destructor));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
 
     [Fact]
@@ -171,7 +223,8 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
 
     [Fact]
@@ -192,7 +245,28 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+    }
+
+    [Fact]
+    public void Si_AgregoUnJugadorConUnPortaavionesConCoordenadasDiferentesA5EInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var portaaviones = new List<(int x, int y)>
+        {
+            (0, 6),
+            (0, 7),
+            (0, 8)
+        };
+        listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
 
     [Fact]
@@ -223,7 +297,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
-    
+
     [Fact]
     public void Si_AgregoUnJugadorConCincoBarcosCañonerosEInicioElJuego_Debe_ArrojarExcepcion()
     {
@@ -247,7 +321,7 @@ public class AcorazadosTest
         };
         var canoneroCinco = new List<(int x, int y)>
         {
-            (0,4)
+            (0, 4)
         };
 
         listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
@@ -261,72 +335,5 @@ public class AcorazadosTest
         Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
-    }
-    
-    [Fact]
-    public void Si_AgregoUnJugadorConUnCañoneroFueraDeLaPlataformaEInicioJuego_Debe_ArrojarExcepcion()
-    {
-        var juego = new Juego();
-        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var coordenadasPrimerCañonero = new List<(int x, int y)> { (0, 10) };
-        listaBarcos.Add((coordenadasPrimerCañonero, TipoBarco.Canonero));
-
-        juego.AgregarJugador(listaBarcos);
-
-        Action result = () => juego.Iniciar();
-
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
-    }
-    
-    [Fact]
-    public void Si_AgregoUnJugadorConUnCanoneroConCordenadaDiferenteA1EInicioJuego_Debe_ArrojarExcepcion()
-    {
-        var juego = new Juego();
-        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var canonero = new List<(int x, int y)>();
-        listaBarcos.Add((canonero, TipoBarco.Canonero));
-        
-        juego.AgregarJugador(listaBarcos);
-        Action result = () => juego.Iniciar();
-
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
-    }
-    
-    [Fact]
-    public void Si_AgregoUnJugadorConUnDestructorConCoordenadasDiferenteATresEInicioJuego_Debe_ArrojarExcepcion()
-    {
-        var juego = new Juego();
-        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var destructor = new List<(int x, int y)>
-        {
-            (0, 8),
-            (0, 9)
-        };
-        listaBarcos.Add((destructor, TipoBarco.Destructor));
-        
-        juego.AgregarJugador(listaBarcos);
-
-        Action result = () => juego.Iniciar();
-
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
-    }
-    
-    [Fact]
-    public void Si_AgregoUnJugadorConUnPortaavionesConCoordenadasDiferentesA5EInicioJuego_Debe_ArrojarExcepcion()
-    {
-        var juego = new Juego();
-        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
-        var portaaviones = new List<(int x, int y)>
-        {
-            (0, 6),
-            (0, 7),
-            (0, 8)
-        };
-        listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
-        juego.AgregarJugador(listaBarcos);
-
-        Action result = () => juego.Iniciar();
-
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
     }
 }
