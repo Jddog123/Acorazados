@@ -308,4 +308,23 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
+    
+    [Fact]
+    public void Si_AgregoUnJugadorConUnPortaavionesConCoordenadasDiferentesA5EInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var portaaviones = new List<(int x, int y)>
+        {
+            (0, 6),
+            (0, 7),
+            (0, 8)
+        };
+        listaBarcos.Add((portaaviones, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+    }
 }
