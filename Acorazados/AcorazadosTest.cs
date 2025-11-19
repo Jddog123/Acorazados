@@ -766,7 +766,7 @@ public class AcorazadosTest
             (7, 0),
             (8, 0)
         };
-        listaBarcosJugadorDos.Add((portaAvion1JugadorDos, TipoBarco.Destructor));
+        listaBarcosJugadorDos.Add((portaAvion1JugadorDos, TipoBarco.Portaaviones));
 
         juego.AgregarJugadorDos(listaBarcosJugadorDos);
 

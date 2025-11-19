@@ -53,8 +53,11 @@ public class Juego
         if (ValidarLongitudBarcoCanonero(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoCanonero);
 
-        if (ValidarLongitudBarcoDestructor(_jugadorDos))            
+        if (ValidarLongitudBarcoDestructor(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoDestructor);
+        
+        if (_jugadorDos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4))
+            throw new ArgumentException("El tipo de barco portaaviones es de cuatro coordenadas");
 
         throw new NotImplementedException();
     }
