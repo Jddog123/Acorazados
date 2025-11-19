@@ -8,6 +8,7 @@ public class Juego
     private const int LimiteInferiorPlataforma = 0;
     private const string MensajeBarcoFueraDelLimiteDeLaPlataforma = "Barco fuera del limite de la plataforma";
     private const string MensajeLogitudBarcoCanonero = "El tipo de barco cañonero es de una coordenada";
+    private const string MensajeLogitudBarcoDestructor = "El tipo de barco destructor es de tres coordenadas";
     private char[,] _plataforma;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
     private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorDos;
@@ -30,8 +31,8 @@ public class Juego
         if (ValidarLongitudBarcoCanonero(_jugadorUno))
             throw new ArgumentException(MensajeLogitudBarcoCanonero);
 
-        if (_jugadorUno.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3))
-            throw new ArgumentException("El tipo de barco destructor es de tres coordenadas");
+        if (ValidarLongitudBarcoDestructor(_jugadorUno))
+            throw new ArgumentException(MensajeLogitudBarcoDestructor);
 
         if (_jugadorUno.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4))
             throw new ArgumentException("El tipo de barco portaaviones es de cuatro coordenadas");
@@ -52,10 +53,15 @@ public class Juego
         if (ValidarLongitudBarcoCanonero(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoCanonero);
 
-        if (_jugadorDos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3))
-            throw new ArgumentException("El tipo de barco destructor es de tres coordenadas");
+        if (ValidarLongitudBarcoDestructor(_jugadorDos))            
+            throw new ArgumentException(MensajeLogitudBarcoDestructor);
 
         throw new NotImplementedException();
+    }
+
+    private bool ValidarLongitudBarcoDestructor(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
+    {
+        return barcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3);
     }
 
     private bool ValidarLongitudBarcoCanonero(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos)
