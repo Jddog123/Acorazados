@@ -7,6 +7,7 @@ public class Juego
     private const int LimiteSuperiorPlataforma = 9;
     private const int LimiteInferiorPlataforma = 0;
     private char[,] _plataforma;
+    private List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> _jugadorUno;
 
     public Juego()
     {
@@ -30,10 +31,15 @@ public class Juego
         {
             throw new ArgumentException("Barco fuera del limite de la plataforma");
         }
+
+        _jugadorUno = listaBarcos;
     }
 
     public void IniciarJuego()
     {
+        if(_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Canonero) < 4)
+            throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
+            
         throw new NotImplementedException();
     }
 }
