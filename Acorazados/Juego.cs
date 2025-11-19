@@ -59,6 +59,9 @@ public class Juego
 
         if (ValidarLongitudBarcoPortaAviones(_jugadorDos))
             throw new ArgumentException(MensajeLogitudBarcoPortaaviones);
+        
+        if (_jugadorDos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
+            throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
 
         throw new NotImplementedException();
     }
