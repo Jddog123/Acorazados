@@ -51,6 +51,9 @@ public class Juego
         {
             throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
         }
+        if (_jugadorDos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1))
+            throw new ArgumentException("El tipo de barco cañonero es de una coordenada");
+
         
         throw new NotImplementedException();
     }
