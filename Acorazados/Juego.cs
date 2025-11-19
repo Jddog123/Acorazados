@@ -44,6 +44,13 @@ public class Juego
                 _plataforma[barcoCanonero.coordenadas[0].x, barcoCanonero.coordenadas[0].y] = 'g';
             }
         }
+        
+        if (_tripulacionJugadorDos[4].tipoBarco == TipoBarco.Destructor)
+        {
+            _plataforma[_tripulacionJugadorDos[4].coordenadas[0].x, _tripulacionJugadorDos[4].coordenadas[0].y] = 'd';
+            _plataforma[_tripulacionJugadorDos[4].coordenadas[1].x, _tripulacionJugadorDos[4].coordenadas[1].y] = 'd';
+            _plataforma[_tripulacionJugadorDos[4].coordenadas[2].x, _tripulacionJugadorDos[4].coordenadas[2].y] = 'd';
+        }
     }
     
     public string Disparar(int coordenadaX, int coordenadaY)
@@ -54,7 +61,20 @@ public class Juego
             return "Barco hundido";
         }
         
-        throw new NotImplementedException();
+        if (_plataforma[coordenadaX, coordenadaY] == 'd')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'x';
+
+            if (_plataforma[9, 0] == 'x' && _plataforma[8, 0] == 'x' && _plataforma[7, 0] == 'x')
+            {
+                _plataforma[9, 0] = 'X';
+                _plataforma[8, 9] = 'X';
+                _plataforma[7, 0] = 'X';
+                return "Barco hundido";
+            }
+        }
+        
+        return "";
     }
 
     private void ValidacionTripulacionJugadorDos()
