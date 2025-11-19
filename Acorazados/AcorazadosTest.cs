@@ -180,7 +180,7 @@ public class AcorazadosTest
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConTresBarcosCañonerosDebe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConTresBarcosCañonerosEInicioElJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -201,7 +201,9 @@ public class AcorazadosTest
         listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
         listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
 
         result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
     }

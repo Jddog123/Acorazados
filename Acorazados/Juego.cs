@@ -31,4 +31,9 @@ public class Juego
             throw new ArgumentException("Barco fuera del limite de la plataforma");
         }
     }
+
+    public void IniciarJuego()
+    {
+        throw new NotImplementedException();
+    }
 }
