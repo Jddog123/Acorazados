@@ -207,4 +207,43 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
     }
+    
+    [Fact]
+    public void Si_AgregoUnJugadorConCincoBarcosCañonerosEInicioElJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (0, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (0, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (0, 3)
+        };
+        var canoneroCinco = new List<(int x, int y)>
+        {
+            (0,4)
+        };
+
+        listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroCuatro, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroCinco, TipoBarco.Canonero));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
+
+        result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
+    }
 }
