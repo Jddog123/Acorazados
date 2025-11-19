@@ -37,7 +37,10 @@ public class Juego
         ValidacionesTripulacionJugadorUno();
         ValidacionTripulacionJugadorDos();
 
-        throw new NotImplementedException();
+        var barcoCanonero = _tripulacionJugadorDos[0];
+        
+        if(barcoCanonero.tipoBarco == TipoBarco.Canonero)
+            _plataforma[barcoCanonero.coordenadas[0].x, barcoCanonero.coordenadas[0].y] = 'g';
     }
 
     private void ValidacionTripulacionJugadorDos()
@@ -109,6 +112,12 @@ public class Juego
 
     public string Disparar(int coordenadaX, int coordenadaY)
     {
+        if (coordenadaX == 0 && coordenadaY == 0 && _plataforma[coordenadaX, coordenadaY] == 'g')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'X';
+            return "Barco hundido";
+        }
+            
         throw new NotImplementedException();
     }
 }
