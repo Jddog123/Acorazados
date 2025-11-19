@@ -29,7 +29,7 @@ public class Juego
         _jugadorUno = listaBarcos;
     }
 
-    public void IniciarJuego()
+    public void Iniciar()
     {
         if (_jugadorUno.Any(barco => barco.coordenadas.Any(coor =>
                 coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||

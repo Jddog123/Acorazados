@@ -15,7 +15,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -30,7 +30,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -50,7 +50,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -78,7 +78,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -211,7 +211,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
     }
@@ -250,7 +250,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Deben existir 4 cañoreros en la plataforma");
     }
@@ -265,7 +265,7 @@ public class AcorazadosTest
 
         juego.AgregarJugador(listaBarcos);
 
-        Action result = () => juego.IniciarJuego();
+        Action result = () => juego.Iniciar();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
