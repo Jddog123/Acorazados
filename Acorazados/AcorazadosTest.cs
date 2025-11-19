@@ -127,9 +127,11 @@ public class AcorazadosTest
         };
         listaBarcos.Add((destructor, TipoBarco.Destructor));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco destructor es de tres coordenadas");
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
 
     [Fact]
@@ -146,9 +148,11 @@ public class AcorazadosTest
         };
         listaBarcos.Add((destructor, TipoBarco.Destructor));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco destructor es de tres coordenadas");
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
 
     [Fact]
@@ -302,6 +306,6 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>("El tipo de barco destructor es de tres coordenadas");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
 }
