@@ -25,18 +25,19 @@ public class Juego
         if (listaBarcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1))
             throw new ArgumentException("El tipo de barco cañonero es de una coordenada");
 
-        if (listaBarcos.Any(barco => barco.coordenadas.Any(coor =>
-                coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
-                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma)))
-        {
-            throw new ArgumentException("Barco fuera del limite de la plataforma");
-        }
-
+        
         _jugadorUno = listaBarcos;
     }
 
     public void IniciarJuego()
     {
+        if (_jugadorUno.Any(barco => barco.coordenadas.Any(coor =>
+                coor.x < LimiteInferiorPlataforma || coor.x > LimiteSuperiorPlataforma ||
+                coor.y < LimiteInferiorPlataforma || coor.y > LimiteSuperiorPlataforma)))
+        {
+            throw new ArgumentException("Barco fuera del limite de la plataforma");
+        }
+        
         if(_jugadorUno.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4)
             throw new ArgumentException("Deben existir 4 cañoreros en la plataforma");
 

@@ -6,33 +6,37 @@ namespace Acorazados;
 public class AcorazadosTest
 {
     [Fact]
-    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion0_10_Debe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion0_10EInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var coordenadasPrimerCañonero = new List<(int x, int y)> { (0, 10) };
         listaBarcos.Add((coordenadasPrimerCañonero, TipoBarco.Canonero));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion10_0_Debe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConUnCañoneroEnLaPosicion10_0EInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var coordenadasPrimerCañonero = new List<(int x, int y)> { (10, 0) };
         listaBarcos.Add((coordenadasPrimerCañonero, TipoBarco.Canonero));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConUnDestructorEnLaPosicion0_8_0_9_0_10Debe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConUnDestructorEnLaPosicion0_8_0_9_0_10EinicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -44,13 +48,15 @@ public class AcorazadosTest
         };
         listaBarcos.Add((destructor, TipoBarco.Destructor));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
 
     [Fact]
-    public void Si_AgregoUnJugadorConDosDestructorEnLaPosicion_0_8_0_9_0_10_Y_8_0_9_0_10_0_Debe_ArrojarExcepcion()
+    public void Si_AgregoUnJugadorConDosDestructorEnLaPosicion_0_8_0_9_0_10_Y_8_0_9_0_10_0_EInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -70,7 +76,9 @@ public class AcorazadosTest
         };
         listaBarcos.Add((destructor2, TipoBarco.Destructor));
 
-        Action result = () => juego.AgregarJugador(listaBarcos);
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.IniciarJuego();
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
