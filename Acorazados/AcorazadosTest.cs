@@ -336,7 +336,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
-    
+
     [Fact]
     public void Si_AgregoUnJugadorCon4CañoerosYUnDestructorEInicioElJuego_Debe_ArrojarExcepcion()
     {
@@ -362,15 +362,63 @@ public class AcorazadosTest
         listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
         listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
         listaBarcos.Add((canoneroCuatro, TipoBarco.Canonero));
-        
+
         var destructor = new List<(int x, int y)>
         {
-            (0, 0)
-            ,(0, 2)
-            ,(0, 3)
+            (0, 0), (0, 2), (0, 3)
         };
 
         listaBarcos.Add((destructor, TipoBarco.Destructor));
+
+        juego.AgregarJugador(listaBarcos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 2 destructores en la plataforma");
+    }
+
+    [Fact]
+    public void Si_AgregoUnJugadorCon4CañoerosYTresDestructorEInicioElJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (0, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (0, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (0, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (0, 3)
+        };
+        listaBarcos.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcos.Add((canoneroCuatro, TipoBarco.Canonero));
+
+        var destructor1 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3)
+        };
+        var destructor2 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3)
+        };
+        var destructor3 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3)
+        };
+
+        listaBarcos.Add((destructor1, TipoBarco.Destructor));
+        listaBarcos.Add((destructor2, TipoBarco.Destructor));
+        listaBarcos.Add((destructor3, TipoBarco.Destructor));
 
         juego.AgregarJugador(listaBarcos);
 
