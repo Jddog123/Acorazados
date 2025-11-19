@@ -527,7 +527,7 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 1 portaavion en la plataforma");
     }
-    
+
     [Fact]
     public void Si_AgregoUnSegundoJugadorConUnBarcoFueraDeLaPlataformaEInicioJuego_Debe_ArrojarExcepcion()
     {
@@ -573,13 +573,13 @@ public class AcorazadosTest
 
         listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
         juego.AgregarJugador(listaBarcosJugadorUno);
-        
+
         var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var canoneroJugadorDos = new List<(int x, int y)>
         {
             (10, 10)
         };
-        
+
         listaBarcosJugadorDos.Add((canoneroJugadorDos, TipoBarco.Canonero));
         juego.AgregarJugadorDos(listaBarcosJugadorDos);
 
@@ -587,9 +587,10 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
-    
+
     [Fact]
-    public void Si_AgregoUnSegundoJugadorConUnCanoneroConSuLongitudDiferenteAUnaCordenadaEInicioJuego_Debe_ArrojarExcepcion()
+    public void
+        Si_AgregoUnSegundoJugadorConUnCanoneroConSuLongitudDiferenteAUnaCordenadaEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -633,14 +634,14 @@ public class AcorazadosTest
 
         listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
         juego.AgregarJugador(listaBarcosJugadorUno);
-        
+
         var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var canonero1JugadorDos = new List<(int x, int y)>
         {
             (0, 2),
             (0, 1)
         };
-        
+
         listaBarcosJugadorDos.Add((canonero1JugadorDos, TipoBarco.Canonero));
         juego.AgregarJugadorDos(listaBarcosJugadorDos);
 
@@ -648,9 +649,10 @@ public class AcorazadosTest
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco cañonero es de una coordenada");
     }
-    
+
     [Fact]
-    public void Si_AgregoUnSegundoJugadorConUnDestructorConSuLongitudDiferenteATresCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
+    public void
+        Si_AgregoUnSegundoJugadorConUnDestructorConSuLongitudDiferenteATresCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -694,7 +696,7 @@ public class AcorazadosTest
 
         listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
         juego.AgregarJugador(listaBarcosJugadorUno);
-        
+
         var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var destructor1JugadorDos = new List<(int x, int y)>
         {
@@ -709,10 +711,13 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco destructor es de tres coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco destructor es de tres coordenadas");
     }
-     [Fact]
-    public void Si_AgregoUnSegundoJugadorConUnPortaAvionConSuLongitudDiferenteACuatroCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
+
+    [Fact]
+    public void
+        Si_AgregoUnSegundoJugadorConUnPortaAvionConSuLongitudDiferenteACuatroCoordenadasEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
@@ -756,7 +761,7 @@ public class AcorazadosTest
 
         listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
         juego.AgregarJugador(listaBarcosJugadorUno);
-        
+
         var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
         var portaAvion1JugadorDos = new List<(int x, int y)>
         {
@@ -772,6 +777,78 @@ public class AcorazadosTest
 
         Action result = () => juego.Iniciar();
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("El tipo de barco portaaviones es de cuatro coordenadas");
+    }
+    
+    [Fact]
+    public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosCañonerosDiferentesACuatroEInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (2, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (2, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (2, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (2, 3)
+        };
+        listaBarcosJugadorUno.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroCuatro, TipoBarco.Canonero));
+
+        var destructor1 = new List<(int x, int y)>
+        {
+            (3, 0), (3, 2), (3, 3)
+        };
+        var destructor2 = new List<(int x, int y)>
+        {
+            (4, 0), (4, 2), (4, 3)
+        };
+
+        listaBarcosJugadorUno.Add((destructor1, TipoBarco.Destructor));
+        listaBarcosJugadorUno.Add((destructor2, TipoBarco.Destructor));
+
+        var portaAvion1 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3), (0, 4)
+        };
+
+        listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcosJugadorUno);
+
+        var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUnoJugadorDos = new List<(int x, int y)>
+        {
+            (6, 0)
+        };
+        var canoneroDosJugadorDos = new List<(int x, int y)>
+        {
+            (7, 0)
+        };
+        var canoneroTresJugadorDos = new List<(int x, int y)>
+        {
+            (8, 0)
+        };
+        listaBarcosJugadorDos.Add((canoneroUnoJugadorDos, TipoBarco.Canonero));
+        listaBarcosJugadorDos.Add((canoneroDosJugadorDos, TipoBarco.Canonero));
+        listaBarcosJugadorDos.Add((canoneroTresJugadorDos, TipoBarco.Canonero));
+
+        juego.AgregarJugadorDos(listaBarcosJugadorDos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
 }
