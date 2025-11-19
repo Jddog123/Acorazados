@@ -100,14 +100,6 @@ public class Juego
         if (_plataforma[coordenadaX, coordenadaY] == 'c')
         {
             _plataforma[coordenadaX, coordenadaY] = 'x';
-
-            if (_plataforma[9, 0] == 'x' && _plataforma[8, 0] == 'x' && _plataforma[7, 0] == 'x')
-            {
-                _plataforma[9, 0] = 'X';
-                _plataforma[8, 9] = 'X';
-                _plataforma[7, 0] = 'X';
-                return "Barco hundido";
-            }
             
             if (_plataforma[1, 3] == 'x' && _plataforma[1, 4] == 'x' && _plataforma[1, 5] == 'x' && _plataforma[1,6] == 'x')
             {
@@ -115,6 +107,15 @@ public class Juego
                 _plataforma[1, 4] = 'X';
                 _plataforma[1, 5] = 'X';
                 _plataforma[1, 6] = 'X';
+                return "Barco hundido";
+            }
+            
+            if (_plataforma[9, 9] == 'x' && _plataforma[8, 9] == 'x' && _plataforma[7, 9] == 'x' && _plataforma[6,9] == 'x')
+            {
+                _plataforma[9, 9] = 'X';
+                _plataforma[8, 9] = 'X';
+                _plataforma[7, 9] = 'X';
+                _plataforma[6, 9] = 'X';
                 return "Barco hundido";
             }
         }

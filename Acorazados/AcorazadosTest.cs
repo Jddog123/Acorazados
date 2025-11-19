@@ -1096,7 +1096,7 @@ public class AcorazadosTest
         tripulacionJugadorDosClonada[6].Item1[0] = (9, 9);
         tripulacionJugadorDosClonada[6].Item1[1] = (8, 9);
         tripulacionJugadorDosClonada[6].Item1[2] = (7, 9);
-        tripulacionJugadorDosClonada[6].Item1[2] = (6, 9);
+        tripulacionJugadorDosClonada[6].Item1[3] = (6, 9);
         
         juego.AgregarJugadorDos(tripulacionJugadorDosClonada);
         juego.Iniciar();
