@@ -936,4 +936,96 @@ public class AcorazadosTest
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Deben existir 2 destructores en la plataforma");
     }
+    
+    [Fact]
+    public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosPortaavionesDiferentesA1EInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        var listaBarcosJugadorUno = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUno = new List<(int x, int y)>
+        {
+            (2, 0)
+        };
+        var canoneroDos = new List<(int x, int y)>
+        {
+            (2, 1)
+        };
+        var canoneroTres = new List<(int x, int y)>
+        {
+            (2, 2)
+        };
+        var canoneroCuatro = new List<(int x, int y)>
+        {
+            (2, 3)
+        };
+        listaBarcosJugadorUno.Add((canoneroUno, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroDos, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroTres, TipoBarco.Canonero));
+        listaBarcosJugadorUno.Add((canoneroCuatro, TipoBarco.Canonero));
+
+        var destructor1 = new List<(int x, int y)>
+        {
+            (3, 0), (3, 2), (3, 3)
+        };
+        var destructor2 = new List<(int x, int y)>
+        {
+            (4, 0), (4, 2), (4, 3)
+        };
+
+        listaBarcosJugadorUno.Add((destructor1, TipoBarco.Destructor));
+        listaBarcosJugadorUno.Add((destructor2, TipoBarco.Destructor));
+
+        var portaAvion1 = new List<(int x, int y)>
+        {
+            (0, 0), (0, 2), (0, 3), (0, 4)
+        };
+
+        listaBarcosJugadorUno.Add((portaAvion1, TipoBarco.Portaaviones));
+        juego.AgregarJugador(listaBarcosJugadorUno);
+
+        var listaBarcosJugadorDos = new List<(List<(int x, int y)> coordenadas, TipoBarco)>();
+        var canoneroUnoJugadorDos = new List<(int x, int y)>
+        {
+            (6, 0)
+        };
+        var canoneroDosJugadorDos = new List<(int x, int y)>
+        {
+            (7, 0)
+        };
+        var canoneroTresJugadorDos = new List<(int x, int y)>
+        {
+            (8, 0)
+        };
+        var canoneroCuatroJugadorDos = new List<(int x, int y)>
+        {
+            (9, 0)
+        };
+        listaBarcosJugadorDos.Add((canoneroUnoJugadorDos, TipoBarco.Canonero));
+        listaBarcosJugadorDos.Add((canoneroDosJugadorDos, TipoBarco.Canonero));
+        listaBarcosJugadorDos.Add((canoneroTresJugadorDos, TipoBarco.Canonero));
+        listaBarcosJugadorDos.Add((canoneroCuatroJugadorDos, TipoBarco.Canonero));
+
+        var destructorUnoJugadorDos = new List<(int x, int y)>
+        {
+            (8, 0),
+            (8, 1),
+            (8, 2),
+        };
+        var destructorDosJugadorDos = new List<(int x, int y)>
+        {
+            (7, 0),
+            (7, 1),
+            (7, 2),
+        };
+        listaBarcosJugadorDos.Add((destructorUnoJugadorDos, TipoBarco.Destructor));
+        listaBarcosJugadorDos.Add((destructorDosJugadorDos, TipoBarco.Destructor));
+
+
+        juego.AgregarJugadorDos(listaBarcosJugadorDos);
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Deben existir 1 portaavion en la plataforma");
+    }
 }
