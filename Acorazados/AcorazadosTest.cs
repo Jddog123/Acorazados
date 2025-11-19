@@ -998,5 +998,19 @@ public class AcorazadosTest
     }
     
     
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion5_1YElJugadorUnoDisparaEnLaPosicion5_1_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        
+        juego.AgregarJugadorUno(datosTripulacionJugadores.tripulacionJugadorUno);
+        juego.AgregarJugadorDos(datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.Iniciar();
+       
+        string mensaje = juego.Disparar(5,1);
+
+        mensaje.Should().Be("Barco hundido");
+    }
     
 }
