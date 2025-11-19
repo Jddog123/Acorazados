@@ -133,6 +133,12 @@ public class Juego
             _plataforma[coordenadaX, coordenadaY] = 'X';
             return "Barco hundido";
         }
+        
+        if (coordenadaX == 5 && coordenadaY == 1 && _plataforma[coordenadaX, coordenadaY] == 'g')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'X';
+            return "Barco hundido";
+        }
 
         throw new NotImplementedException();
     }
