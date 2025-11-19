@@ -26,7 +26,7 @@ public class Juego
     {
         _tripulacionJugadorUno = listaBarcosJugadorUno;
     }
-    
+
     public void AgregarJugadorDos(List<(List<(int x, int y)> coordenadas, TipoBarco)> listaBarcosJugadorDos)
     {
         _tripulacionJugadorDos = listaBarcosJugadorDos;
@@ -37,10 +37,13 @@ public class Juego
         ValidacionesTripulacionJugadorUno();
         ValidacionTripulacionJugadorDos();
 
-        var barcoCanonero = _tripulacionJugadorDos[0];
-        
-        if(barcoCanonero.tipoBarco == TipoBarco.Canonero)
-            _plataforma[barcoCanonero.coordenadas[0].x, barcoCanonero.coordenadas[0].y] = 'g';
+        foreach (var barcoCanonero in _tripulacionJugadorDos)
+        {
+            if (barcoCanonero.tipoBarco == TipoBarco.Canonero)
+            {
+                _plataforma[barcoCanonero.coordenadas[0].x, barcoCanonero.coordenadas[0].y] = 'g';
+            }
+        }
     }
 
     private void ValidacionTripulacionJugadorDos()
@@ -62,7 +65,7 @@ public class Juego
 
         if (ValidarCantidadBarcosDestructores(_tripulacionJugadorDos))
             throw new ArgumentException(MensajeCantidadBarcosDestructores);
-        
+
         if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorDos))
             throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
     }
@@ -91,19 +94,26 @@ public class Juego
             throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
     }
 
-    private bool ValidarCantidadBarcosPortaaviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1;
+    private bool
+        ValidarCantidadBarcosPortaaviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Count(barco => barco.tipoBarco == TipoBarco.Portaaviones) != 1;
 
     private bool ValidarCantidadBarcosDestructores(
         List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
         barcos.Count(barco => barco.tipoBarco == TipoBarco.Destructor) != 2;
 
-    private bool ValidarCantidadBarcosCanoneros(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4;
+    private bool ValidarCantidadBarcosCanoneros(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Count(barco => barco.tipoBarco == TipoBarco.Canonero) != 4;
 
-    private bool ValidarLongitudBarcoPortaAviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4);
+    private bool
+        ValidarLongitudBarcoPortaAviones(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Any(barco => barco.tipoBarco == TipoBarco.Portaaviones && barco.coordenadas.Count() != 4);
 
-    private bool ValidarLongitudBarcoDestructor(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3);
+    private bool ValidarLongitudBarcoDestructor(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Any(barco => barco.tipoBarco == TipoBarco.Destructor && barco.coordenadas.Count() != 3);
 
-    private bool ValidarLongitudBarcoCanonero(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) => barcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1);
+    private bool ValidarLongitudBarcoCanonero(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
+        barcos.Any(barco => barco.tipoBarco == TipoBarco.Canonero && barco.coordenadas.Count() != 1);
 
     private bool ValidarLimitesPlataforma(List<(List<(int x, int y)> coordenadas, TipoBarco tipoBarco)> barcos) =>
         barcos.Any(barco => barco.coordenadas.Any(coor =>
@@ -117,7 +127,13 @@ public class Juego
             _plataforma[coordenadaX, coordenadaY] = 'X';
             return "Barco hundido";
         }
-            
+
+        if (coordenadaX == 0 && coordenadaY == 1 && _plataforma[coordenadaX, coordenadaY] == 'g')
+        {
+            _plataforma[coordenadaX, coordenadaY] = 'X';
+            return "Barco hundido";
+        }
+
         throw new NotImplementedException();
     }
 }
