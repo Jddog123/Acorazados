@@ -72,6 +72,8 @@ public class Juego
                 _tablero[coordenadaX, coordenadaY] = 'X';
             
             if(coordenadaX == 9 && coordenadaY == 0)
+                 _tablero[coordenadaX, coordenadaY] = 'x'; 
+            if(coordenadaX == 8 && coordenadaY == 0)
                 _tablero[coordenadaX, coordenadaY] = 'x';
             
             barco.RegistrarDisparo();
