@@ -617,18 +617,19 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparaEn0_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparada(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparaEn0_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparada(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(0, 0);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|X| | | | | | |d|d|d|
@@ -647,11 +648,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparaEn_0_0_Y_5_1YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparada(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparaEn_0_0_Y_5_1YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparada(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -659,7 +661,7 @@ public class AcorazadosTest
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(0, 0);
         juego.Disparar(5, 1);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|X| | | | | | |d|d|d|
@@ -678,11 +680,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoATodosLosCanonerosYSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoATodosLosCanonerosYSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -692,7 +695,7 @@ public class AcorazadosTest
         juego.Disparar(0, 1);
         juego.Disparar(5, 1);
         juego.Disparar(5, 2);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|X| | | | | | |d|d|d|
@@ -711,18 +714,19 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(9, 0);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |d|d|x|
@@ -741,11 +745,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0_8_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0_8_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -753,7 +758,7 @@ public class AcorazadosTest
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(9, 0);
         juego.Disparar(8, 0);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |d|x|x|
@@ -772,11 +777,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0_8_0_7_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0_8_0_7_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -785,7 +791,7 @@ public class AcorazadosTest
         juego.Disparar(9, 0);
         juego.Disparar(8, 0);
         juego.Disparar(7, 0);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |X|X|X|
@@ -804,18 +810,19 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(1, 3);
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |d|d|d|
@@ -834,11 +841,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_1_4_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_1_4_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -847,7 +855,7 @@ public class AcorazadosTest
         juego.Disparar(1, 3);
         juego.Disparar(1, 4);
 
-        
+
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |d|d|d|
@@ -866,11 +874,12 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
-    
+
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_1_4_1_5_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
-        DatosTripulacionJugadores datosTripulacionJugadores)
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYDisparoEn1_3_1_4_1_5_YSeImprime_Debe_MostrarTableroConUnaxEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
@@ -881,7 +890,6 @@ public class AcorazadosTest
         juego.Disparar(1, 5);
 
 
-        
         var tableroEsperado = @"
  |0|1|2|3|4|5|6|7|8|9|
 0|g| | | | | | |d|d|d|
@@ -891,6 +899,42 @@ public class AcorazadosTest
 4| |x| | | | | | | | |
 5| |x| | | | | | | | |
 6| |c| | | | | | | | |
+7| | | |d|d|d| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+";
+
+        string tablero = juego.Imprimir();
+
+        tablero.Should().Be(tableroEsperado);
+    }
+
+
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_AgregoDosJugadoresIniciaJuegoYHundoElPortaAvion_SeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.Disparar(1, 3);
+        juego.Disparar(1, 4);
+        juego.Disparar(1, 5);
+        juego.Disparar(1, 6);
+
+
+        var tableroEsperado = @"
+ |0|1|2|3|4|5|6|7|8|9|
+0|g| | | | | | |d|d|d|
+1|g| | | | |g| | | | |
+2| | | | | |g| | | | |
+3| |X| | | | | | | | |
+4| |X| | | | | | | | |
+5| |X| | | | | | | | |
+6| |X| | | | | | | | |
 7| | | |d|d|d| | | | |
 8| | | | | | | | | | |
 9| | | | | | | | | | |
