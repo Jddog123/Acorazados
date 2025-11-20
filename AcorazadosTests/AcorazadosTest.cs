@@ -521,4 +521,21 @@ public class AcorazadosTest
 
         mensaje.Should().Be("Barco hundido");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnDestructorEnLaPosicion_5_7_4_7_3_7YElJugadorDosDisparaTodasLasPosicionesMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.FinalizarTurno();
+        juego.Disparar(5,7);
+        juego.Disparar(4,7);
+        
+        var mensaje = juego.Disparar(3,7);
+
+        mensaje.Should().Be("Barco hundido");
+    }
 }
