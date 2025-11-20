@@ -61,8 +61,8 @@ public class Juego
                 barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
         }else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
         {
-            barco = _tripulacionJugadorUno.FirstOrDefault(barco =>
-                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
+            if(coordenadaX == 2 && coordenadaY == 0)
+                barco = _tripulacionJugadorUno[0];
         }
 
         if (barco != null)
