@@ -20,9 +20,9 @@ public class AcorazadosTest
         var juego = new Juego();
         var listaBarcos = new List<Barco> { new Canonero(coordenadaX,coordenadaY) };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -33,9 +33,9 @@ public class AcorazadosTest
         var juego = new Juego();
         var listaBarcos = new List<Barco> { new Destructor([ (0,8) , (0,9), (0,10)]) };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>("Barco fuera del limite de la plataforma");
     }
@@ -51,9 +51,9 @@ public class AcorazadosTest
             new Destructor([ (8,0) , (9,0), (10,0)])
         };
         
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos , new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
@@ -118,9 +118,9 @@ public class AcorazadosTest
             new Canonero(0,2)
         };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos , new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
@@ -138,9 +138,9 @@ public class AcorazadosTest
             new Canonero(0,4)
         };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos , new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
     }
@@ -158,9 +158,9 @@ public class AcorazadosTest
             new Destructor([(1, 0), (1, 2), (1, 3)])
         };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos , new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 2 destructores en la plataforma");
     }
@@ -180,9 +180,9 @@ public class AcorazadosTest
             new Destructor([(3, 0), (3, 1), (3, 2)])
         };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 2 destructores en la plataforma");
     }
@@ -201,9 +201,9 @@ public class AcorazadosTest
             new Destructor([(2, 0), (2, 1), (2, 2)])
         };
 
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 1 portaavion en la plataforma");
     }
@@ -224,9 +224,9 @@ public class AcorazadosTest
             new Portaaviones([(4, 0), (4, 1), (4, 2),(4, 3)]),
         };
         
-        juego.AgregarJugador(listaBarcos , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(listaBarcos , new List<Barco>());
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 1 portaavion en la plataforma");
     }
@@ -236,12 +236,12 @@ public class AcorazadosTest
     public void Si_AgregoUnSegundoJugadorConUnBarcoFueraDeLaPlataformaEInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
         
         var listaBarcosJugadorDos = new List<Barco> { new Canonero(10,10) };
-        juego.AgregarJugador(listaBarcosJugadorDos , TipoJugador.Dos);
-
-        Action result = () => juego.Iniciar();
+        
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
@@ -252,7 +252,8 @@ public class AcorazadosTest
         Si_AgregoUnSegundoJugadorConCantidadDeBarcosCañonerosDiferentesACuatroEInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         var listaBarcosJugadorDos = new List<Barco>
         {
@@ -260,9 +261,8 @@ public class AcorazadosTest
             new Canonero(7,0),
             new Canonero(8,0)
         };
-        juego.AgregarJugador(listaBarcosJugadorDos , TipoJugador.Dos);
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Deben existir 4 cañoreros en la plataforma");
@@ -273,7 +273,8 @@ public class AcorazadosTest
     public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosDestructoresDiferentesA2EInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         var listaBarcosJugadorDos = new List<Barco>
         {
@@ -283,9 +284,8 @@ public class AcorazadosTest
             new Canonero(9,0),
             new Destructor([(8,1),(8,2),(8,3)])
         };
-        juego.AgregarJugador(listaBarcosJugadorDos , TipoJugador.Dos);
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Deben existir 2 destructores en la plataforma");
@@ -296,7 +296,8 @@ public class AcorazadosTest
     public void Si_AgregoUnSegundoJugadorConCantidadDeBarcosPortaavionesDiferentesA1EInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         var listaBarcosJugadorDos = new List<Barco>
         {
@@ -307,9 +308,8 @@ public class AcorazadosTest
             new Destructor([(8,1),(8,2),(8,3)]),
             new Destructor([(9,1),(9,2),(9,3)])
         };
-        juego.AgregarJugador(listaBarcosJugadorDos , TipoJugador.Dos);
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Deben existir 1 portaavion en la plataforma");
@@ -320,9 +320,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion0_0YElJugadorUnoDisparaEnLaPosicion0_0_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
        
         var mensaje = juego.Disparar(0,0);
 
@@ -334,10 +334,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion0_1YElJugadorUnoDisparaEnLaPosicion0_1_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
        
         var mensaje = juego.Disparar(0,1);
 
@@ -350,10 +349,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion5_1YElJugadorUnoDisparaEnLaPosicion5_1_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
        
         var mensaje = juego.Disparar(5,1);
 
@@ -365,10 +363,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnCanoneroEnLaPosicion5_2YElJugadorUnoDisparaEnLaPosicion5_2_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
        
         var mensaje = juego.Disparar(5,2);
 
@@ -380,10 +377,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnDestructorEn9_0_8_0Y7_0YElJugadorUnoDisparaTodasLasCoordenadasElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(9,0);
         juego.Disparar(8,0);
         
@@ -397,10 +393,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnDestructorEn5_7_4_7_Y_3_7_0YElJugadorUnoDisparaTodasLasCoordenadasElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(3,7);
         juego.Disparar(4,7);
         
@@ -414,10 +409,9 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnPortaavionEn1_3_1_4_1_5Y_1_6YElJugadorUnoDisparaTodasLasCoordenadasElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.Disparar(1,3);
         juego.Disparar(1,4);
         juego.Disparar(1,5);
@@ -432,7 +426,8 @@ public class AcorazadosTest
     public void Si_AgregoDosJugadoresYElJugadorDosTieneUnPortaavionEn9_9_8_9_7_9Y_6_9YElJugadorUnoDisparaTodasLasCoordenadasElMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(datosTripulacionJugadores.tripulacionJugadorUno , TipoJugador.Uno);
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
         
         var tripulacionJugadorDos = new List<Barco>
         {
@@ -444,8 +439,7 @@ public class AcorazadosTest
             new Destructor([(5, 7), (4, 7), (3, 7)]),
             new Portaaviones([(9, 9), (8, 9), (7, 9), (6, 9)])
         };
-        juego.AgregarJugador(tripulacionJugadorDos , TipoJugador.Dos);
-        juego.Iniciar();
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, tripulacionJugadorDos);
         juego.Disparar(9,9);
         juego.Disparar(8,9);
         juego.Disparar(7,9);

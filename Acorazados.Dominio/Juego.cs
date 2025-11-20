@@ -39,27 +39,12 @@ public class Juego
         if (tipoJugador == TipoJugador.Dos)
             _nombreJugadorDos = nombre;
     }
-
-    public void AgregarJugador(List<Barco> listaBarcosJugador, TipoJugador tipoJugador)
-    {
-        if (tipoJugador == TipoJugador.Uno)
-            _tripulacionJugadorUno = listaBarcosJugador;
-
-        if (tipoJugador == TipoJugador.Dos)
-            _tripulacionJugadorDos = listaBarcosJugador;
-    }
     
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
         
-        ValidacionesTripulacionJugadores();
-        AsignarTripulacionTablero();
-    }
-
-    public void Iniciar()
-    {
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();
     }
