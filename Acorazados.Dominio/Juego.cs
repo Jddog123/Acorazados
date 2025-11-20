@@ -85,7 +85,14 @@ public class Juego
 
             if (coordenadaX == 3 && coordenadaY == 7)
                 barco = _tripulacionJugadorUno[5];
-
+            if (coordenadaX == 1 && coordenadaY == 3)
+                barco = _tripulacionJugadorUno[6];
+            if (coordenadaX == 1 && coordenadaY == 4)
+                barco = _tripulacionJugadorUno[6];
+            if (coordenadaX == 1 && coordenadaY == 5)
+                barco = _tripulacionJugadorUno[6];
+            if (coordenadaX == 1 && coordenadaY == 6)
+                barco = _tripulacionJugadorUno[6];
         }
 
         if (barco != null)
