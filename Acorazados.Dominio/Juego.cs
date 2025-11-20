@@ -18,8 +18,8 @@ public class Juego
     private const char LetraTableroCanonero = 'g';
     private const char LetraTableroDestructor = 'd';
     private const char LetraTableroPortaaviones = 'c';
-
     private char[,] _tablero;
+    private string _nombreJugadorActual;
     private string _nombreJugadorUno;
     private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
@@ -47,12 +47,23 @@ public class Juego
         
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();
+
+        _nombreJugadorActual = _nombreJugadorDos;
     }
 
     public string Disparar(int coordenadaX, int coordenadaY)
     {
-        var barco = _tripulacionJugadorDos.FirstOrDefault(barco =>
-            barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
+        Barco barco = null;
+        
+        if (_nombreJugadorActual.Equals(_nombreJugadorDos))
+        {
+            barco = _tripulacionJugadorDos.FirstOrDefault(barco =>
+                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
+        }else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
+        {
+            barco = _tripulacionJugadorUno.FirstOrDefault(barco =>
+                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
+        }
 
         if (barco != null)
         {
@@ -129,4 +140,8 @@ public class Juego
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
 
+    public void FinalizarTurno()
+    {
+        _nombreJugadorActual = _nombreJugadorUno;
+    }
 }

@@ -477,13 +477,14 @@ public class AcorazadosTest
 
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresYElJugadorUnoTieneUnCanoneroEnLaPosicion2_0YElJugadorDosDisparaEnLaPosicion2_0_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnCanoneroEnLaPosicion2_0YElJugadorDosDisparaEnLaPosicion2_0_Mensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
-       
+        juego.FinalizarTurno();
+        
         var mensaje = juego.Disparar(2,0);
 
         mensaje.Should().Be("Barco hundido");
