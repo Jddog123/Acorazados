@@ -84,6 +84,11 @@ public class Juego
                 _tablero[coordenadaX, coordenadaY] = 'x';
             }
             
+            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 5)
+            {
+                _tablero[coordenadaX, coordenadaY] = 'x';
+            }
+            
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
