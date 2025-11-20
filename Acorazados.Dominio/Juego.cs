@@ -15,34 +15,29 @@ public class Juego
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
     private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private const string MensajeBarcoHundido = "Barco hundido";
-    private const char LetraTableroCanonero = 'g';
-    private const char LetraTableroDestructor = 'd';
-    private const char LetraTableroPortaaviones = 'c';
-    private char[,] _tableroTurnoDisparar;
-    private char[,] _tableroPrimerJugador;
-    private char[,] _tableroSegundoJugador;
+    private Tablero _tableroTurnoDisparar;
+    private Tablero _tableroPrimerJugador;
+    private Tablero _tableroSegundoJugador;
     private string _nombreJugadorTurnoDisparar;
     private string _nombreJugadorUno;
     private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
 
-
-    public Juego()
-    {
-        _tableroSegundoJugador = new char[10, 10];
-    }
-
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
         if (tipoJugador == TipoJugador.Uno)
         {
             _nombreJugadorUno = nombre;
-            _tableroPrimerJugador = new char[10, 10];
+            _tableroPrimerJugador = new Tablero(new char[10, 10]);
         }
 
         if (tipoJugador == TipoJugador.Dos)
+        {
             _nombreJugadorDos = nombre;
+            _tableroSegundoJugador = new Tablero(new char[10, 10]);
+        }
+            
     }
 
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
@@ -75,29 +70,30 @@ public class Juego
         if (barco != null)
         {
             if (barco is Canonero)
-                MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
+                _tableroTurnoDisparar.MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
 
             if (barco is Destructor or Portaaviones)
-                MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
+                _tableroTurnoDisparar.MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
 
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
             {
-                if (barco is Destructor destructor) MarcaDestructorHundidoEnPlataforma(destructor);
+                if (barco is Destructor destructor) _tableroTurnoDisparar.MarcaDestructorHundidoEnPlataforma(destructor);
 
-                if (barco is Portaaviones portaAvion) MarcaPortaAvionHundidoEnPlataforma(portaAvion);
+                if (barco is Portaaviones portaAvion) _tableroTurnoDisparar.MarcaPortaAvionHundidoEnPlataforma(portaAvion);
 
                 return MensajeBarcoHundido;
             }
         }
         else
         {
-            _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'o';
+            _tableroTurnoDisparar.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
         }
 
         return "";
     }
+
 
     public string Imprimir()
     {
@@ -111,8 +107,8 @@ public class Juego
             tablero.Append(fila + "|");
             for (int columna = 0; columna < 10; columna++)
             {
-                char valorCasilla = (_tableroTurnoDisparar[columna, fila] != '\0'
-                    ? _tableroTurnoDisparar[columna, fila]
+                char valorCasilla = (_tableroTurnoDisparar.ObtenerValorCasilla(columna, fila) != '\0'
+                    ? _tableroTurnoDisparar.ObtenerValorCasilla(columna, fila)
                     : ' ');
                 tablero.Append(valorCasilla + "|");
             }
@@ -135,35 +131,10 @@ public class Juego
 
     private void AsignarTripulacionesTablero()
     {
-        AsignarTripulacion(_tripulacionJugadorUno, _tableroPrimerJugador);
-        AsignarTripulacion(_tripulacionJugadorDos, _tableroSegundoJugador);
+        _tableroPrimerJugador.AsignarTripulacion(_tripulacionJugadorUno);
+        _tableroSegundoJugador.AsignarTripulacion(_tripulacionJugadorDos);
     }
-
-    private void AsignarTripulacion(List<Barco> barcosJugador, char[,] tableroJugador)
-    {
-        foreach (var barco in barcosJugador)
-        {
-            if (barco is Canonero canonero)
-            {
-                tableroJugador[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
-            }
-            else if (barco is Destructor destructor)
-            {
-                foreach (var coordenadas in destructor.Coordenadas)
-                {
-                    tableroJugador[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
-                }
-            }
-            else if (barco is Portaaviones portaaviones)
-            {
-                foreach (var coordenadas in portaaviones.Coordenadas)
-                {
-                    tableroJugador[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
-                }
-            }
-        }
-    }
-
+    
     private void ValidacionesTripulacionJugadores()
     {
         if (ValidarLimitesPlataforma(_tripulacionJugadorUno))
@@ -202,26 +173,4 @@ public class Juego
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
-
-    private void MarcaCoordenadaAcertadaEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'x';
-
-    private void MarcaCanoneroHundidoEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'X';
-
-    private void MarcaPortaAvionHundidoEnPlataforma(Portaaviones portaAvion)
-    {
-        foreach (var destructorCoordenada in portaAvion.Coordenadas)
-        {
-            _tableroTurnoDisparar[destructorCoordenada.x, destructorCoordenada.y] = 'X';
-        }
-    }
-
-    private void MarcaDestructorHundidoEnPlataforma(Destructor destructor)
-    {
-        foreach (var destructorCoordenada in destructor.Coordenadas)
-        {
-            _tableroTurnoDisparar[destructorCoordenada.x, destructorCoordenada.y] = 'X';
-        }
-    }
 }
