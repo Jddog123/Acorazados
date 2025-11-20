@@ -91,6 +91,10 @@ public class Juego
                 return MensajeBarcoHundido;
             }
         }
+        else
+        {
+            _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'o';
+        }
 
         return "";
     }
@@ -107,7 +111,9 @@ public class Juego
             tablero.Append(fila + "|");
             for (int columna = 0; columna < 10; columna++)
             {
-                char valorCasilla = (_tableroTurnoDisparar[columna, fila] != '\0' ? _tableroTurnoDisparar[columna, fila] : ' ');
+                char valorCasilla = (_tableroTurnoDisparar[columna, fila] != '\0'
+                    ? _tableroTurnoDisparar[columna, fila]
+                    : ' ');
                 tablero.Append(valorCasilla + "|");
             }
 
@@ -122,7 +128,9 @@ public class Juego
         _tableroTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno)
             ? _tableroSegundoJugador
             : _tableroPrimerJugador;
-        _nombreJugadorTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno) ? _nombreJugadorDos: _nombreJugadorUno;
+        _nombreJugadorTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno)
+            ? _nombreJugadorDos
+            : _nombreJugadorUno;
     }
 
     private void AsignarTripulacionesTablero()
@@ -131,7 +139,7 @@ public class Juego
         AsignarTripulacion(_tripulacionJugadorDos, _tableroSegundoJugador);
     }
 
-    private void AsignarTripulacion(List<Barco> barcosJugador , char[,] tableroJugador)
+    private void AsignarTripulacion(List<Barco> barcosJugador, char[,] tableroJugador)
     {
         foreach (var barco in barcosJugador)
         {
