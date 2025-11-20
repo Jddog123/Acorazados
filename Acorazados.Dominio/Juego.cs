@@ -75,6 +75,11 @@ public class Juego
 
         return "";
     }
+    
+    public void FinalizarTurno()
+    {
+        _nombreJugadorActual = _nombreJugadorUno;
+    }
 
     private void AsignarTripulacionTablero()
     {
@@ -139,9 +144,4 @@ public class Juego
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
-
-    public void FinalizarTurno()
-    {
-        _nombreJugadorActual = _nombreJugadorUno;
-    }
 }
