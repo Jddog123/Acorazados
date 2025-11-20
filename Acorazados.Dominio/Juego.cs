@@ -71,14 +71,23 @@ public class Juego
             if (barco is Canonero)
                 _tablero[coordenadaX, coordenadaY] = 'X';
             
-            if(coordenadaX == 9 && coordenadaY == 0)
-                 _tablero[coordenadaX, coordenadaY] = 'x'; 
-            if(coordenadaX == 8 && coordenadaY == 0)
+            if (barco is Destructor)
                 _tablero[coordenadaX, coordenadaY] = 'x';
-            
+
             barco.RegistrarDisparo();
+
             if (barco.EstaHundido())
+            {
+                if (barco is Destructor destructor)
+                {
+                    foreach (var destructorCoordenada in destructor.Coordenadas)
+                    {
+                        _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
+                    }
+                }
                 return MensajeBarcoHundido;
+            }
+                
         }
 
         return "";
