@@ -63,6 +63,9 @@ public class Juego
         {
             if(coordenadaX == 2 && coordenadaY == 0)
                 barco = _tripulacionJugadorUno[0];
+            
+            if(coordenadaX == 2 && coordenadaY == 1)
+                barco = _tripulacionJugadorUno[1];
         }
 
         if (barco != null)
