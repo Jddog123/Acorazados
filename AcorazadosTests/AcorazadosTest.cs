@@ -741,4 +741,35 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoDosJugadoresIniciaJuegoYDisparoEn9_0_8_0YSeImprime_Debe_MostrarTableroConUnaXEnLaCoordenadaDisparadas(
+        DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+        juego.Disparar(9, 0);
+        juego.Disparar(8, 0);
+        
+        var tableroEsperado = @"
+ |0|1|2|3|4|5|6|7|8|9|
+0|g| | | | | | |d|x|x|
+1|g| | | | |g| | | | |
+2| | | | | |g| | | | |
+3| |c| | | | | | | | |
+4| |c| | | | | | | | |
+5| |c| | | | | | | | |
+6| |c| | | | | | | | |
+7| | | |d|d|d| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+";
+
+        string tablero = juego.Imprimir();
+
+        tablero.Should().Be(tableroEsperado);
+    }
 }
