@@ -21,8 +21,10 @@ public class Juego
 
     private char[,] _tablero;
     private string _nombreJugadorUno;
+    private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
+    
 
     public Juego()
     {
@@ -33,6 +35,9 @@ public class Juego
     {
         if (tipoJugador == TipoJugador.Uno)
             _nombreJugadorUno = nombre;
+        
+        if (tipoJugador == TipoJugador.Dos)
+            _nombreJugadorDos = nombre;
     }
 
     public void AgregarJugador(List<Barco> listaBarcosJugador, TipoJugador tipoJugador)
@@ -47,6 +52,7 @@ public class Juego
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         _tripulacionJugadorUno = tripulacionJugadorUno;
+        _tripulacionJugadorDos = tripulacionJugadorDos;
         
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();
