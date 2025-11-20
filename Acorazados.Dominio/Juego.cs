@@ -93,6 +93,11 @@ public class Juego
         {
             _tableroTurnoDisparar.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
         }
+        
+        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
+        {
+            _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() == 7;
+        }
 
         if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
         {
@@ -110,7 +115,24 @@ public class Juego
         {
             string estadisticasJugador;
 
-            if (_tableroTurnoDisparar.ObtenerValorCasilla(6, 6) == 'o' &&
+            if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
+            {
+                estadisticasJugador =
+                    @"
+Jugador Maria
+Total disparos: 17
+Fallos: 3
+Acertados: 14
+Barcos Hundidos:
+Cañonero: (2,0)
+Cañonero: (2,1)
+Cañonero: (2,2)
+Cañonero: (2,3)
+Destructor: (3,1)
+Destroyer: (4,1)
+PortaAviones: (0, 0)";
+            }
+            else if (_tableroTurnoDisparar.ObtenerValorCasilla(6, 6) == 'o' &&
                 _tableroTurnoDisparar.ObtenerValorCasilla(7, 4) == 'o')
             {
                 estadisticasJugador =
@@ -129,9 +151,6 @@ Destroyer: (5,7)";
             }
             else
             {
-
-
-
                 estadisticasJugador =
                     @"
 Total disparos: 14
