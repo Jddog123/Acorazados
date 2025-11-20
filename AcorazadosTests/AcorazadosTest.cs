@@ -591,7 +591,7 @@ public class AcorazadosTest
 
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYElJugadorDosTieneUnCanoneroEn0_0YSeImprime_Debe_MostrarseEn0_0LaLetraG(
+    public void Si_AgregoDosJugadoresIniciaJuegoYSeImprime_Debe_MostrarTableroJugadorDos(
         DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
@@ -600,17 +600,18 @@ public class AcorazadosTest
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
 
         var tableroEsperado = @"
-        | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
-        0| g | | | | | | | | |
-        1| | | | | | | | | | |
-        2| | | | | | | | | | | |
-        3| | | | | | | | | | | | | |
-        4| | | | | | | | | | | | |
-        5| | | | | | | | | | | |
-        6| | | | | | | | | | | |
-        7| | | | | | | | | | | | | |
-        8| | | | | | | | | | | |
-        9| | | | | | | | | | | | |";
+         |0|1|2|3|4|5|6|7|8|9|
+        0|g|g| | | | | |d|d|d|
+        1| | | | | |g| | | | |
+        2| | | | | |g| | | | |
+        3| |c| | | | | | | | | 
+        4| |c| | | | | | | | |
+        5| |c| | | | | | | | |
+        6| |c| | | | | | | | |
+        7| | | |d|d|d| | | | |
+        8| | | | | | | | | | |
+        9| | | | | | | | | | |
+        ";
 
         string tablero = juego.Imprimir();
 
