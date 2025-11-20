@@ -68,17 +68,10 @@ public class Juego
 
         if (barco != null)
         {
-            if (coordenadaX == 0 && coordenadaY == 0)
-                _tablero[coordenadaX, coordenadaY] = 'X';
-            if (coordenadaX == 0 && coordenadaY == 1)
-                _tablero[coordenadaX, coordenadaY] = 'X';
-            if (coordenadaX == 5 && coordenadaY == 1)
-                _tablero[coordenadaX, coordenadaY] = 'X';
-            if (coordenadaX == 5 && coordenadaY == 2)
+            if (barco is Canonero)
                 _tablero[coordenadaX, coordenadaY] = 'X';
 
             barco.RegistrarDisparo();
-
             if (barco.EstaHundido())
                 return MensajeBarcoHundido;
         }
