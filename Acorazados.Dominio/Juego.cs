@@ -70,7 +70,11 @@ public class Juego
         {
             if (coordenadaX == 0 && coordenadaY == 0)
                 _tablero[coordenadaX, coordenadaY] = 'X';
+            if (coordenadaX == 0 && coordenadaY == 1)
+                _tablero[coordenadaX, coordenadaY] = 'X';
             if (coordenadaX == 5 && coordenadaY == 1)
+                _tablero[coordenadaX, coordenadaY] = 'X';
+            if (coordenadaX == 5 && coordenadaY == 2)
                 _tablero[coordenadaX, coordenadaY] = 'X';
 
             barco.RegistrarDisparo();
