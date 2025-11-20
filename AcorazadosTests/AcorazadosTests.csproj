@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>Acorazados</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +18,10 @@
 
     <ItemGroup>
         <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Acorazados.Dominio\Acorazados.Dominio.csproj" />
     </ItemGroup>
 
 </Project>

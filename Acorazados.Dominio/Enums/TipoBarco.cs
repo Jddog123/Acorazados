@@ -1,4 +1,4 @@
-﻿namespace Acorazados.Enums;
+﻿namespace Acorazados.Dominio.Enums;
 
 public enum TipoBarco
 {
