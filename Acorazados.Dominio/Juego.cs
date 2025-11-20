@@ -70,7 +70,10 @@ public class Juego
         {
             if (barco is Canonero)
                 _tablero[coordenadaX, coordenadaY] = 'X';
-
+            
+            if(coordenadaX == 9 && coordenadaY == 0)
+                _tablero[coordenadaX, coordenadaY] = 'x';
+            
             barco.RegistrarDisparo();
             if (barco.EstaHundido())
                 return MensajeBarcoHundido;
