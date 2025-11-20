@@ -88,6 +88,11 @@ public class Juego
             {
                 _tablero[coordenadaX, coordenadaY] = 'x';
             }
+                        
+            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 6)
+            {
+                _tablero[coordenadaX, coordenadaY] = 'x';
+            }
             
             barco.RegistrarDisparo();
 
@@ -96,6 +101,13 @@ public class Juego
                 if (barco is Destructor destructor)
                 {
                     foreach (var destructorCoordenada in destructor.Coordenadas)
+                    {
+                        _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
+                    }
+                }
+                if (barco is Portaaviones portaAvion)
+                {
+                    foreach (var destructorCoordenada in portaAvion.Coordenadas)
                     {
                         _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
                     }
