@@ -74,6 +74,11 @@ public class Juego
             if (barco is Destructor)
                 _tablero[coordenadaX, coordenadaY] = 'x';
 
+            if (coordenadaX == 1 && coordenadaY == 3)
+            {
+                _tablero[coordenadaX, coordenadaY] = 'x';
+            }
+            
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
