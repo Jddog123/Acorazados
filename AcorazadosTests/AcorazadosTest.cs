@@ -461,8 +461,8 @@ public class AcorazadosTest
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno,"Pepito");
 
-        Action result = () => juego.Iniciar();
+        Action result = () => juego.Iniciar(new List<Barco> { new Canonero(-11,-11) });
 
-        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
 }

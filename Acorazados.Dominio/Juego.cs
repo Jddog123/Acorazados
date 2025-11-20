@@ -20,12 +20,19 @@ public class Juego
     private const char LetraTableroPortaaviones = 'c';
 
     private char[,] _tablero;
+    private string _nombreJugadorUno;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
 
     public Juego()
     {
         _tablero = new char[10, 10];
+    }
+    
+    public void AgregarJugador(TipoJugador tipoJugador, string nombre)
+    {
+        if (tipoJugador == TipoJugador.Uno)
+            _nombreJugadorUno = nombre;
     }
 
     public void AgregarJugador(List<Barco> listaBarcosJugador, TipoJugador tipoJugador)
@@ -35,6 +42,14 @@ public class Juego
 
         if (tipoJugador == TipoJugador.Dos)
             _tripulacionJugadorDos = listaBarcosJugador;
+    }
+    
+    public void Iniciar(List<Barco> listaBarcosJugadorUno)
+    {
+        _tripulacionJugadorUno = listaBarcosJugadorUno;
+        
+        ValidacionesTripulacionJugadores();
+        AsignarTripulacionTablero();
     }
 
     public void Iniciar()
@@ -123,8 +138,4 @@ public class Juego
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
 
-    public void AgregarJugador(TipoJugador tipoJugador, string nombre)
-    {
-        throw new NotImplementedException();
-    }
 }
