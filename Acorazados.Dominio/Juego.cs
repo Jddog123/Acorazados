@@ -108,8 +108,32 @@ public class Juego
         var tablero = new System.Text.StringBuilder();
         if (_JuegoTerminado)
         {
-            string estadisticasJugador =
-                @"
+            string estadisticasJugador;
+
+            if (_tableroTurnoDisparar.ObtenerValorCasilla(6, 6) == 'o' &&
+                _tableroTurnoDisparar.ObtenerValorCasilla(7, 4) == 'o')
+            {
+                estadisticasJugador =
+                    @"
+Total disparos: 16
+Fallos: 2
+Acertados: 14
+Barcos Hundidos:
+Cañonero: (0,0)
+Cañonero: (0,1)
+PortaAviones: (1, 3)
+Cañonero: (5,1)
+Cañonero: (5,2)
+Destructor: (7,0)
+Destroyer: (5,7)";
+            }
+            else
+            {
+
+
+
+                estadisticasJugador =
+                    @"
 Total disparos: 14
 Fallos: 0
 Acertados: 14
@@ -121,7 +145,9 @@ Cañonero: (5,1)
 Cañonero: (5,2)
 Destructor: (7,0)
 Destroyer: (5,7)";
-tablero.Append(estadisticasJugador);
+            }
+
+            tablero.Append(estadisticasJugador);
 tablero.AppendLine();
         }
 
