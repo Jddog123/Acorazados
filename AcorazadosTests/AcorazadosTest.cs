@@ -1045,5 +1045,66 @@ public class AcorazadosTest
 
         tablero.Should().Be(tableroEsperado);
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_JugadorUnoHundeTodosLosBarcosDelJugadorDos_Debe_ImprimirElInforme (
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+        
+        juego.Disparar(0, 0);
+        juego.Disparar(0, 1);
+       
+        juego.Disparar(1, 3);
+        juego.Disparar(1, 4);
+        juego.Disparar(1, 5);
+        juego.Disparar(1,6);
+         
+        juego.Disparar(5, 1);
+        juego.Disparar(5, 2);
+       
+        juego.Disparar(7, 0);
+        juego.Disparar(8, 0);
+        juego.Disparar(9, 0);
+        
+        juego.Disparar(5, 7);
+        juego.Disparar(4, 7);
+        juego.Disparar(3, 7);
+
+        var tableroEsperado = @"
+Total disparos: 14
+Fallos: 0
+Acertados: 14
+Barcos Hundidos: 
+Cañonero: (0,0)
+Cañonero: (0,1)
+PortaAviones: (1, 3)
+Cañonero: (5,1)
+Cañonero: (5,2)
+Destructor: (7,0)
+Destroyer: (5,7)
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|X| | | | | | |X|X|X|
+1|X| | | | |X| | | | |
+2| | | | | |X| | | | |
+3| |X| | | | | | | | |
+4| |X| | | | | | | | |
+5| |X| | | | | | | | |
+6| |X| | | | | | | | |
+7| | | |X|X|X| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+";
+
+        string tablero = juego.Imprimir();
+
+        tablero.Should().Be(tableroEsperado);
+    }
 
 }
