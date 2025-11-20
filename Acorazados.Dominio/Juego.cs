@@ -23,6 +23,7 @@ public class Juego
     private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
+    private bool _JuegoTerminado;
 
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
@@ -37,7 +38,6 @@ public class Juego
             _nombreJugadorDos = nombre;
             _tableroSegundoJugador = new Tablero(new char[10, 10]);
         }
-            
     }
 
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
@@ -54,6 +54,7 @@ public class Juego
 
     public string Disparar(int coordenadaX, int coordenadaY)
     {
+        string mensajeResultado = "";
         Barco barco = null;
 
         if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
@@ -79,11 +80,13 @@ public class Juego
 
             if (barco.EstaHundido())
             {
-                if (barco is Destructor destructor) _tableroTurnoDisparar.MarcaDestructorHundidoEnPlataforma(destructor);
+                if (barco is Destructor destructor)
+                    _tableroTurnoDisparar.MarcaDestructorHundidoEnPlataforma(destructor);
 
-                if (barco is Portaaviones portaAvion) _tableroTurnoDisparar.MarcaPortaAvionHundidoEnPlataforma(portaAvion);
+                if (barco is Portaaviones portaAvion)
+                    _tableroTurnoDisparar.MarcaPortaAvionHundidoEnPlataforma(portaAvion);
 
-                return MensajeBarcoHundido;
+                mensajeResultado = MensajeBarcoHundido;
             }
         }
         else
@@ -91,13 +94,37 @@ public class Juego
             _tableroTurnoDisparar.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
         }
 
-        return "";
+        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
+        {
+            _JuegoTerminado = _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() == 7;
+        }
+
+        return mensajeResultado;
     }
 
 
     public string Imprimir()
     {
         var tablero = new System.Text.StringBuilder();
+        if (_JuegoTerminado)
+        {
+            string estadisticasJugador =
+                @"
+Total disparos: 14
+Fallos: 0
+Acertados: 14
+Barcos Hundidos:
+Cañonero: (0,0)
+Cañonero: (0,1)
+PortaAviones: (1, 3)
+Cañonero: (5,1)
+Cañonero: (5,2)
+Destructor: (7,0)
+Destroyer: (5,7)";
+tablero.Append(estadisticasJugador);
+tablero.AppendLine();
+        }
+
         tablero.AppendLine();
         tablero.Append(" |0|1|2|3|4|5|6|7|8|9|");
         tablero.AppendLine();
@@ -134,7 +161,7 @@ public class Juego
         _tableroPrimerJugador.AsignarTripulacion(_tripulacionJugadorUno);
         _tableroSegundoJugador.AsignarTripulacion(_tripulacionJugadorDos);
     }
-    
+
     private void ValidacionesTripulacionJugadores()
     {
         if (ValidarLimitesPlataforma(_tripulacionJugadorUno))

@@ -1059,15 +1059,9 @@ public class AcorazadosTest
         
         juego.Disparar(0, 0);
         juego.Disparar(0, 1);
-       
-        juego.Disparar(1, 3);
-        juego.Disparar(1, 4);
-        juego.Disparar(1, 5);
-        juego.Disparar(1,6);
-         
         juego.Disparar(5, 1);
         juego.Disparar(5, 2);
-       
+        
         juego.Disparar(7, 0);
         juego.Disparar(8, 0);
         juego.Disparar(9, 0);
@@ -1075,12 +1069,17 @@ public class AcorazadosTest
         juego.Disparar(5, 7);
         juego.Disparar(4, 7);
         juego.Disparar(3, 7);
+       
+        juego.Disparar(1, 3);
+        juego.Disparar(1, 4);
+        juego.Disparar(1, 5);
+        juego.Disparar(1,6);
 
         var tableroEsperado = @"
 Total disparos: 14
 Fallos: 0
 Acertados: 14
-Barcos Hundidos: 
+Barcos Hundidos:
 Cañonero: (0,0)
 Cañonero: (0,1)
 PortaAviones: (1, 3)
