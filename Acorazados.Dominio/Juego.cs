@@ -69,55 +69,46 @@ public class Juego
         if (barco != null)
         {
             if (barco is Canonero)
-                _tablero[coordenadaX, coordenadaY] = 'X';
-            
-            if (barco is Destructor)
-                _tablero[coordenadaX, coordenadaY] = 'x';
+                MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
 
-            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 3)
-            {
-                _tablero[coordenadaX, coordenadaY] = 'x';
-            }
-            
-            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 4)
-            {
-                _tablero[coordenadaX, coordenadaY] = 'x';
-            }
-            
-            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 5)
-            {
-                _tablero[coordenadaX, coordenadaY] = 'x';
-            }
-                        
-            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 6)
-            {
-                _tablero[coordenadaX, coordenadaY] = 'x';
-            }
-            
+            if (barco is Destructor or Portaaviones)
+                MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
+
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
             {
-                if (barco is Destructor destructor)
-                {
-                    foreach (var destructorCoordenada in destructor.Coordenadas)
-                    {
-                        _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
-                    }
-                }
-                if (barco is Portaaviones portaAvion)
-                {
-                    foreach (var destructorCoordenada in portaAvion.Coordenadas)
-                    {
-                        _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
-                    }
-                }
+                if (barco is Destructor destructor) MarcaDestructorHundidoEnPlataforma(destructor);
+
+                if (barco is Portaaviones portaAvion) MarcaPortaAvionHundidoEnPlataforma(portaAvion);
+
                 return MensajeBarcoHundido;
             }
-                
         }
 
         return "";
+    }
+
+    public string Imprimir()
+    {
+        var tablero = new System.Text.StringBuilder();
+        tablero.AppendLine();
+        tablero.Append(" |0|1|2|3|4|5|6|7|8|9|");
+        tablero.AppendLine();
+
+        for (int fila = 0; fila < 10; fila++)
+        {
+            tablero.Append(fila + "|");
+            for (int columna = 0; columna < 10; columna++)
+            {
+                char valorCasilla = (_tablero[columna, fila] != '\0' ? _tablero[columna, fila] : ' ');
+                tablero.Append(valorCasilla + "|");
+            }
+
+            tablero.AppendLine();
+        }
+
+        return tablero.ToString();
     }
 
     public void FinalizarTurno()
@@ -189,25 +180,25 @@ public class Juego
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
 
-    public string Imprimir()
+    private void MarcaCoordenadaAcertadaEnPlataforma(int coordenadaX, int coordenadaY) =>
+        _tablero[coordenadaX, coordenadaY] = 'x';
+
+    private void MarcaCanoneroHundidoEnPlataforma(int coordenadaX, int coordenadaY) =>
+        _tablero[coordenadaX, coordenadaY] = 'X';
+
+    private void MarcaPortaAvionHundidoEnPlataforma(Portaaviones portaAvion)
     {
-        var tablero = new System.Text.StringBuilder();
-        tablero.AppendLine();
-        tablero.Append(" |0|1|2|3|4|5|6|7|8|9|");
-        tablero.AppendLine();
-
-        for (int fila = 0; fila < 10; fila++)
+        foreach (var destructorCoordenada in portaAvion.Coordenadas)
         {
-            tablero.Append(fila + "|");
-            for (int columna = 0; columna < 10; columna++)
-            {
-                char valorCasilla = (_tablero[columna, fila] != '\0' ? _tablero[columna, fila] : ' ');
-                tablero.Append(valorCasilla + "|");
-            }
-
-            tablero.AppendLine();
+            _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
         }
+    }
 
-        return tablero.ToString();
+    private void MarcaDestructorHundidoEnPlataforma(Destructor destructor)
+    {
+        foreach (var destructorCoordenada in destructor.Coordenadas)
+        {
+            _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
+        }
     }
 }
