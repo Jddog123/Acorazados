@@ -1076,17 +1076,18 @@ public class AcorazadosTest
         juego.Disparar(1,6);
 
         var tableroEsperado = @"
+Jugador Pepe
 Total disparos: 14
 Fallos: 0
 Acertados: 14
 Barcos Hundidos:
 Cañonero: (0,0)
 Cañonero: (0,1)
-PortaAviones: (1, 3)
 Cañonero: (5,1)
 Cañonero: (5,2)
 Destructor: (7,0)
-Destroyer: (5,7)
+Destructor: (3,7)
+Portaavion: (1,3)
 
  |0|1|2|3|4|5|6|7|8|9|
 0|X| | | | | | |X|X|X|
@@ -1139,17 +1140,18 @@ Destroyer: (5,7)
         juego.Disparar(7, 4);
 
         var tableroEsperado = @"
+Jugador Pepe
 Total disparos: 16
 Fallos: 2
 Acertados: 14
 Barcos Hundidos:
 Cañonero: (0,0)
 Cañonero: (0,1)
-PortaAviones: (1, 3)
 Cañonero: (5,1)
 Cañonero: (5,2)
 Destructor: (7,0)
-Destroyer: (5,7)
+Destructor: (3,7)
+Portaavion: (1,3)
 
  |0|1|2|3|4|5|6|7|8|9|
 0|X| | | | | | |X|X|X|
@@ -1215,8 +1217,8 @@ Cañonero: (2,1)
 Cañonero: (2,2)
 Cañonero: (2,3)
 Destructor: (3,1)
-Destroyer: (4,1)
-PortaAviones: (0, 0)
+Destructor: (4,1)
+Portaavion: (0,0)
 
  |0|1|2|3|4|5|6|7|8|9|
 0|X| |X| | | | | | | |

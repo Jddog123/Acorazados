@@ -1,4 +1,6 @@
-﻿namespace Acorazados.Dominio.Barcos;
+﻿using Acorazados.Dominio.Records;
+
+namespace Acorazados.Dominio.Barcos;
 
 public class Portaaviones : Barco
 {
@@ -33,5 +35,15 @@ public class Portaaviones : Barco
     public override void RegistrarDisparo()
     {
         DisparosAcertados += 1;
+    }
+    
+    public override string ObtenerDescripcion()
+    {
+        return "Portaavion";
+    }
+    
+    public override Coordenada ObtenerCoordenadaMinima()
+    {
+        return new Coordenada(Coordenadas.Min().x, Coordenadas.Min().y);
     }
 }

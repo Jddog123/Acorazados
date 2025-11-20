@@ -10,33 +10,31 @@ public class Juego
     private const int CantidadMaximaPorJugadorCanonero = 4;
     private const int CantidadMaximaPorJugadorDestructor = 2;
     private const int CantidadMaximaPorJugadorPortaaviones = 1;
+    private const int CantidadBarcosHundidosParaGanar = 7;
     private const string MensajeBarcoFueraDelLimiteDeLaPlataforma = "Barco fuera del limite de la plataforma";
     private const string MensajeCantidadBarcosCanoneros1 = "Deben existir 4 cañoreros en la plataforma";
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
     private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private const string MensajeBarcoHundido = "Barco hundido";
-    private Tablero _tableroTurnoDisparar;
-    private Tablero _tableroPrimerJugador;
-    private Tablero _tableroSegundoJugador;
-    private string _nombreJugadorTurnoDisparar;
-    private string _nombreJugadorUno;
-    private string _nombreJugadorDos;
+    private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
+    private Jugador _jugadorUno;
+    private Jugador _jugadorDos;
+    private Jugador _jugadorTurnoActual;
+    private Jugador _jugadorTurnoADisparar;
     private bool _JuegoTerminado;
 
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
         if (tipoJugador == TipoJugador.Uno)
         {
-            _nombreJugadorUno = nombre;
-            _tableroPrimerJugador = new Tablero(new char[10, 10]);
+            _jugadorUno = new Jugador(nombre, new Tablero(new char[10, 10]));
         }
 
         if (tipoJugador == TipoJugador.Dos)
         {
-            _nombreJugadorDos = nombre;
-            _tableroSegundoJugador = new Tablero(new char[10, 10]);
+            _jugadorDos = new Jugador(nombre, new Tablero(new char[10, 10]));
         }
     }
 
@@ -48,61 +46,52 @@ public class Juego
         ValidacionesTripulacionJugadores();
         AsignarTripulacionesTablero();
 
-        _tableroTurnoDisparar = _tableroSegundoJugador;
-        _nombreJugadorTurnoDisparar = _nombreJugadorDos;
+        _jugadorTurnoActual = _jugadorUno;
+        _jugadorTurnoADisparar = _jugadorDos;
+        _tripulacionJugadorADisparar = tripulacionJugadorDos;
     }
 
     public string Disparar(int coordenadaX, int coordenadaY)
     {
         string mensajeResultado = "";
-        Barco barco = null;
-
-        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
-        {
-            barco = _tripulacionJugadorDos.FirstOrDefault(barco =>
-                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
-        }
-        else if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
-        {
-            barco = _tripulacionJugadorUno.FirstOrDefault(barco =>
-                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
-        }
+        
+        _jugadorTurnoActual.SumarDisparo();
+        
+        var barco = _tripulacionJugadorADisparar.FirstOrDefault(barco =>
+            barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
 
         if (barco != null)
         {
+            _jugadorTurnoActual.SumarAciertos();
+                
             if (barco is Canonero)
-                _tableroTurnoDisparar.MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
+                _jugadorTurnoADisparar._tablero.MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
 
             if (barco is Destructor or Portaaviones)
-                _tableroTurnoDisparar.MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
+                _jugadorTurnoADisparar._tablero.MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
 
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
             {
+                _jugadorTurnoActual.AgregarBarcoHundido(barco);
+                
                 if (barco is Destructor destructor)
-                    _tableroTurnoDisparar.MarcaDestructorHundidoEnPlataforma(destructor);
+                    _jugadorTurnoADisparar._tablero.MarcaDestructorHundidoEnPlataforma(destructor);
 
                 if (barco is Portaaviones portaAvion)
-                    _tableroTurnoDisparar.MarcaPortaAvionHundidoEnPlataforma(portaAvion);
+                    _jugadorTurnoADisparar._tablero.MarcaPortaAvionHundidoEnPlataforma(portaAvion);
 
                 mensajeResultado = MensajeBarcoHundido;
             }
         }
         else
         {
-            _tableroTurnoDisparar.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
+            _jugadorTurnoActual.SumarFallos();
+            _jugadorTurnoADisparar._tablero.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
         }
         
-        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
-        {
-            _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() == 7;
-        }
-
-        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
-        {
-            _JuegoTerminado = _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() == 7;
-        }
+        TerminarJuego();
 
         return mensajeResultado;
     }
@@ -111,63 +100,28 @@ public class Juego
     public string Imprimir()
     {
         var tablero = new System.Text.StringBuilder();
+        
         if (_JuegoTerminado)
         {
-            string estadisticasJugador;
+            var estadisticasJugador = _jugadorTurnoActual.ObtenerEstadisticasJugador();
+            tablero.AppendLine();
+            tablero.Append("Jugador "+_jugadorTurnoActual._nombre);
+            tablero.AppendLine();
+            tablero.Append("Total disparos: " + estadisticasJugador.totalDisparos);
+            tablero.AppendLine();
+            tablero.Append("Fallos: " + estadisticasJugador.totalFallos);
+            tablero.AppendLine();
+            tablero.Append("Acertados: " + estadisticasJugador.totalAciertos);
+            tablero.AppendLine();
+            tablero.Append("Barcos Hundidos:");
+            tablero.AppendLine();
 
-            if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
+            foreach (var barcoHundido in estadisticasJugador.barcosHundidos)
             {
-                estadisticasJugador =
-                    @"
-Jugador Maria
-Total disparos: 17
-Fallos: 3
-Acertados: 14
-Barcos Hundidos:
-Cañonero: (2,0)
-Cañonero: (2,1)
-Cañonero: (2,2)
-Cañonero: (2,3)
-Destructor: (3,1)
-Destroyer: (4,1)
-PortaAviones: (0, 0)";
+                var coordenadasMinimas = barcoHundido.ObtenerCoordenadaMinima();
+                tablero.Append(barcoHundido.ObtenerDescripcion() + ": (" + coordenadasMinimas.x + "," + coordenadasMinimas.y + ")");
+                tablero.AppendLine();
             }
-            else if (_tableroTurnoDisparar.ObtenerValorCasilla(6, 6) == 'o' &&
-                _tableroTurnoDisparar.ObtenerValorCasilla(7, 4) == 'o')
-            {
-                estadisticasJugador =
-                    @"
-Total disparos: 16
-Fallos: 2
-Acertados: 14
-Barcos Hundidos:
-Cañonero: (0,0)
-Cañonero: (0,1)
-PortaAviones: (1, 3)
-Cañonero: (5,1)
-Cañonero: (5,2)
-Destructor: (7,0)
-Destroyer: (5,7)";
-            }
-            else
-            {
-                estadisticasJugador =
-                    @"
-Total disparos: 14
-Fallos: 0
-Acertados: 14
-Barcos Hundidos:
-Cañonero: (0,0)
-Cañonero: (0,1)
-PortaAviones: (1, 3)
-Cañonero: (5,1)
-Cañonero: (5,2)
-Destructor: (7,0)
-Destroyer: (5,7)";
-            }
-
-            tablero.Append(estadisticasJugador);
-tablero.AppendLine();
         }
 
         tablero.AppendLine();
@@ -179,8 +133,8 @@ tablero.AppendLine();
             tablero.Append(fila + "|");
             for (int columna = 0; columna < 10; columna++)
             {
-                char valorCasilla = (_tableroTurnoDisparar.ObtenerValorCasilla(columna, fila) != '\0'
-                    ? _tableroTurnoDisparar.ObtenerValorCasilla(columna, fila)
+                char valorCasilla = (_jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila) != '\0'
+                    ? _jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila)
                     : ' ');
                 tablero.Append(valorCasilla + "|");
             }
@@ -193,18 +147,33 @@ tablero.AppendLine();
 
     public void FinalizarTurno()
     {
-        _tableroTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno)
-            ? _tableroSegundoJugador
-            : _tableroPrimerJugador;
-        _nombreJugadorTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno)
-            ? _nombreJugadorDos
-            : _nombreJugadorUno;
+        if (_jugadorTurnoActual._nombre.Equals(_jugadorUno._nombre))
+        {
+            _jugadorTurnoActual = _jugadorDos;
+            _jugadorTurnoADisparar = _jugadorUno;
+            _tripulacionJugadorADisparar = _tripulacionJugadorUno;
+        }
+        else
+        {
+            _jugadorTurnoActual = _jugadorUno;
+            _jugadorTurnoADisparar = _jugadorDos;
+            _tripulacionJugadorADisparar = _tripulacionJugadorDos;
+        }
+    }
+    
+    private void TerminarJuego()
+    {
+        _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() ==
+                          CantidadBarcosHundidosParaGanar ||
+                          _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() ==
+                          CantidadBarcosHundidosParaGanar;
+
     }
 
     private void AsignarTripulacionesTablero()
     {
-        _tableroPrimerJugador.AsignarTripulacion(_tripulacionJugadorUno);
-        _tableroSegundoJugador.AsignarTripulacion(_tripulacionJugadorDos);
+        _jugadorUno._tablero.AsignarTripulacion(_tripulacionJugadorUno);
+        _jugadorDos._tablero.AsignarTripulacion(_tripulacionJugadorDos);
     }
 
     private void ValidacionesTripulacionJugadores()

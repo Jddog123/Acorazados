@@ -1,4 +1,6 @@
-﻿namespace Acorazados.Dominio.Barcos;
+﻿using Acorazados.Dominio.Records;
+
+namespace Acorazados.Dominio.Barcos;
 
 public abstract class Barco
 {
@@ -8,6 +10,8 @@ public abstract class Barco
     public abstract bool SeEncuentraEnCoordenada(int x, int y);
     public abstract bool EstaHundido();
     public abstract void RegistrarDisparo();
+    public abstract string ObtenerDescripcion();
+    public abstract Coordenada ObtenerCoordenadaMinima();
 }
 
 

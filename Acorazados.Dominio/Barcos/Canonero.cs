@@ -1,4 +1,6 @@
-﻿namespace Acorazados.Dominio.Barcos;
+﻿using Acorazados.Dominio.Records;
+
+namespace Acorazados.Dominio.Barcos;
 
 public class Canonero : Barco
 {
@@ -34,5 +36,15 @@ public class Canonero : Barco
     public override void RegistrarDisparo()
     {
         Hundido = true;
+    }
+
+    public override string ObtenerDescripcion()
+    {
+        return "Cañonero";
+    }
+
+    public override Coordenada ObtenerCoordenadaMinima()
+    {
+        return new Coordenada(CoordenadaX, CoordenadaY);
     }
 }
