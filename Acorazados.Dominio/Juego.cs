@@ -20,8 +20,8 @@ public class Juego
     private const char LetraTableroPortaaviones = 'c';
     private char[,] _tableroTurnoDisparar;
     private char[,] _tableroPrimerJugador;
-    private char[,] _tablero;
-    private string _nombreJugadorActual;
+    private char[,] _tableroSegundoJugador;
+    private string _nombreJugadorTurnoDisparar;
     private string _nombreJugadorUno;
     private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
@@ -30,7 +30,7 @@ public class Juego
 
     public Juego()
     {
-        _tablero = new char[10, 10];
+        _tableroSegundoJugador = new char[10, 10];
     }
 
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
@@ -51,22 +51,22 @@ public class Juego
         _tripulacionJugadorDos = tripulacionJugadorDos;
 
         ValidacionesTripulacionJugadores();
-        AsignarTripulacionTablero();
+        AsignarTripulacionesTablero();
 
-        _tableroTurnoDisparar = _tablero;
-        _nombreJugadorActual = _nombreJugadorDos;
+        _tableroTurnoDisparar = _tableroSegundoJugador;
+        _nombreJugadorTurnoDisparar = _nombreJugadorDos;
     }
 
     public string Disparar(int coordenadaX, int coordenadaY)
     {
         Barco barco = null;
 
-        if (_nombreJugadorActual.Equals(_nombreJugadorDos))
+        if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorDos))
         {
             barco = _tripulacionJugadorDos.FirstOrDefault(barco =>
                 barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
         }
-        else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
+        else if (_nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno))
         {
             barco = _tripulacionJugadorUno.FirstOrDefault(barco =>
                 barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
@@ -119,60 +119,38 @@ public class Juego
 
     public void FinalizarTurno()
     {
-        if (_nombreJugadorActual.Equals(_nombreJugadorUno))
-        {
-            _tableroTurnoDisparar = _tablero;
-            _nombreJugadorActual = _nombreJugadorDos;
-        }
-        else
-        {
-            _tableroTurnoDisparar = _tableroPrimerJugador;
-            _nombreJugadorActual = _nombreJugadorUno;
-        }
+        _tableroTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno)
+            ? _tableroSegundoJugador
+            : _tableroPrimerJugador;
+        _nombreJugadorTurnoDisparar = _nombreJugadorTurnoDisparar.Equals(_nombreJugadorUno) ? _nombreJugadorDos: _nombreJugadorUno;
     }
 
-    private void AsignarTripulacionTablero()
+    private void AsignarTripulacionesTablero()
     {
-        foreach (var barco in _tripulacionJugadorUno)
+        AsignarTripulacion(_tripulacionJugadorUno, _tableroPrimerJugador);
+        AsignarTripulacion(_tripulacionJugadorDos, _tableroSegundoJugador);
+    }
+
+    private void AsignarTripulacion(List<Barco> barcosJugador , char[,] tableroJugador)
+    {
+        foreach (var barco in barcosJugador)
         {
             if (barco is Canonero canonero)
             {
-                _tableroPrimerJugador[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
+                tableroJugador[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
             }
             else if (barco is Destructor destructor)
             {
                 foreach (var coordenadas in destructor.Coordenadas)
                 {
-                    _tableroPrimerJugador[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
+                    tableroJugador[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
                 }
             }
             else if (barco is Portaaviones portaaviones)
             {
                 foreach (var coordenadas in portaaviones.Coordenadas)
                 {
-                    _tableroPrimerJugador[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
-                }
-            }
-        }
-        
-        foreach (var barco in _tripulacionJugadorDos)
-        {
-            if (barco is Canonero canonero)
-            {
-                _tablero[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
-            }
-            else if (barco is Destructor destructor)
-            {
-                foreach (var coordenadas in destructor.Coordenadas)
-                {
-                    _tablero[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
-                }
-            }
-            else if (barco is Portaaviones portaaviones)
-            {
-                foreach (var coordenadas in portaaviones.Coordenadas)
-                {
-                    _tablero[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
+                    tableroJugador[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
                 }
             }
         }
