@@ -44,9 +44,9 @@ public class Juego
             _tripulacionJugadorDos = listaBarcosJugador;
     }
     
-    public void Iniciar(List<Barco> listaBarcosJugadorUno)
+    public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
-        _tripulacionJugadorUno = listaBarcosJugadorUno;
+        _tripulacionJugadorUno = tripulacionJugadorUno;
         
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();

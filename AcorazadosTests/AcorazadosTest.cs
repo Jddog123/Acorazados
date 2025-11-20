@@ -456,12 +456,27 @@ public class AcorazadosTest
     }
 
     [Fact]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
     public void Si_AgregoUnPrimerJugadorConNombrePepitoEInicioJuego_Debe_ArrojarExcepcion()
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno,"Pepito");
 
-        Action result = () => juego.Iniciar(new List<Barco> { new Canonero(-11,-11) });
+        Action result = () => juego.Iniciar(new List<Barco> { new Canonero(-11,-11) } , new List<Barco>());
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
+    }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_AgregoUnPrimerJugadorConNombrePepitoYSegundoJugadorConNombreMariaEInicioJuego_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno,"Pepito");
+        juego.AgregarJugador(TipoJugador.Dos,"Maria");
+        var tripulacionJugadorDos = new List<Barco> { new Canonero(-11, -11) };
+
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, tripulacionJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>().WithMessage("Barco fuera del limite de la plataforma");
     }
