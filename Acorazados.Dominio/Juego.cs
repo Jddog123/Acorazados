@@ -119,8 +119,16 @@ public class Juego
 
     public void FinalizarTurno()
     {
-        _tableroTurnoDisparar = _tableroPrimerJugador;
-        _nombreJugadorActual = _nombreJugadorUno;
+        if (_nombreJugadorActual.Equals(_nombreJugadorUno))
+        {
+            _tableroTurnoDisparar = _tablero;
+            _nombreJugadorActual = _nombreJugadorDos;
+        }
+        else
+        {
+            _tableroTurnoDisparar = _tableroPrimerJugador;
+            _nombreJugadorActual = _nombreJugadorUno;
+        }
     }
 
     private void AsignarTripulacionTablero()
