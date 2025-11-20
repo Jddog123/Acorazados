@@ -74,12 +74,12 @@ public class Juego
             if (barco is Destructor)
                 _tablero[coordenadaX, coordenadaY] = 'x';
 
-            if (coordenadaX == 1 && coordenadaY == 3)
+            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 3)
             {
                 _tablero[coordenadaX, coordenadaY] = 'x';
             }
             
-            if (coordenadaX == 1 && coordenadaY == 4)
+            if (barco is Portaaviones && coordenadaX == 1 && coordenadaY == 4)
             {
                 _tablero[coordenadaX, coordenadaY] = 'x';
             }
