@@ -19,28 +19,9 @@ public class Jugador
         _barcosHundidos = new List<Barco>();
     }
 
-    public void SumarDisparo()
-    {
-        _totalDisparos++;
-    }
-    
-    public void SumarFallos()
-    {
-        _totalFallos++;
-    }
-    
-    public void SumarAciertos()
-    {
-        _totalAciertos++;
-    }
-    
-    public void AgregarBarcoHundido(Barco barco)
-    {
-        _barcosHundidos.Add(barco);
-    }
-
-    public EstadisticasJugador ObtenerEstadisticasJugador()
-    {
-        return new EstadisticasJugador(_totalDisparos, _totalFallos, _totalAciertos, _barcosHundidos);
-    }
+    public void SumarDisparoAEstadistica() => _totalDisparos++;
+    public void SumarFallosAEstadistica() => _totalFallos++;
+    public void SumarAciertosAEstadistica() => _totalAciertos++;
+    public void AgregarBarcoHundidoAEstadistica(Barco barco) => _barcosHundidos.Add(barco);
+    public EstadisticasJugador ObtenerEstadisticasJugador() => new(_totalDisparos, _totalFallos, _totalAciertos, _barcosHundidos);
 }

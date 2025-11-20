@@ -42,11 +42,8 @@ public class Tablero
         }
     }
 
-    public char ObtenerValorCasilla(int coordenadaX, int coordenadaY)
-    {
-        return _casillas[coordenadaX, coordenadaY];
-    }
-    
+    public char ObtenerValorCasilla(int coordenadaX, int coordenadaY) => _casillas[coordenadaX, coordenadaY];
+
     public void MarcaCoordenadaAcertadaEnPlataforma(int coordenadaX, int coordenadaY) =>
         _casillas[coordenadaX, coordenadaY] = LetraTableroBarcoAcertado;
     

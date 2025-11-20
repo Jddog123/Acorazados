@@ -33,7 +33,7 @@ public class Canonero : Barco
         return Hundido;
     }
 
-    public override void RegistrarDisparo()
+    public override void RegistrarDañoRecibido()
     {
         Hundido = true;
     }

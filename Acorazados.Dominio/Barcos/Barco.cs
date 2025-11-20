@@ -9,7 +9,7 @@ public abstract class Barco
     public abstract bool EstaFueraDeLimites(int limiteInferior, int limiteSuperior);
     public abstract bool SeEncuentraEnCoordenada(int x, int y);
     public abstract bool EstaHundido();
-    public abstract void RegistrarDisparo();
+    public abstract void RegistrarDañoRecibido();
     public abstract string ObtenerDescripcion();
     public abstract Coordenada ObtenerCoordenadaMinima();
 }

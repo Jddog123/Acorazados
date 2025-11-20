@@ -32,7 +32,7 @@ public class Portaaviones : Barco
         return DisparosAcertados == Coordenadas.Count;
     }
 
-    public override void RegistrarDisparo()
+    public override void RegistrarDañoRecibido()
     {
         DisparosAcertados += 1;
     }
