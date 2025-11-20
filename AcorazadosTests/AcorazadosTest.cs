@@ -600,18 +600,18 @@ public class AcorazadosTest
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
 
         var tableroEsperado = @"
-         |0|1|2|3|4|5|6|7|8|9|
-        0|g|g| | | | | |d|d|d|
-        1| | | | | |g| | | | |
-        2| | | | | |g| | | | |
-        3| |c| | | | | | | | | 
-        4| |c| | | | | | | | |
-        5| |c| | | | | | | | |
-        6| |c| | | | | | | | |
-        7| | | |d|d|d| | | | |
-        8| | | | | | | | | | |
-        9| | | | | | | | | | |
-        ";
+ |0|1|2|3|4|5|6|7|8|9|
+0|g| | | | | | |d|d|d|
+1|g| | | | |g| | | | |
+2| | | | | |g| | | | |
+3| |c| | | | | | | | |
+4| |c| | | | | | | | |
+5| |c| | | | | | | | |
+6| |c| | | | | | | | |
+7| | | |d|d|d| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+";
 
         string tablero = juego.Imprimir();
 

@@ -28,7 +28,7 @@ public class Juego
 
     public Juego()
     {
-        _tablero = new char[10, 10];
+            _tablero = new char[10, 10];
     }
 
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
@@ -148,6 +148,22 @@ public class Juego
 
     public string Imprimir()
     {
-        throw new NotImplementedException();
+        var tablero = new System.Text.StringBuilder();
+        tablero.AppendLine();
+        tablero.Append(" |0|1|2|3|4|5|6|7|8|9|");
+        tablero.AppendLine();
+        
+        for (int fila = 0; fila < 10; fila++)
+        {
+            tablero.Append(fila + "|");
+            for (int columna = 0; columna < 10; columna++)
+            {
+                char valorCasilla = (_tablero[columna, fila] != '\0'? _tablero[columna, fila]: ' ') ;
+                tablero.Append(valorCasilla + "|");
+            }
+            tablero.AppendLine();
+        }
+        
+        return tablero.ToString();
     }
 }
