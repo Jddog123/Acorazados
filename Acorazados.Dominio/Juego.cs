@@ -122,4 +122,9 @@ public class Juego
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
+
+    public void AgregarJugador(TipoJugador tipoJugador, string nombre)
+    {
+        throw new NotImplementedException();
+    }
 }

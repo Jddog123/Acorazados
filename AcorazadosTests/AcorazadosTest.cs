@@ -454,4 +454,15 @@ public class AcorazadosTest
 
         mensaje.Should().Be("Barco hundido");
     }
+
+    [Fact]
+    public void Si_AgregoUnPrimerJugadorConNombrePepitoEInicioJuego_Debe_ArrojarExcepcion()
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno,"Pepito");
+
+        Action result = () => juego.Iniciar();
+
+        result.Should().ThrowExactly<ArgumentException>().WithMessage("Deben existir 4 cañoreros en la plataforma");
+    }
 }
