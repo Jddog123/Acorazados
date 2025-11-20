@@ -18,6 +18,8 @@ public class Juego
     private const char LetraTableroCanonero = 'g';
     private const char LetraTableroDestructor = 'd';
     private const char LetraTableroPortaaviones = 'c';
+    private char[,] _tableroTurnoDisparar;
+    private char[,] _tableroPrimerJugador;
     private char[,] _tablero;
     private string _nombreJugadorActual;
     private string _nombreJugadorUno;
@@ -34,7 +36,10 @@ public class Juego
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
         if (tipoJugador == TipoJugador.Uno)
+        {
             _nombreJugadorUno = nombre;
+            _tableroPrimerJugador = new char[10, 10];
+        }
 
         if (tipoJugador == TipoJugador.Dos)
             _nombreJugadorDos = nombre;
@@ -48,6 +53,7 @@ public class Juego
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();
 
+        _tableroTurnoDisparar = _tablero;
         _nombreJugadorActual = _nombreJugadorDos;
     }
 
@@ -101,7 +107,7 @@ public class Juego
             tablero.Append(fila + "|");
             for (int columna = 0; columna < 10; columna++)
             {
-                char valorCasilla = (_tablero[columna, fila] != '\0' ? _tablero[columna, fila] : ' ');
+                char valorCasilla = (_tableroTurnoDisparar[columna, fila] != '\0' ? _tableroTurnoDisparar[columna, fila] : ' ');
                 tablero.Append(valorCasilla + "|");
             }
 
@@ -113,11 +119,34 @@ public class Juego
 
     public void FinalizarTurno()
     {
+        _tableroTurnoDisparar = _tableroPrimerJugador;
         _nombreJugadorActual = _nombreJugadorUno;
     }
 
     private void AsignarTripulacionTablero()
     {
+        foreach (var barco in _tripulacionJugadorUno)
+        {
+            if (barco is Canonero canonero)
+            {
+                _tableroPrimerJugador[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
+            }
+            else if (barco is Destructor destructor)
+            {
+                foreach (var coordenadas in destructor.Coordenadas)
+                {
+                    _tableroPrimerJugador[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
+                }
+            }
+            else if (barco is Portaaviones portaaviones)
+            {
+                foreach (var coordenadas in portaaviones.Coordenadas)
+                {
+                    _tableroPrimerJugador[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
+                }
+            }
+        }
+        
         foreach (var barco in _tripulacionJugadorDos)
         {
             if (barco is Canonero canonero)
@@ -181,16 +210,16 @@ public class Juego
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
 
     private void MarcaCoordenadaAcertadaEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _tablero[coordenadaX, coordenadaY] = 'x';
+        _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'x';
 
     private void MarcaCanoneroHundidoEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _tablero[coordenadaX, coordenadaY] = 'X';
+        _tableroTurnoDisparar[coordenadaX, coordenadaY] = 'X';
 
     private void MarcaPortaAvionHundidoEnPlataforma(Portaaviones portaAvion)
     {
         foreach (var destructorCoordenada in portaAvion.Coordenadas)
         {
-            _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
+            _tableroTurnoDisparar[destructorCoordenada.x, destructorCoordenada.y] = 'X';
         }
     }
 
@@ -198,7 +227,7 @@ public class Juego
     {
         foreach (var destructorCoordenada in destructor.Coordenadas)
         {
-            _tablero[destructorCoordenada.x, destructorCoordenada.y] = 'X';
+            _tableroTurnoDisparar[destructorCoordenada.x, destructorCoordenada.y] = 'X';
         }
     }
 }
