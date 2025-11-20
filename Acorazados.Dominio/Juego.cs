@@ -24,27 +24,27 @@ public class Juego
     private string _nombreJugadorDos;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
-    
+
 
     public Juego()
     {
         _tablero = new char[10, 10];
     }
-    
+
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
         if (tipoJugador == TipoJugador.Uno)
             _nombreJugadorUno = nombre;
-        
+
         if (tipoJugador == TipoJugador.Dos)
             _nombreJugadorDos = nombre;
     }
-    
+
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
-        
+
         ValidacionesTripulacionJugadores();
         AsignarTripulacionTablero();
 
@@ -54,18 +54,28 @@ public class Juego
     public string Disparar(int coordenadaX, int coordenadaY)
     {
         Barco barco = null;
-        
+
         if (_nombreJugadorActual.Equals(_nombreJugadorDos))
         {
             barco = _tripulacionJugadorDos.FirstOrDefault(barco =>
                 barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
-        }else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
+        }
+        else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
         {
-            if(coordenadaX == 2 && coordenadaY == 0)
+            if (coordenadaX == 2 && coordenadaY == 0)
                 barco = _tripulacionJugadorUno[0];
-            
-            if(coordenadaX == 2 && coordenadaY == 1)
+
+            if (coordenadaX == 2 && coordenadaY == 1)
                 barco = _tripulacionJugadorUno[1];
+
+            if (coordenadaX == 3 && coordenadaY == 1)
+                barco = _tripulacionJugadorUno[4];
+
+            if (coordenadaX == 3 && coordenadaY == 2)
+                barco = _tripulacionJugadorUno[4];
+
+            if (coordenadaX == 3 && coordenadaY == 3)
+                barco = _tripulacionJugadorUno[4];
         }
 
         if (barco != null)
@@ -78,7 +88,7 @@ public class Juego
 
         return "";
     }
-    
+
     public void FinalizarTurno()
     {
         _nombreJugadorActual = _nombreJugadorUno;
