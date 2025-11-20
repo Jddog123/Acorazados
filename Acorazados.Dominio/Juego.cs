@@ -68,6 +68,9 @@ public class Juego
 
         if (barco != null)
         {
+            if (coordenadaX == 0 && coordenadaY == 0)
+                _tablero[coordenadaX, coordenadaY] = 'X';
+            
             barco.RegistrarDisparo();
 
             if (barco.EstaHundido())
