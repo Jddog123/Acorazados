@@ -524,35 +524,35 @@ public class AcorazadosTest
     
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnDestructorEnLaPosicion_5_7_4_7_3_7YElJugadorDosDisparaTodasLasPosicionesMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnDestructorEnLaPosicion_4_1_4_2_4_3YElJugadorDosDisparaTodasLasPosicionesMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.FinalizarTurno();
-        juego.Disparar(5,7);
-        juego.Disparar(4,7);
+        juego.Disparar(4,1);
+        juego.Disparar(4,2);
         
-        var mensaje = juego.Disparar(3,7);
+        var mensaje = juego.Disparar(4,3);
 
         mensaje.Should().Be("Barco hundido");
     }
     
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnPortaAvionesEnLaPosicion_1_3_1_4_1_5_1_6_YElJugadorDosDisparaTodasLasPosicionesMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
+    public void Si_AgregoDosJugadoresIniciaJuegoYFinalizoTurnoYElJugadorUnoTieneUnPortaAvionesEnLaPosicion_0_0_0_1_0_2_0_3_YElJugadorDosDisparaTodasLasPosicionesMensaje_Debe_SerBarcoHundido(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
         juego.FinalizarTurno();
-        juego.Disparar(1,3);
-        juego.Disparar(1,4);
-        juego.Disparar(1,5);
+        juego.Disparar(0,0);
+        juego.Disparar(0,1);
+        juego.Disparar(0,2);
         
-        var mensaje = juego.Disparar(1,6);
+        var mensaje = juego.Disparar(0,3);
 
         mensaje.Should().Be("Barco hundido");
     }

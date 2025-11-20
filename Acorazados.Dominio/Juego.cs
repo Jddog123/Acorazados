@@ -62,37 +62,8 @@ public class Juego
         }
         else if (_nombreJugadorActual.Equals(_nombreJugadorUno))
         {
-            if (coordenadaX == 2 && coordenadaY == 0)
-                barco = _tripulacionJugadorUno[0];
-
-            if (coordenadaX == 2 && coordenadaY == 1)
-                barco = _tripulacionJugadorUno[1];
-
-            if (coordenadaX == 3 && coordenadaY == 1)
-                barco = _tripulacionJugadorUno[4];
-
-            if (coordenadaX == 3 && coordenadaY == 2)
-                barco = _tripulacionJugadorUno[4];
-
-            if (coordenadaX == 3 && coordenadaY == 3)
-                barco = _tripulacionJugadorUno[4];
-
-            if (coordenadaX == 5 && coordenadaY == 7)
-                barco = _tripulacionJugadorUno[5];
-
-            if (coordenadaX == 4 && coordenadaY == 7)
-                barco = _tripulacionJugadorUno[5];
-
-            if (coordenadaX == 3 && coordenadaY == 7)
-                barco = _tripulacionJugadorUno[5];
-            if (coordenadaX == 1 && coordenadaY == 3)
-                barco = _tripulacionJugadorUno[6];
-            if (coordenadaX == 1 && coordenadaY == 4)
-                barco = _tripulacionJugadorUno[6];
-            if (coordenadaX == 1 && coordenadaY == 5)
-                barco = _tripulacionJugadorUno[6];
-            if (coordenadaX == 1 && coordenadaY == 6)
-                barco = _tripulacionJugadorUno[6];
+            barco = _tripulacionJugadorUno.FirstOrDefault(barco =>
+                barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
         }
 
         if (barco != null)

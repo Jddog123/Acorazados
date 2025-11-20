@@ -35,7 +35,7 @@ public class DatosTripulacionJugadoresClassData : IEnumerable<object[]>
             new Canonero(2, 3),
             new Destructor([(3, 1), (3, 2), (3, 3)]),
             new Destructor([(4, 1), (4, 2), (4, 3)]),
-            new Portaaviones([(0, 0), (0, 2), (0, 3), (0, 4)])
+            new Portaaviones([(0, 0), (0, 1), (0, 2), (0, 3)])
         ];
     }
     
