@@ -57,6 +57,10 @@ public class Juego
     public string Disparar(int coordenadaX, int coordenadaY)
     {
         string mensajeResultado = "";
+        
+        if (_JuegoTerminado)
+            throw new Exception(MensajeJuegoTerminado);
+        
         _jugadorTurnoActual.SumarDisparoAEstadistica();
         
         var barco = ObtenerBarcoPor(coordenadaX, coordenadaY);

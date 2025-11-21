@@ -1131,14 +1131,14 @@ Portaavion: (1,3)
         juego.Disparar(4, 7);
         juego.Disparar(3, 7);
        
+        juego.Disparar(6, 6);
+        juego.Disparar(7, 4);
+        
         juego.Disparar(1, 3);
         juego.Disparar(1, 4);
         juego.Disparar(1, 5);
         juego.Disparar(1,6);
         
-        juego.Disparar(6, 6);
-        juego.Disparar(7, 4);
-
         var tableroEsperado = @"
 Jugador Pepe
 Total disparos: 16
@@ -1197,14 +1197,16 @@ Portaavion: (1,3)
         juego.Disparar(4, 2);
         juego.Disparar(4, 3);
        
+        juego.Disparar(6, 6);
+        juego.Disparar(7, 4);
+        juego.Disparar(8, 8);
+        
         juego.Disparar(0, 0);
         juego.Disparar(0, 1);
         juego.Disparar(0, 2);
         juego.Disparar(0,3);
         
-        juego.Disparar(6, 6);
-        juego.Disparar(7, 4);
-        juego.Disparar(8, 8);
+
 
         var tableroEsperado = @"
 Jugador Maria
