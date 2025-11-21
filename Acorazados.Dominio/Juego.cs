@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Acorazados.Dominio.Barcos;
+using Acorazados.Dominio.Constantes;
 using Acorazados.Dominio.Enums;
 using Acorazados.Dominio.Records;
 
@@ -7,25 +8,6 @@ namespace Acorazados.Dominio;
 
 public class Juego
 {
-    private const int LongitudPlataforma = 10;
-    private const int LimiteSuperiorPlataforma = 9;
-    private const int LimiteInferiorPlataforma = 0;
-    private const int CantidadMaximaPorJugadorCanonero = 4;
-    private const int CantidadMaximaPorJugadorDestructor = 2;
-    private const int CantidadMaximaPorJugadorPortaaviones = 1;
-    private const int CantidadBarcosHundidosParaGanar = 7;
-    private const string MensajeBarcoFueraDelLimiteDeLaPlataforma = "Barco fuera del limite de la plataforma";
-    private const string MensajeCantidadBarcosCanoneros1 = "Deben existir 4 cañoreros en la plataforma";
-    private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
-    private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
-    private const string MensajeBarcoHundido = "Barco hundido";
-    private const string MensajeTiroAcertado = "Tiro acertado";
-    private const string MensajeBarcosEnMismaPosicion = "Ya Existe un Barco en la misma posición";
-    private const string MensajeJugadorUnoRequerido = "Debe agregar al jugador uno";
-    private const string MensajeJugadorDosRequerido = "Debe agregar al jugador dos";
-    private const string MensajeBarcosEnDiagonal = "Solo se pueden colocar barcos en posiciones horizontales o verticales";
-    private const string MensajeJuegoTerminado = "El juego ya termino";
-    private const string MensajeDisparoFueraDelTablero = "Disparo fuera del tablero";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
@@ -39,22 +21,22 @@ public class Juego
     {
         if (tipoJugador == TipoJugador.Uno)
         {
-            _jugadorUno = new Jugador(nombre, new Tablero(new char[LongitudPlataforma, LongitudPlataforma]));
+            _jugadorUno = new Jugador(nombre, new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
         }
 
         if (tipoJugador == TipoJugador.Dos)
         {
-            _jugadorDos = new Jugador(nombre, new Tablero(new char[LongitudPlataforma, LongitudPlataforma]));
+            _jugadorDos = new Jugador(nombre, new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
         }
     }
 
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         if (_jugadorUno == null)
-            throw new ArgumentException(MensajeJugadorUnoRequerido);
+            throw new ArgumentException(ConstantesJuego.MensajeJugadorUnoRequerido);
         
         if (_jugadorDos == null)
-            throw new ArgumentException(MensajeJugadorDosRequerido);
+            throw new ArgumentException(ConstantesJuego.MensajeJugadorDosRequerido);
         
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
@@ -72,18 +54,18 @@ public class Juego
         string mensajeResultado = "";
 
         if (_JuegoTerminado)
-            throw new Exception(MensajeJuegoTerminado);
+            throw new Exception(ConstantesJuego.MensajeJuegoTerminado);
         
-        if ( coordenadaX < LimiteInferiorPlataforma || coordenadaX > LimiteSuperiorPlataforma ||
-             coordenadaY < LimiteInferiorPlataforma || coordenadaY > LimiteSuperiorPlataforma)
-            throw new ArgumentException(MensajeDisparoFueraDelTablero);
+        if ( coordenadaX < ConstantesJuego.LimiteInferiorPlataforma || coordenadaX > ConstantesJuego.LimiteSuperiorPlataforma ||
+             coordenadaY < ConstantesJuego.LimiteInferiorPlataforma || coordenadaY > ConstantesJuego.LimiteSuperiorPlataforma)
+            throw new ArgumentException(ConstantesJuego.MensajeDisparoFueraDelTablero);
 
         _jugadorTurnoActual.SumarDisparoAEstadistica();
 
         var barco = ObtenerBarcoPor(coordenadaX, coordenadaY);
         if (barco != null)
         {
-            mensajeResultado = MensajeTiroAcertado;
+            mensajeResultado = ConstantesJuego.MensajeTiroAcertado;
 
             _jugadorTurnoActual.SumarAciertosAEstadistica();
 
@@ -105,7 +87,7 @@ public class Juego
                 if (barco is Portaaviones portaavion)
                     HundirPortaavionEnTablero(portaavion);
 
-                mensajeResultado = MensajeBarcoHundido;
+                mensajeResultado = ConstantesJuego.MensajeBarcoHundido;
             }
         }
         else
@@ -152,9 +134,9 @@ public class Juego
     private void JuegoEstaTerminado()
     {
         _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() ==
-                          CantidadBarcosHundidosParaGanar ||
+                          ConstantesJuego.CantidadBarcosHundidosParaGanar ||
                           _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() ==
-                          CantidadBarcosHundidosParaGanar;
+                          ConstantesJuego.CantidadBarcosHundidosParaGanar;
     }
 
     private void AgregarTableroAInforme(StringBuilder informe)
@@ -233,50 +215,50 @@ public class Juego
     private void ValidacionesTripulacionJugadores()
     {
         if (ValidarLimitesPlataforma(_tripulacionJugadorUno))
-            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
+            throw new ArgumentException(ConstantesJuego.MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
         if (ValidarCantidadBarcosCanoneros(_tripulacionJugadorUno))
-            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosCanoneros1);
 
         if (ValidarCantidadBarcosDestructores(_tripulacionJugadorUno))
-            throw new ArgumentException(MensajeCantidadBarcosDestructores);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosDestructores);
 
         if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorUno))
-            throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosPortaaviones);
 
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorUno))
-            throw new ArgumentException(MensajeBarcosEnMismaPosicion);
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosEnMismaPosicion);
 
         if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
+            throw new ArgumentException(ConstantesJuego.MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
         if (ValidarCantidadBarcosCanoneros(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeCantidadBarcosCanoneros1);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosCanoneros1);
 
         if (ValidarCantidadBarcosDestructores(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeCantidadBarcosDestructores);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosDestructores);
 
         if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
+            throw new ArgumentException(ConstantesJuego.MensajeCantidadBarcosPortaaviones);
 
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeBarcosEnMismaPosicion);
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosEnMismaPosicion);
 
         if (ValidarBarcoEnDiagonal(_tripulacionJugadorUno) || ValidarBarcoEnDiagonal(_tripulacionJugadorDos))
-            throw new ArgumentException(MensajeBarcosEnDiagonal);
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosEnDiagonal);
     }
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
-        barcos.Count(barco => barco.GetType() == typeof(Portaaviones)) != CantidadMaximaPorJugadorPortaaviones;
+        barcos.Count(barco => barco.GetType() == typeof(Portaaviones)) != ConstantesJuego.CantidadMaximaPorJugadorPortaaviones;
 
     private bool ValidarCantidadBarcosDestructores(List<Barco> barcos) =>
-        barcos.Count(barco => barco.GetType() == typeof(Destructor)) != CantidadMaximaPorJugadorDestructor;
+        barcos.Count(barco => barco.GetType() == typeof(Destructor)) != ConstantesJuego.CantidadMaximaPorJugadorDestructor;
 
     private bool ValidarCantidadBarcosCanoneros(List<Barco> barcos) =>
-        barcos.Count(barco => barco.GetType() == typeof(Canonero)) != CantidadMaximaPorJugadorCanonero;
+        barcos.Count(barco => barco.GetType() == typeof(Canonero)) != ConstantesJuego.CantidadMaximaPorJugadorCanonero;
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
-        barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
+        barcos.Any(barco => barco.EstaFueraDeLimites(ConstantesJuego.LimiteInferiorPlataforma, ConstantesJuego.LimiteSuperiorPlataforma));
 
     private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos)
     {

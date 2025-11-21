@@ -1,15 +1,10 @@
 ﻿using Acorazados.Dominio.Barcos;
+using Acorazados.Dominio.Constantes;
 
 namespace Acorazados.Dominio;
 
 public class Tablero
 {
-    private const char LetraTableroBarcoAcertado = 'x';
-    private const char LetraTableroBarcoHundido = 'X';
-    private const char LetraTableroDisparoAlMar = 'o';
-    private const char LetraTableroCanonero = 'g';
-    private const char LetraTableroDestructor = 'd';
-    private const char LetraTableroPortaaviones = 'c';
     private char[,] _casillas;
 
     public Tablero(char[,] casillas)
@@ -23,20 +18,20 @@ public class Tablero
         {
             if (barco is Canonero canonero)
             {
-                _casillas[canonero.CoordenadaX, canonero.CoordenadaY] = LetraTableroCanonero;
+                _casillas[canonero.CoordenadaX, canonero.CoordenadaY] = ConstantesTablero.LetraTableroCanonero;
             }
             else if (barco is Destructor destructor)
             {
                 foreach (var coordenadas in destructor.Coordenadas)
                 {
-                    _casillas[coordenadas.x, coordenadas.y] = LetraTableroDestructor;
+                    _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroDestructor;
                 }
             }
             else if (barco is Portaaviones portaaviones)
             {
                 foreach (var coordenadas in portaaviones.Coordenadas)
                 {
-                    _casillas[coordenadas.x, coordenadas.y] = LetraTableroPortaaviones;
+                    _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroPortaaviones;
                 }
             }
         }
@@ -45,19 +40,19 @@ public class Tablero
     public char ObtenerValorCasilla(int coordenadaX, int coordenadaY) => _casillas[coordenadaX, coordenadaY];
 
     public void MarcaCoordenadaAcertadaEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _casillas[coordenadaX, coordenadaY] = LetraTableroBarcoAcertado;
+        _casillas[coordenadaX, coordenadaY] = ConstantesTablero.LetraTableroBarcoAcertado;
     
     public void MarcaDisparoAlMarEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _casillas[coordenadaX, coordenadaY] = LetraTableroDisparoAlMar;
+        _casillas[coordenadaX, coordenadaY] = ConstantesTablero.LetraTableroDisparoAlMar;
     
     public void MarcaCanoneroHundidoEnPlataforma(int coordenadaX, int coordenadaY) =>
-        _casillas[coordenadaX, coordenadaY] = LetraTableroBarcoHundido;
+        _casillas[coordenadaX, coordenadaY] = ConstantesTablero.LetraTableroBarcoHundido;
     
     public void MarcaDestructorHundidoEnPlataforma(Destructor destructor)
     {
         foreach (var destructorCoordenada in destructor.Coordenadas)
         {
-            _casillas[destructorCoordenada.x, destructorCoordenada.y] = LetraTableroBarcoHundido;
+            _casillas[destructorCoordenada.x, destructorCoordenada.y] = ConstantesTablero.LetraTableroBarcoHundido;
         }
     }
     
@@ -65,7 +60,7 @@ public class Tablero
     {
         foreach (var destructorCoordenada in portaAvion.Coordenadas)
         {
-            _casillas[destructorCoordenada.x, destructorCoordenada.y] = LetraTableroBarcoHundido;
+            _casillas[destructorCoordenada.x, destructorCoordenada.y] = ConstantesTablero.LetraTableroBarcoHundido;
         }
     }
 }
