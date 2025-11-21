@@ -38,6 +38,18 @@ string nombreSegundoUsuario = Console.ReadLine();
 juego.AgregarJugador(TipoJugador.Uno, nombrePrimerUsuario);
 juego.AgregarJugador(TipoJugador.Dos, nombreSegundoUsuario);
 
+Console.WriteLine("Por favor, especifica el modo de juego :");
+Console.WriteLine("DISPARO X TURNO = Se cambiara el turno acierte o falle");
+Console.WriteLine("RACHAS DE ACIERTOS = Si el jugador acierta puede seguir disparando hasta que falle");
+string modoJuego = Console.ReadLine();
+while (modoJuego != "DISPARO X TURNO" && modoJuego != "RACHAS DE ACIERTOS")
+{
+    Console.WriteLine("Por favor, especifica el modo de juego :");
+    Console.WriteLine("DISPARO X TURNO = Se cambiara el turno acierte o falle");
+    Console.WriteLine("RACHAS DE ACIERTOS = Si el jugador acierta puede seguir disparando hasta que falle");
+    modoJuego = Console.ReadLine();
+}
+
 Console.WriteLine("Ingresa un comando (INICIAR) y presiona Enter:");
 string comando = Console.ReadLine();
 
@@ -65,6 +77,7 @@ comando = string.Empty;
 
 bool juegoTerminado = false;
 string jugadorTurnoActual = nombrePrimerUsuario;
+string resultadoDisparo = string.Empty;
 
 while (!juegoTerminado)
 {
@@ -85,7 +98,9 @@ while (!juegoTerminado)
             
     try
     {
-        juego.Disparar(coordenadaXDisparo, coordenadaYDisparo);
+        resultadoDisparo = juego.Disparar(coordenadaXDisparo, coordenadaYDisparo);
+
+        Console.WriteLine(string.IsNullOrEmpty(resultadoDisparo)? "Fallaste": resultadoDisparo);
     }
     catch (Exception ex)
     {
@@ -93,22 +108,34 @@ while (!juegoTerminado)
     }
     
     tablero = juego.Imprimir();
-    Console.WriteLine("--- TABLERO DE JUEGO DEL ENEMIGO---");
+    if(juegoTerminado) 
+        Console.WriteLine("--- INFORME DE JUEGO DEL GANADOR---");
+    else
+        Console.WriteLine("--- TABLERO DE JUEGO DEL ENEMIGO---");
+    
     Console.WriteLine(tablero);
     Console.WriteLine("------------------------");
-    
-    while (comando != "SIGUIENTE TURNO")
+
+    if (juegoTerminado)
     {
-        Console.WriteLine("Ingresa un comando (SIGUIENTE TURNO) y presiona Enter:");
-        comando = Console.ReadLine();
+        juego.FinalizarTurno();
+        jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
     }
-    
-    juego.FinalizarTurno();
-    jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
+    else if (modoJuego.Equals("DISPARO X TURNO") || (modoJuego.Equals("RACHAS DE ACIERTOS") && string.IsNullOrEmpty(resultadoDisparo)))
+    {
+        while (comando != "SIGUIENTE TURNO")
+        {
+            Console.WriteLine("Ingresa un comando (SIGUIENTE TURNO) y presiona Enter:");
+            comando = Console.ReadLine();
+        }
+        
+        juego.FinalizarTurno();
+        jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
+    } 
 }
 
 tablero = juego.Imprimir();
-Console.WriteLine("--- TABLERO DE JUEGO PERDEDOR---");
+Console.WriteLine("--- INFORME DE JUEGO DEL PERDEDOR---");
 Console.WriteLine(tablero);
 Console.WriteLine("------------------------");
 Console.WriteLine("JUEGO TERMINADO MUCHAS GRACIAS");
