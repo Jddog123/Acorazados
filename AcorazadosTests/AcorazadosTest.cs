@@ -1481,4 +1481,30 @@ Portaavion: (0,0)
             .WithMessage("Solo se pueden colocar barcos en posiciones horizontales o verticales");
     }
     
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_AgregoDosJugadoresYJugadorDosTieneDosBarcosConUnaCoordenadaRepetidaEInicioJuego_Debe_ArrojarExcepcion(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+
+        var listaBarcosJugadorDos = new List<Barco>
+        {
+            new Canonero(1, 0),
+            new Canonero(2, 0),
+            new Canonero(3, 0),
+            new Canonero(4, 0),
+            new Destructor([(9, 1), (8, 1), (7, 1)]),
+            new Destructor([(9, 1), (8, 1), (7, 0)]),
+            new Portaaviones([(1, 3), (1, 4), (1, 5), (1, 6)])
+        };
+
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Ya Existe un Barco en la misma posición");
+    }
 }
