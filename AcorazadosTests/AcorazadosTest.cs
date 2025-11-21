@@ -1547,7 +1547,7 @@ Portaavion: (0,0)
     public void Si_SeIniciaPartidaYSeDisparaFueraDelTablero_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
     {
         var juego = new Juego();
-        juego.AgregarJugador(TipoJugador.Dos, "Pepe");
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
         juego.AgregarJugador(TipoJugador.Dos, "Maria");
         
         juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
