@@ -18,6 +18,7 @@ public class Juego
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
     private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private const string MensajeBarcoHundido = "Barco hundido";
+    private const string MensajeBarcosEnMismaPosicion = "Ya Existe un Barco en la misma posición";
     private const string MensajeJuegoTerminado = "El juego ya termino";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
@@ -225,6 +226,9 @@ public class Juego
         if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorUno))
             throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
 
+        if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeBarcosEnMismaPosicion);
+
         if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
             throw new ArgumentException(MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
@@ -237,19 +241,9 @@ public class Juego
         if (ValidarCantidadBarcosPortaaviones(_tripulacionJugadorDos))
             throw new ArgumentException(MensajeCantidadBarcosPortaaviones);
 
-        if (_tripulacionJugadorDos.GroupBy(barco => barco.ObtenerCoordenadaMinima())
-            .Any(repetido => repetido.Count() > 1))
-        {
-            throw new ArgumentException("Ya Existe un Barco en la misma posicion");
-        }
-        if (_tripulacionJugadorUno.GroupBy(barco => barco.ObtenerCoordenadaMinima())
-            .Any(repetido => repetido.Count() > 1))
-        {
-            throw new ArgumentException("Ya Existe un Barco en la misma posicion");
-        }
-        
+        if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeBarcosEnMismaPosicion);
     }
-
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
         barcos.Count(barco => barco.GetType() == typeof(Portaaviones)) != CantidadMaximaPorJugadorPortaaviones;
@@ -262,4 +256,8 @@ public class Juego
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
+
+    private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos) =>
+        barcos.GroupBy(barco => barco.ObtenerCoordenadaMinima())
+            .Any(repetido => repetido.Count() > 1);
 }

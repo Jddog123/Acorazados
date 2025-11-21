@@ -1314,6 +1314,7 @@ Portaavion: (0,0)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         var listaBarcosJugadorDos = new List<Barco>
         {
@@ -1329,7 +1330,7 @@ Portaavion: (0,0)
         Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, listaBarcosJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("Ya Existe un Barco en la misma posicion");
+            .WithMessage("Ya Existe un Barco en la misma posición");
     }
     
     [Theory]
@@ -1340,6 +1341,7 @@ Portaavion: (0,0)
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         var listaBarcosJugadorUno = new List<Barco>
         {
@@ -1355,7 +1357,7 @@ Portaavion: (0,0)
         Action result = () => juego.Iniciar(listaBarcosJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
 
         result.Should().ThrowExactly<ArgumentException>()
-            .WithMessage("Ya Existe un Barco en la misma posicion");
+            .WithMessage("Ya Existe un Barco en la misma posición");
     }
     
 }
