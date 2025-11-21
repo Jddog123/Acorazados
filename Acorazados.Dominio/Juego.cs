@@ -67,6 +67,8 @@ public class Juego
         var barco = ObtenerBarcoPor(coordenadaX, coordenadaY);
         if (barco != null)
         {
+            mensajeResultado = "Tiro acertado";
+            
             _jugadorTurnoActual.SumarAciertosAEstadistica();
 
             if (barco is Canonero)
