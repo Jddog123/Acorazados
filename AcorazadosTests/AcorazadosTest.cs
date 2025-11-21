@@ -1331,4 +1331,31 @@ Portaavion: (0,0)
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Ya Existe un Barco en la misma posicion");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_AgregoDosJugadoresYElJugadorUnoTieneDosBarcosEnLaMismaCordenadaEInicioJuego_Debe_ArrojarExcepcion(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+
+        var listaBarcosJugadorUno = new List<Barco>
+        {
+            new Canonero(2, 0),
+            new Canonero(2, 1),
+            new Canonero(2, 2),
+            new Canonero(2, 2),
+            new Destructor([(3, 1), (3, 2), (3, 3)]),
+            new Destructor([(4, 1), (4, 2), (4, 3)]),
+            new Portaaviones([(0, 0), (0, 1), (0, 2), (0, 3)])
+        };
+
+        Action result = () => juego.Iniciar(listaBarcosJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Ya Existe un Barco en la misma posicion");
+    }
+    
 }
