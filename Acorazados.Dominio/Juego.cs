@@ -242,6 +242,12 @@ public class Juego
         {
             throw new ArgumentException("Ya Existe un Barco en la misma posicion");
         }
+        if (_tripulacionJugadorUno.GroupBy(barco => barco.ObtenerCoordenadaMinima())
+            .Any(repetido => repetido.Count() > 1))
+        {
+            throw new ArgumentException("Ya Existe un Barco en la misma posicion");
+        }
+        
     }
 
 
