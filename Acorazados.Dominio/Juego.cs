@@ -21,10 +21,9 @@ public class Juego
     private const string MensajeBarcoHundido = "Barco hundido";
     private const string MensajeTiroAcertado = "Tiro acertado";
     private const string MensajeBarcosEnMismaPosicion = "Ya Existe un Barco en la misma posición";
-
-    private const string MensajeBarcosEnDiagonal =
-        "Solo se pueden colocar barcos en posiciones horizontales o verticales";
-
+    private const string MensajeJugadorUnoRequerido = "Debe agregar al jugador uno";
+    private const string MensajeJugadorDosRequerido = "Debe agregar al jugador dos";
+    private const string MensajeBarcosEnDiagonal = "Solo se pueden colocar barcos en posiciones horizontales o verticales";
     private const string MensajeJuegoTerminado = "El juego ya termino";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
@@ -51,10 +50,10 @@ public class Juego
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         if (_jugadorUno == null)
-            throw new ArgumentException("Debe agregar al jugador uno");
+            throw new ArgumentException(MensajeJugadorUnoRequerido);
         
         if (_jugadorDos == null)
-            throw new ArgumentException("Debe agregar al jugador dos");
+            throw new ArgumentException(MensajeJugadorDosRequerido);
         
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
