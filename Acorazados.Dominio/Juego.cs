@@ -265,6 +265,17 @@ public class Juego
                 throw new ArgumentException(MensajeBarcosEnDiagonal);
         }
         
+        foreach (var barco in _tripulacionJugadorDos.OfType<Portaaviones>())
+        {
+            var coordenadas = barco.Coordenadas.ToList();
+        
+            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
+            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
+        
+            if (!mismaFila && !mismaColumna)
+                throw new ArgumentException(MensajeBarcosEnDiagonal);
+        }
+        
     }
 
     private bool ValidarBarcosDestructorEnDiagonal(List<Barco> barcos)
