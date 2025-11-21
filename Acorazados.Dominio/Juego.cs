@@ -20,6 +20,7 @@ public class Juego
     private const string MensajeBarcoHundido = "Barco hundido";
     private const string MensajeTiroAcertado = "Tiro acertado";
     private const string MensajeBarcosEnMismaPosicion = "Ya Existe un Barco en la misma posición";
+    private const string MensajeBarcosEnDiagonal = "Solo se pueden colocar barcos en posiciones horizontales o verticales";
     private const string MensajeJuegoTerminado = "El juego ya termino";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
@@ -247,28 +248,12 @@ public class Juego
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorDos))
             throw new ArgumentException(MensajeBarcosEnMismaPosicion);
         
-        foreach (var barco in _tripulacionJugadorUno.OfType<Destructor>())
-        {
-            var coordenadas = barco.Coordenadas.ToList();
+        if (ValidarBarcosDestructorEnDiagonal(_tripulacionJugadorUno))
+            throw new ArgumentException(MensajeBarcosEnDiagonal);
         
-            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
-            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
-        
-            if (!mismaFila && !mismaColumna)
-                throw new ArgumentException("Solo se pueden colocar barcos en posiciones horizontales o verticales");
-        }
-        
-        foreach (var barco in _tripulacionJugadorDos.OfType<Destructor>())
-        {
-            var coordenadas = barco.Coordenadas.ToList();
-        
-            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
-            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
-        
-            if (!mismaFila && !mismaColumna)
-                throw new ArgumentException("Solo se pueden colocar barcos en posiciones horizontales o verticales");
-        }
-        
+        if (ValidarBarcosDestructorEnDiagonal(_tripulacionJugadorDos))
+            throw new ArgumentException(MensajeBarcosEnDiagonal);
+            
         foreach (var barco in _tripulacionJugadorUno.OfType<Portaaviones>())
         {
             var coordenadas = barco.Coordenadas.ToList();
@@ -277,9 +262,25 @@ public class Juego
             var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
         
             if (!mismaFila && !mismaColumna)
-                throw new ArgumentException("Solo se pueden colocar barcos en posiciones horizontales o verticales");
+                throw new ArgumentException(MensajeBarcosEnDiagonal);
         }
         
+    }
+
+    private bool ValidarBarcosDestructorEnDiagonal(List<Barco> barcos)
+    {
+        foreach (var barco in barcos.OfType<Destructor>())
+        {
+            var coordenadas = barco.Coordenadas.ToList();
+    
+            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
+            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
+    
+            if (!mismaFila && !mismaColumna)
+                return true;
+        }
+    
+        return false;
     }
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
