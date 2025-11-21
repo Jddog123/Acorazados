@@ -25,6 +25,7 @@ public class Juego
     private const string MensajeJugadorDosRequerido = "Debe agregar al jugador dos";
     private const string MensajeBarcosEnDiagonal = "Solo se pueden colocar barcos en posiciones horizontales o verticales";
     private const string MensajeJuegoTerminado = "El juego ya termino";
+    private const string MensajeDisparoFueraDelTablero = "Disparo fuera del tablero";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
@@ -72,6 +73,10 @@ public class Juego
 
         if (_JuegoTerminado)
             throw new Exception(MensajeJuegoTerminado);
+        
+        if ( coordenadaX < LimiteInferiorPlataforma || coordenadaX > LimiteSuperiorPlataforma ||
+             coordenadaY < LimiteInferiorPlataforma || coordenadaY > LimiteSuperiorPlataforma)
+            throw new ArgumentException(MensajeDisparoFueraDelTablero);
 
         _jugadorTurnoActual.SumarDisparoAEstadistica();
 
