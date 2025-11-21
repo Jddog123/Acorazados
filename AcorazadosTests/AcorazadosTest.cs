@@ -1528,4 +1528,17 @@ Portaavion: (0,0)
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Debe agregar al jugador dos");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_SeIniciaUnJuegoSinElJugadorUno_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Debe agregar al jugador uno");
+    }
 }
