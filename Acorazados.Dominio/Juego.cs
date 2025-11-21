@@ -115,10 +115,7 @@ public class Juego
     }
 
     public void FinalizarTurno()
-    {
-        if (_JuegoTerminado)
-            throw new Exception(MensajeJuegoTerminado);
-            
+    {   
         if (_jugadorTurnoActual._nombre.Equals(_jugadorUno._nombre))
         {
             _jugadorTurnoActual = _jugadorDos;

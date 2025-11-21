@@ -1239,37 +1239,6 @@ Portaavion: (0,0)
 
         tablero.Should().Be(tableroEsperado);
     }
-
-    [Theory]
-    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
-    public void Si_UnJugadorHundioTodosLosBarcosYTerminaElJuegoYSeFinalizaElturno_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
-    {
-        var juego = new Juego();
-        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
-        juego.AgregarJugador(TipoJugador.Dos, "Maria");
-        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
-        juego.Disparar(0, 0);
-        juego.Disparar(0, 1);
-        juego.Disparar(5, 1);
-        juego.Disparar(5, 2);
-        
-        juego.Disparar(7, 0);
-        juego.Disparar(8, 0);
-        juego.Disparar(9, 0);
-        
-        juego.Disparar(5, 7);
-        juego.Disparar(4, 7);
-        juego.Disparar(3, 7);
-       
-        juego.Disparar(1, 3);
-        juego.Disparar(1, 4);
-        juego.Disparar(1, 5);
-        juego.Disparar(1,6);
-        
-        Action result = () => juego.FinalizarTurno();
-
-        result.Should().ThrowExactly<Exception>().WithMessage("El juego ya termino");
-    }
     
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
