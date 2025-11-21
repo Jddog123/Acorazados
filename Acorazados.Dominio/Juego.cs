@@ -18,6 +18,7 @@ public class Juego
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
     private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private const string MensajeBarcoHundido = "Barco hundido";
+    private const string MensajeTiroAcertado = "Tiro acertado";
     private const string MensajeBarcosEnMismaPosicion = "Ya Existe un Barco en la misma posición";
     private const string MensajeJuegoTerminado = "El juego ya termino";
     private List<Barco> _tripulacionJugadorADisparar;
@@ -67,7 +68,7 @@ public class Juego
         var barco = ObtenerBarcoPor(coordenadaX, coordenadaY);
         if (barco != null)
         {
-            mensajeResultado = "Tiro acertado";
+            mensajeResultado = MensajeTiroAcertado;
             
             _jugadorTurnoActual.SumarAciertosAEstadistica();
 
