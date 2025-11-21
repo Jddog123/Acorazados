@@ -48,13 +48,28 @@ while (comando != "INICIAR")
 }
 
 juego.Iniciar(ListaBarcosJugadorUno, ListaBarcosJugadorDos);
+
+tablero = juego.Imprimir();
+Console.WriteLine($"--- TABLERO DE JUEGO DEL JUGADOR {nombreSegundoUsuario}---");
+Console.WriteLine(tablero);
+Console.WriteLine("------------------------");
+juego.FinalizarTurno();
+
+tablero = juego.Imprimir();
+Console.WriteLine($"--- TABLERO DE JUEGO DEL JUGADOR {nombrePrimerUsuario}---");
+Console.WriteLine(tablero);
+Console.WriteLine("------------------------");
+juego.FinalizarTurno();
+
 comando = string.Empty;
 
 bool juegoTerminado = false;
+string jugadorTurnoActual = nombrePrimerUsuario;
 
 while (!juegoTerminado)
 {
-
+    Console.WriteLine($"TURNO JUGADOR: {jugadorTurnoActual}");
+    
     while (comando != "DISPARAR")
     {
         Console.WriteLine("Ingresa un comando (DISPARAR) y presiona Enter:");
@@ -68,10 +83,17 @@ while (!juegoTerminado)
     Console.WriteLine("Por favor, ingresa coordenada en Y a disparar:");
     int coordenadaYDisparo = Convert.ToInt32(Console.ReadLine());
             
-    juego.Disparar(coordenadaXDisparo, coordenadaYDisparo);
+    try
+    {
+        juego.Disparar(coordenadaXDisparo, coordenadaYDisparo);
+    }
+    catch (Exception ex)
+    {
+        juegoTerminado = true;
+    }
     
     tablero = juego.Imprimir();
-    Console.WriteLine("--- TABLERO DE JUEGO ---");
+    Console.WriteLine("--- TABLERO DE JUEGO DEL ENEMIGO---");
     Console.WriteLine(tablero);
     Console.WriteLine("------------------------");
     
@@ -80,15 +102,13 @@ while (!juegoTerminado)
         Console.WriteLine("Ingresa un comando (SIGUIENTE TURNO) y presiona Enter:");
         comando = Console.ReadLine();
     }
-
-    try
-    {
-        juego.FinalizarTurno();
-    }
-    catch (Exception e)
-    {
-        juegoTerminado = true;
-    }
+    
+    juego.FinalizarTurno();
+    jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
 }
 
+tablero = juego.Imprimir();
+Console.WriteLine("--- TABLERO DE JUEGO PERDEDOR---");
+Console.WriteLine(tablero);
+Console.WriteLine("------------------------");
 Console.WriteLine("JUEGO TERMINADO MUCHAS GRACIAS");
