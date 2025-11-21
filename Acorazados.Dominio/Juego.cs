@@ -271,7 +271,31 @@ public class Juego
     private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos)
     {
         var todasCoordenadas = new List<(int x, int y)>();
+        ObtenerCoordenadasTripulacion(barcos, todasCoordenadas);
+        
+        return todasCoordenadas.GroupBy(coordenada => (coordenada.x, coordenada.y)).Any(group => group.Count() > 1);
+    }
 
+    private bool ValidarBarcoEnDiagonal(List<Barco> barcos)
+    {
+        bool barcoEnDiagonal = false;
+        foreach (var barco in barcos.Where(b => b is Destructor or Portaaviones))
+        {
+            var todasCoordenadas = new List<(int x, int y)>();
+            ObtenerCoordenadasTripulacion([barco], todasCoordenadas);
+
+            var mismaFila = todasCoordenadas.All(coordenada => coordenada.x == todasCoordenadas[0].x);
+            var mismaColumna = todasCoordenadas.All(coordenada => coordenada.y == todasCoordenadas[0].y);
+
+            if (!mismaFila && !mismaColumna)
+                barcoEnDiagonal = true;
+        }
+
+        return barcoEnDiagonal;
+    }
+    
+    private static void ObtenerCoordenadasTripulacion(List<Barco> barcos, List<(int x, int y)> todasCoordenadas)
+    {
         foreach (var barco in barcos)
         {
             var coordenadas = barco switch
@@ -283,29 +307,5 @@ public class Juego
 
             todasCoordenadas.AddRange(coordenadas);
         }
-        
-        return todasCoordenadas.GroupBy(coordenada => (coordenada.x, coordenada.y)).Any(group => group.Count() > 1);
-    }
-
-
-    private bool ValidarBarcoEnDiagonal(List<Barco> barcos)
-    {
-        foreach (var barco in barcos.Where(b => b is Destructor or Portaaviones))
-        {
-            var coordenadas = barco switch
-            {
-                Destructor d => d.Coordenadas.ToList(),
-                Portaaviones p => p.Coordenadas.ToList(),
-                _ => []
-            };
-
-            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
-            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
-
-            if (!mismaFila && !mismaColumna)
-                return true;
-        }
-
-        return false;
     }
 }
