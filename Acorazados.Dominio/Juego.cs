@@ -50,6 +50,9 @@ public class Juego
 
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
+        if (_jugadorDos == null)
+            throw new ArgumentException("Debe agregar al jugador dos");
+        
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
 
