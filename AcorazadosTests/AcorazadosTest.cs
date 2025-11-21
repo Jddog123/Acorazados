@@ -1541,4 +1541,20 @@ Portaavion: (0,0)
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Debe agregar al jugador uno");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_SeIniciaPartidaYSeDisparaFueraDelTablero_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Dos, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        Action result = () => juego.Disparar(20, 20);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Disparo fuera del tablero");
+    }
 }
