@@ -18,6 +18,7 @@ public class Juego
     private const string MensajeCantidadBarcosDestructores = "Deben existir 2 destructores en la plataforma";
     private const string MensajeCantidadBarcosPortaaviones = "Deben existir 1 portaavion en la plataforma";
     private const string MensajeBarcoHundido = "Barco hundido";
+    private const string MensajeJuegoTerminado = "El juego ya termino";
     private List<Barco> _tripulacionJugadorADisparar;
     private List<Barco> _tripulacionJugadorUno;
     private List<Barco> _tripulacionJugadorDos;
@@ -112,7 +113,7 @@ public class Juego
     public void FinalizarTurno()
     {
         if (_JuegoTerminado)
-            throw new Exception("El juego ya termino");
+            throw new Exception(MensajeJuegoTerminado);
             
         if (_jugadorTurnoActual._nombre.Equals(_jugadorUno._nombre))
         {
