@@ -1426,4 +1426,32 @@ Portaavion: (0,0)
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Solo se pueden colocar barcos en posiciones horizontales o verticales");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_AgregoDosJugadoresYElJugadorDosColocaUnBarcoDestructorEnUnaPosicionDiagonalEIniciaJuego_Debe_ArrojarExcepcion(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+
+        var tripulacionJugadorDos = new List<Barco>
+        {
+            new Canonero(0, 0),
+            new Canonero(0, 1),
+            new Canonero(5, 1),
+            new Canonero(5, 2),
+            new Destructor([(9, 0), (8, 0), (7, 0)]),
+            new Destructor([(0, 9), (1, 8), (2, 7)]),
+            new Portaaviones([(1, 3), (1, 4), (1, 5), (1, 6)])
+        };
+
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, tripulacionJugadorDos );
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Solo se pueden colocar barcos en posiciones horizontales o verticales");
+    }
+    
 }
