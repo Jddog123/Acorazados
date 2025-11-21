@@ -1360,4 +1360,16 @@ Portaavion: (0,0)
             .WithMessage("Ya Existe un Barco en la misma posición");
     }
     
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_JugadorUnoRealizaUnDisparoYAciertaUnBarco_Debe_MensajeSerDisparoAcertado(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+        string resultado = juego.Disparar(9, 0);
+
+        resultado.Should().Be("Tiro acertado");
+    }
 }
