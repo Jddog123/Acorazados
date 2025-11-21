@@ -52,6 +52,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -120,6 +121,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -140,6 +142,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -160,6 +163,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -182,6 +186,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -203,6 +208,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -226,6 +232,7 @@ public class AcorazadosTest
         };
 
         juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(listaBarcos, new List<Barco>());
 
@@ -476,6 +483,7 @@ public class AcorazadosTest
     {
         var juego = new Juego();
         juego.AgregarJugador(TipoJugador.Uno, "Pepito");
+        juego.AgregarJugador(TipoJugador.Dos, "Maria");
 
         Action result = () => juego.Iniciar(new List<Barco> { new Canonero(-11, -11) }, new List<Barco>());
 
@@ -1506,5 +1514,18 @@ Portaavion: (0,0)
 
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Ya Existe un Barco en la misma posición");
+    }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void Si_SeIniciaUnJuegoSinElJugadorDos_Debe_ArrojarExcepcion(DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        var juego = new Juego();
+        juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        
+        Action result = () => juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Debe agregar al jugador dos");
     }
 }
