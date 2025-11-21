@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Acorazados.Dominio.Barcos;
 using Acorazados.Dominio.Enums;
+using Acorazados.Dominio.Records;
 
 namespace Acorazados.Dominio;
 
@@ -267,9 +268,25 @@ public class Juego
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
         barcos.Any(barco => barco.EstaFueraDeLimites(LimiteInferiorPlataforma, LimiteSuperiorPlataforma));
 
-    private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos) =>
-        barcos.GroupBy(barco => barco.ObtenerCoordenadaMinima())
-            .Any(repetido => repetido.Count() > 1);
+    private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos)
+    {
+        var todasCoordenadas = new List<(int x, int y)>();
+
+        foreach (var barco in barcos)
+        {
+            var coordenadas = barco switch
+            {
+                Destructor destructor => destructor.Coordenadas.ToList(),
+                Portaaviones portaavion => portaavion.Coordenadas.ToList(),
+                Canonero canonero => new List<(int x, int y)> { (canonero.CoordenadaX, canonero.CoordenadaY) }
+            };
+
+            todasCoordenadas.AddRange(coordenadas);
+        }
+        
+        return todasCoordenadas.GroupBy(coordenada => (coordenada.x, coordenada.y)).Any(group => group.Count() > 1);
+    }
+
 
     private bool ValidarBarcoEnDiagonal(List<Barco> barcos)
     {
