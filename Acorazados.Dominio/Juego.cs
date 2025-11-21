@@ -257,6 +257,18 @@ public class Juego
             if (!mismaFila && !mismaColumna)
                 throw new ArgumentException("Solo se pueden colocar barcos en posiciones horizontales o verticales");
         }
+        
+        foreach (var barco in _tripulacionJugadorUno.OfType<Portaaviones>())
+        {
+            var coordenadas = barco.Coordenadas.ToList();
+        
+            var mismaFila = coordenadas.All(c => c.x == coordenadas[0].x);
+            var mismaColumna = coordenadas.All(c => c.y == coordenadas[0].y);
+        
+            if (!mismaFila && !mismaColumna)
+                throw new ArgumentException("Solo se pueden colocar barcos en posiciones horizontales o verticales");
+        }
+        
     }
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
