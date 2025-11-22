@@ -1,30 +1,42 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Acorazados</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body { background: #1b1b1b; color: #f0f0f0; }
-        #tablero {
+        body {
+            background: #1b1b1b;
+            color: #f0f0f0;
+        }
+
+        #tablero, #tableroColocacion {
             display: grid;
             grid-template-columns: repeat(10, 40px);
             gap: 4px;
             margin-top: 20px;
         }
+
         .celda {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             background: #303030;
             border-radius: 6px;
-            display: flex; justify-content: center; align-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
             font-size: 20px;
             transition: .15s;
         }
-        .celda:hover { background: #444; }
+
+        .celda:hover {
+            background: #444;
+        }
+
         #mensajeDisparo {
             margin-top: 20px;
             text-align: center;
@@ -32,28 +44,84 @@
             font-weight: bold;
             color: #ffdd57;
         }
+
+        /* ALERTAS */
+        .alerta {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 10px #000;
+        }
+
+        .alerta-info {
+            background: #3498db;
+        }
+
+        .alerta-success {
+            background: #2ecc71;
+        }
+
+        .alerta-warning {
+            background: #f39c12;
+        }
+
+        .alerta-danger {
+            background: #e74c3c;
+        }
     </style>
 </head>
 
 <body>
-
 <div class="container mt-4" style="max-width:800px;">
 
     <h1 class="text-center mb-4">⚓ ACORAZADOS</h1>
 
-    <div id="configuracion" class="card bg-dark p-4 mb-3">
+    <!-- CONFIGURACION -->
+    <div id="configuracion" class="card bg-dark p-4 mb-3" style="color:white;">
         <label class="form-label">Nombre del jugador 1 (Ataca primero):</label>
-        <input id="j1" class="form-control mb-3" placeholder="Ej: Ana" />
+        <input id="j1" class="form-control mb-3" placeholder="Ej: Ana"/>
         <label class="form-label">Nombre del jugador 2:</label>
-        <input id="j2" class="form-control mb-3" placeholder="Ej: Bruno" />
+        <input id="j2" class="form-control mb-3" placeholder="Ej: Bruno"/>
         <label class="form-label">Modo de juego:</label>
         <select id="modo" class="form-select mb-4">
             <option value="DISPARO">DISPARO X TURNO</option>
             <option value="RACHAS">RACHAS DE ACIERTOS</option>
         </select>
-        <button class="btn btn-primary w-100" onclick="iniciarJuego()">INICIAR</button>
+        <button class="btn btn-primary w-100" onclick="iniciarColocacion()">INICIAR</button>
     </div>
 
+    <div id="colocacionBarcos" class="card bg-dark p-3 mb-3" style="display:none; color:white;">
+        <h4>Coloca tus barcos</h4>
+        <label>Barco a colocar:</label>
+        <select id="tipoBarco" class="form-select mb-2">
+            <option value="Canonero">Cañonero</option>
+            <option value="Destructor">Destructor</option>
+            <option value="Portaaviones">Portaaviones</option>
+        </select>
+        <button class="btn btn-info w-100 mb-2" onclick="iniciarBarco()">Nuevo Barco</button>
+
+        <div id="contadorBarcos" class="mb-2">
+            <p>📊 Barcos colocados:</p>
+            <ul>
+                <li>Cañoneros: <span id="contadorCanonero">0</span></li>
+                <li>Destructores: <span id="contadorDestructor">0</span></li>
+                <li>Portaaviones: <span id="contadorPortaaviones">0</span></li>
+            </ul>
+        </div>
+
+        <p>Haz clic en cualquier celda para asignar coordenadas a tus barcos. Clic derecho elimina coordenadas.</p>
+        <div id="tableroColocacion" class="tablero"></div>
+        <button class="btn btn-primary w-100 mt-2" onclick="confirmarBarco()">Confirmar este barco</button>
+        <button class="btn btn-success w-100 mt-2" onclick="confirmarBarcos()">Confirmar Barcos</button>
+        <button class="btn btn-danger w-100 mt-2" onclick="reiniciarColocacion()">Reiniciar Colocación</button>
+    </div>
+
+    <!-- ZONA DE JUEGO ORIGINAL -->
     <div id="zonaJuego" style="display:none;">
         <h2 id="turno" class="text-center"></h2>
         <div id="tablero"></div>
@@ -67,31 +135,319 @@
     </div>
 
     <div id="informeFinal" class="card bg-dark p-4 mt-4" style="display:none; color: white;"></div>
-
 </div>
 
 <script>
+    // --- VARIABLES PARA COLOCACION ---
     let jugador1 = "", jugador2 = "";
     let modo = "";
     let turnoActual = 1;
     let turnoBloqueado = false;
 
-    async function iniciarJuego() {
-        jugador1 = document.getElementById("j1").value || "Jugador 1";
-        jugador2 = document.getElementById("j2").value || "Jugador 2";
-        modo = document.getElementById("modo").value;
+    // --- VARIABLES PARA COLOCACION ---
+    let jugadorActual = 1;
+    let enColocacion = false;
 
-        await fetch('/api/iniciar', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ Jugador1: jugador1, Jugador2: jugador2 })
+    let listaJ1 = [];
+    let listaJ2 = [];
+    let barcoActual = null;
+    let tableroJ1 = Array.from({length: 10}, () => Array(10).fill(null));
+    let tableroJ2 = Array.from({length: 10}, () => Array(10).fill(null));
+
+    const coloresBarcos = {
+        "Canonero": "#2196f3",
+        "Destructor": "#f39c12",
+        "Portaaviones": "#e74c3c"
+    };
+
+    // --- ALERTAS ---
+    function mostrarAlerta(texto, tipo = "info", duracion = 2000) {
+        // Contar alertas existentes para calcular desplazamiento vertical
+        const alertasExistentes = document.querySelectorAll(".alerta");
+        const desplazamiento = alertasExistentes.length * 70; // 70px por alerta para que no se superpongan
+
+        const div = document.createElement("div");
+        div.classList.add("alerta", "alerta-" + tipo);
+        div.innerText = texto;
+
+        // Posicionar con desplazamiento para evitar solapamientos
+        div.style.top = (20 + desplazamiento) + "px";
+        div.style.right = "20px";
+
+        document.body.appendChild(div);
+
+        setTimeout(() => {
+            div.remove();
+        }, duracion);
+    }
+
+
+    function iniciarColocacion() {
+
+        // Obtener y validar datos
+        jugador1 = document.getElementById("j1").value.trim();
+        jugador2 = document.getElementById("j2").value.trim();
+        modo      = document.getElementById("modo").value;
+
+        if (!jugador1 || !jugador2) {
+            mostrarAlerta("Debes ingresar los nombres de ambos jugadores", "danger");
+            return;
+        }
+
+        jugadorActual = 1;
+        enColocacion = true;
+
+        // Mostrar la sección de colocación
+        document.getElementById("configuracion").style.display = "none";
+        document.getElementById("colocacionBarcos").style.display = "block";
+
+        // Limpiar tableros y listas por si había reinicio
+        listaJ1 = [];
+        listaJ2 = [];
+        tableroJ1.forEach(f => f.fill(null));
+        tableroJ2.forEach(f => f.fill(null));
+        barcoActual = null;
+
+        renderizarTableroColocacion();
+        actualizarContadores();
+
+        mostrarAlerta("Jugador 1, coloca tus barcos", "info");
+    }
+
+
+
+    // --- INICIAR NUEVO BARCO ---
+    function iniciarBarco() {
+        const tipo = document.getElementById("tipoBarco").value;
+
+        barcoActual = {tipo: tipo, coords: []};
+
+        mostrarAlerta(`Nuevo ${tipo} iniciado`, "info", 1500);
+
+        actualizarContadores();   // <--- este es el que hace el conteo correcto
+        renderizarTableroColocacion();
+    }
+
+
+    // --- CONFIRMAR BARCO ---
+
+    // --- COLOCAR COORDENADA ---
+    function colocarCoordenada(x, y) {
+        if (!enColocacion || !barcoActual) return;
+        const tablero = jugadorActual === 1 ? tableroJ1 : tableroJ2;
+
+        if (barcoActual.tipo === "Canonero" && barcoActual.coords.length >= 1) {
+            mostrarAlerta("Cañonero solo puede tener una coordenada", "warning");
+            return;
+        }
+
+        if (!barcoActual.coords.some(c => c[0] === y && c[1] === x)) {
+            barcoActual.coords.push([y, x]);
+            tablero[y][x] = barcoActual.tipo;
+        }
+
+        renderizarTableroColocacion();
+        actualizarContadores();
+    }
+
+    // --- ELIMINAR COORDENADA ---
+    function eliminarCoordenada(x, y) {
+        if (!enColocacion || !barcoActual) return;
+        const tablero = jugadorActual === 1 ? tableroJ1 : tableroJ2;
+        const index = barcoActual.coords.findIndex(c => c[0] === y && c[1] === x);
+        if (index !== -1) {
+            barcoActual.coords.splice(index, 1);
+            tablero[y][x] = null;
+        }
+        renderizarTableroColocacion();
+        actualizarContadores();
+    }
+
+    // --- ACTUALIZAR CONTADORES ---
+    function actualizarContadores() {
+        const lista = jugadorActual === 1 ? listaJ1 : listaJ2;
+
+        const contadores = {
+            "Canonero": document.getElementById("contadorCanonero"),
+            "Destructor": document.getElementById("contadorDestructor"),
+            "Portaaviones": document.getElementById("contadorPortaaviones")
+        };
+
+        const total = {"Canonero": 0, "Destructor": 0, "Portaaviones": 0};
+
+        // Contar los barcos confirmados
+        lista.forEach(b => total[b.tipo]++);
+
+        // 🔥 CONTAR TAMBIÉN EL BARCO EN EDICIÓN (aunque no tenga coords)
+        if (barcoActual) {
+            total[barcoActual.tipo]++;
+        }
+
+        Object.keys(contadores).forEach(tipo => {
+            contadores[tipo].innerText = total[tipo];
+        });
+    }
+
+
+    // --- RENDERIZAR TABLERO COLOCACION ---
+    function renderizarTableroColocacion() {
+        const tableroDiv = document.getElementById("tableroColocacion");
+        tableroDiv.innerHTML = "";
+        const tablero = jugadorActual === 1 ? tableroJ1 : tableroJ2;
+
+        tablero.forEach((fila, y) => {
+            fila.forEach((celda, x) => {
+                const div = document.createElement("div");
+                div.classList.add("celda");
+                if (celda) div.style.background = coloresBarcos[celda];
+
+                if (barcoActual && barcoActual.coords.some(c => c[0] === y && c[1] === x)) {
+                    div.style.background = "#8e44ad";
+                }
+
+                div.addEventListener("click", () => colocarCoordenada(x, y));
+                div.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
+                    eliminarCoordenada(x, y);
+                });
+
+                tableroDiv.appendChild(div);
+            });
+        });
+    }
+
+    // --- REINICIAR COLOCACION ---
+    function reiniciarColocacion() {
+        listaJ1 = [];
+        listaJ2 = [];
+        barcoActual = null;
+        jugadorActual = 1;
+        enColocacion = true;
+
+        tableroJ1.forEach(f => f.fill(null));
+        tableroJ2.forEach(f => f.fill(null));
+
+        document.getElementById("colocacionBarcos").style.display = "block";
+        actualizarContadores();
+        renderizarTableroColocacion();
+
+        mostrarAlerta("Colocación reiniciada. Comienza de nuevo", "info", 2000);
+    }
+
+    // --- CONFIRMAR TODOS LOS BARCOS Y CAMBIAR JUGADOR ---
+
+    function confirmarBarco() {
+        if (!barcoActual) {
+            mostrarAlerta("No hay barco iniciado", "warning");
+            return;
+        }
+
+        if (barcoActual.coords.length === 0) {
+            mostrarAlerta("Debes poner al menos una coordenada", "warning");
+            return;
+        }
+
+        const listaJugador = jugadorActual === 1 ? listaJ1 : listaJ2;
+        const tablero = jugadorActual === 1 ? tableroJ1 : tableroJ2;
+
+        // Guardar el barco en la lista del jugador
+        listaJugador.push(barcoActual);
+
+        // Fijar sus posiciones en el tablero
+        barcoActual.coords.forEach(([y, x]) => {
+            tablero[y][x] = barcoActual.tipo;
         });
 
-        document.getElementById("configuracion").style.display = "none";
+        barcoActual = null;
+
+        actualizarContadores();
+        renderizarTableroColocacion();
+
+        mostrarAlerta("Barco confirmado", "success");
+    }
+
+    function armarBarcos(lista) {
+        // Devuelve un array de objetos { tipo, coords } donde coords = [columna, fila]
+        return lista.map(b => ({
+            tipo: b.tipo,
+            coords: b.coords.map(c => [c[1], c[0]]) // [x, y] = [columna, fila]
+        }));
+    }
+
+    // --- CONFIRMAR TODOS LOS BARCOS DEL JUGADOR ---
+    async function confirmarBarcos() {
+        const listaJugador = jugadorActual === 1 ? listaJ1 : listaJ2;
+
+        // Si hay un barco en edición, se agrega
+        if (barcoActual) {
+            if (barcoActual.coords.length === 0) {
+                mostrarAlerta("El barco debe tener al menos una coordenada", "warning");
+                return;
+            }
+            listaJugador.push(barcoActual);
+            barcoActual = null;
+        }
+
+        actualizarContadores();
+        renderizarTableroColocacion();
+
+        // Cambiar a jugador 2
+        if (jugadorActual === 1) {
+            jugadorActual = 2;
+            barcoActual = null;
+
+            // ❌ IMPORTANTE: NO BORRAR tableroJ2
+            // tableroJ2.forEach(f => f.fill(null));   ← Quitar esto
+
+            renderizarTableroColocacion();
+            actualizarContadores();
+            mostrarAlerta("Jugador 2, coloca tus barcos", "info");
+            return;
+        }
+
+        // Enviar al backend
+        enColocacion = false;
+        document.getElementById("colocacionBarcos").style.display = "none";
+
+        const payload = {
+            Jugador1: jugador1,
+            Jugador2: jugador2,
+            listaBarcosJugadorUno: armarBarcos(listaJ1),
+            listaBarcosJugadorDos: armarBarcos(listaJ2)
+        };
+
+        const res = await fetch('/api/iniciar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            const match = text.match(/System\.ArgumentException: (.+)/);
+            mostrarAlerta(match ? "Error: " + match[1] : "Error desconocido", "danger", 3000);
+            reiniciarColocacion();
+            return;
+        }
+
+        mostrarAlerta("¡Barcos colocados! Iniciando juego...", "success");
+        // MOSTRAR TABLERO DE JUEGO
         document.getElementById("zonaJuego").style.display = "block";
+
+        // Preparar turno inicial
+        turnoActual = 1;
         actualizarTurno();
+        
+        // Cargar tablero vacío inicial
         await actualizarTablero();
     }
+
+
+    // --- NUEVO BARCO ---
+
+
+    // --- RESTO DE TU SCRIPT ORIGINAL (DISPAROS, CAMBIO DE TURNO, TABLERO, INFORMES) ---
+    // Se mantiene exactamente igual, no se toca nada
 
     function actualizarTurno() {
         document.getElementById("turno").innerText =
@@ -103,23 +459,20 @@
 
     async function disparar(x, y) {
         if (turnoBloqueado) {
-            document.getElementById("mensajeDisparo").style.color= "red";
+            document.getElementById("mensajeDisparo").style.color = "red";
             document.getElementById("mensajeDisparo").innerText = "Debes presionar SIGUIENTE TURNO antes de disparar.";
             return;
         }
-        
+
         const res = await fetch('/api/disparar', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ X: x, Y: y })
+            body: JSON.stringify({X: x, Y: y})
         });
         const data = await res.json();
-        
-        console.log(data);
-        
-        if(data.terminado === true)
-        {
-            document.getElementById("mensajeDisparo").style.color= "green";
+
+        if (data.terminado === true) {
+            document.getElementById("mensajeDisparo").style.color = "green";
             document.getElementById("mensajeDisparo").innerText = "JUEGO TERMINADO";
             return;
         }
@@ -129,18 +482,21 @@
         // mostrar mensaje debajo del tablero
         document.getElementById("mensajeDisparo").innerText =
             data.resultado || "Agua...";
-        document.getElementById("mensajeDisparo").style.color= data.resultado === "Barco hundido" || data.resultado === "Tiro acertado"? "Green" : "Red";
-        
+        document.getElementById("mensajeDisparo").style.color = data.resultado === "Barco hundido" || data.resultado === "Tiro acertado" ? "Green" : "Red";
 
-        // control de botón siguiente turno según modo
-        if (modo === "DISPARO" || (modo === "RACHAS" && !data.resultado)) {
+
+        // Detectar si fue AGUA
+
+        if (modo === "DISPARO" || (modo === "RACHAS" && data.resultado === '')) {
             document.getElementById("btnCambiarTurno").style.display = "block";
             turnoBloqueado = true;
         }
+
+
     }
 
     async function cambiarTurno() {
-        await fetch('/api/cambiarturno', { method: 'POST' });
+        await fetch('/api/cambiarturno', {method: 'POST'});
         turnoActual = turnoActual === 1 ? 2 : 1;
         actualizarTurno();
         await actualizarTablero();
@@ -151,13 +507,12 @@
         const res = await fetch('/api/imprimir', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ X: 0, Y: 0 }) // dummy
+            body: JSON.stringify({X: 0, Y: 0}) // dummy
         });
         const data = await res.json();
-        const resultado =  data.tablero;
+        const resultado = data.tablero;
         // mostrar informe final si final=true
-        if (resultado.trimStart().toLowerCase().startsWith("jugador")) 
-        {
+        if (resultado.trimStart().toLowerCase().startsWith("jugador")) {
             document.getElementById("informeFinal").innerHTML = formatearInformeFinalMultiples(resultado);
             document.getElementById("informeFinal").style.display = "block";
         }
@@ -165,7 +520,7 @@
         const mapa = obtenerMapa(resultado);
         const tableroDiv = document.getElementById("tablero");
         tableroDiv.innerHTML = "";
-        
+
         // Cada fila tiene un índice al inicio (columna vertical) que hay que eliminar
         mapa.forEach((fila, y) => {
 
@@ -174,15 +529,30 @@
                 celda.classList.add("celda");
 
                 let icono = "";
-                switch(valor.trim()) {
-                    case "g": icono = ""; break;   // barco
-                    case "d": icono = ""; break;   // destructor
-                    case "c": icono = ""; break;   // barco hundido (c)
-                    case "X": icono = "💥️"; break;   // barco hundido (X)
-                    case "x": icono = "🚢"; break;
-                    case "o": icono = "🌊"; break;   // agua
-                    case " ": icono = ""; break;     // vacío
-                    default: icono = valor.trim();
+                switch (valor.trim()) {
+                    case "g":
+                        icono = "";
+                        break;   // barco
+                    case "d":
+                        icono = "";
+                        break;   // destructor
+                    case "c":
+                        icono = "";
+                        break;   // barco hundido (c)
+                    case "X":
+                        icono = "💥️";
+                        break;   // barco hundido (X)
+                    case "x":
+                        icono = "🚢";
+                        break;
+                    case "o":
+                        icono = "🌊";
+                        break;   // agua
+                    case " ":
+                        icono = "";
+                        break;     // vacío
+                    default:
+                        icono = valor.trim();
                 }
 
                 celda.textContent = icono;
@@ -271,8 +641,6 @@
 
         return htmlSecciones.join("\n");
     }
-
-
 
 
 </script>
