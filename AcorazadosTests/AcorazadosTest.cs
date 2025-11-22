@@ -1499,4 +1499,89 @@ Portaavion: (0,0)
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Disparo fuera del tablero");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_JugadorUnoHundeTodosLosBarcosDelJugadorDos_Debe_ImprimirElInformeConEstadisticasDeAmbosJugadores(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        _juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        _juego.AgregarJugador(TipoJugador.Dos, "Maria");
+        _juego.Iniciar(datosTripulacionJugadores.tripulacionJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        _juego.Disparar(0, 0);
+        _juego.Disparar(0, 1);
+        _juego.Disparar(5, 1);
+        _juego.Disparar(5, 2);
+        
+        _juego.FinalizarTurno();
+        _juego.Disparar(7, 9);
+        
+        _juego.FinalizarTurno();
+        _juego.Disparar(7, 0);
+        _juego.Disparar(8, 0);
+        _juego.Disparar(9, 0);
+
+        _juego.Disparar(5, 7);
+        _juego.Disparar(4, 7);
+        _juego.Disparar(3, 7);
+
+        _juego.Disparar(3, 3);
+        
+        _juego.Disparar(1, 3);
+        _juego.Disparar(1, 4);
+        _juego.Disparar(1, 5);
+        _juego.Disparar(1, 6);
+
+        var tableroEsperado = @"JUGADOR GANADOR
+Jugador Pepe
+Total disparos: 15
+Fallos: 1
+Acertados: 14
+Barcos Hundidos:
+Cañonero: (0,0)
+Cañonero: (0,1)
+Cañonero: (5,1)
+Cañonero: (5,2)
+Destructor: (7,0)
+Destructor: (3,7)
+Portaavion: (1,3)
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|X| | | | | | |X|X|X|
+1|X| | | | |X| | | | |
+2| | | | | |X| | | | |
+3| |X| |o| | | | | | |
+4| |X| | | | | | | | |
+5| |X| | | | | | | | |
+6| |X| | | | | | | | |
+7| | | |X|X|X| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+
+JUGADOR PERDEDOR
+Jugador Maria
+Total disparos: 1
+Fallos: 1
+Acertados: 0
+Barcos Hundidos:
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|c| |g| | | | | | | |
+1|c| |g|d|d| | | | | |
+2|c| |g|d|d| | | | | |
+3|c| |g|d|d| | | | | |
+4| | | | | | | | | | |
+5| | | | | | | | | | |
+6| | | | | | | | | | |
+7| | | | | | | | | | |
+8| | | | | | | | | | |
+9| | | | | | | |o| | |
+";
+
+        string tablero = _juego.Imprimir();
+
+        tablero.Should().Be(tableroEsperado);
+    }
 }
