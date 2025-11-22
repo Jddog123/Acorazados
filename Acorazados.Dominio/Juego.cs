@@ -195,7 +195,7 @@ public class Juego
 
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorUno))
             throw new ArgumentException(ConstantesJuego.MensajeBarcosEnMismaPosicion);
-
+        
         if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
             throw new ArgumentException(ConstantesJuego.MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
@@ -316,6 +316,11 @@ public class Juego
 
             if (!mismaFila && !mismaColumna)
                 barcoEnDiagonal = true;
+            
+            if(mismaFila
+                   ? todasCoordenadas.Select(c => c.y).OrderBy(n => n).Select((val, idx) => val - idx).Distinct().Count() != 1
+                   : todasCoordenadas.Select(c => c.x).OrderBy(n => n).Select((val, idx) => val - idx).Distinct().Count() != 1)
+                throw new ArgumentException("Las coordenadas de un barco deben ser consecutivas");
         }
 
         return barcoEnDiagonal;
