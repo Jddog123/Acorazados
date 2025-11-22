@@ -1040,7 +1040,7 @@ public class AcorazadosTest
         _juego.Disparar(1, 5);
         _juego.Disparar(1, 6);
 
-        var tableroEsperado = @"
+        var tableroEsperado = @"JUGADOR GANADOR
 Jugador Pepe
 Total disparos: 14
 Fallos: 0
@@ -1063,6 +1063,25 @@ Portaavion: (1,3)
 5| |X| | | | | | | | |
 6| |X| | | | | | | | |
 7| | | |X|X|X| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+
+JUGADOR PERDEDOR
+Jugador Maria
+Total disparos: 0
+Fallos: 0
+Acertados: 0
+Barcos Hundidos:
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|c| |g| | | | | | | |
+1|c| |g|d|d| | | | | |
+2|c| |g|d|d| | | | | |
+3|c| |g|d|d| | | | | |
+4| | | | | | | | | | |
+5| | | | | | | | | | |
+6| | | | | | | | | | |
+7| | | | | | | | | | |
 8| | | | | | | | | | |
 9| | | | | | | | | | |
 ";
@@ -1103,7 +1122,7 @@ Portaavion: (1,3)
         _juego.Disparar(1, 5);
         _juego.Disparar(1, 6);
 
-        var tableroEsperado = @"
+        var tableroEsperado = @"JUGADOR GANADOR
 Jugador Pepe
 Total disparos: 16
 Fallos: 2
@@ -1126,6 +1145,25 @@ Portaavion: (1,3)
 5| |X| | | | | | | | |
 6| |X| | | | |o| | | |
 7| | | |X|X|X| | | | |
+8| | | | | | | | | | |
+9| | | | | | | | | | |
+
+JUGADOR PERDEDOR
+Jugador Maria
+Total disparos: 0
+Fallos: 0
+Acertados: 0
+Barcos Hundidos:
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|c| |g| | | | | | | |
+1|c| |g|d|d| | | | | |
+2|c| |g|d|d| | | | | |
+3|c| |g|d|d| | | | | |
+4| | | | | | | | | | |
+5| | | | | | | | | | |
+6| | | | | | | | | | |
+7| | | | | | | | | | |
 8| | | | | | | | | | |
 9| | | | | | | | | | |
 ";
@@ -1170,7 +1208,7 @@ Portaavion: (1,3)
         _juego.Disparar(0, 3);
 
 
-        var tableroEsperado = @"
+        var tableroEsperado = @"JUGADOR GANADOR
 Jugador Maria
 Total disparos: 17
 Fallos: 3
@@ -1195,6 +1233,25 @@ Portaavion: (0,0)
 7| | | | | | | | | | |
 8| | | | | | | | |o| |
 9| | | | | | | | | | |
+
+JUGADOR PERDEDOR
+Jugador Pepe
+Total disparos: 1
+Fallos: 1
+Acertados: 0
+Barcos Hundidos:
+
+ |0|1|2|3|4|5|6|7|8|9|
+0|g| | | | | | |d|d|d|
+1|g| | | | |g| | | | |
+2| | | | | |g| | | | |
+3| |c| | | | | | | | |
+4| |c| | | | | | | | |
+5| |c| | | | | | | | |
+6| |c| | | | | | | | |
+7| | | |d|d|d| | | | |
+8| | | | | | | | | | |
+9| | | | | |o| | | | |
 ";
 
         string tablero = _juego.Imprimir();
