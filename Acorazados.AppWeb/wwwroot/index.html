@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Acorazados</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background: #1b1b1b; color: #f0f0f0; }
+        #tablero {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            gap: 4px;
+            margin-top: 20px;
+        }
+        .celda {
+            width: 40px; height: 40px;
+            background: #303030;
+            border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: .15s;
+        }
+        .celda:hover { background: #444; }
+        #mensajeDisparo {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffdd57;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container mt-4" style="max-width:800px;">
+
+    <h1 class="text-center mb-4">⚓ ACORAZADOS</h1>
+
+    <div id="configuracion" class="card bg-dark p-4 mb-3">
+        <label class="form-label">Nombre del jugador 1 (Ataca primero):</label>
+        <input id="j1" class="form-control mb-3" placeholder="Ej: Ana" />
+        <label class="form-label">Nombre del jugador 2:</label>
+        <input id="j2" class="form-control mb-3" placeholder="Ej: Bruno" />
+        <label class="form-label">Modo de juego:</label>
+        <select id="modo" class="form-select mb-4">
+            <option value="DISPARO">DISPARO X TURNO</option>
+            <option value="RACHAS">RACHAS DE ACIERTOS</option>
+        </select>
+        <button class="btn btn-primary w-100" onclick="iniciarJuego()">INICIAR</button>
+    </div>
+
+    <div id="zonaJuego" style="display:none;">
+        <h2 id="turno" class="text-center"></h2>
+        <div id="tablero"></div>
+        <div id="mensajeDisparo"></div>
+        <button id="btnCambiarTurno"
+                class="btn btn-warning w-100 mt-4"
+                onclick="cambiarTurno()"
+                style="display:none;">
+            SIGUIENTE TURNO
+        </button>
+    </div>
+
+    <div id="informeFinal" class="card bg-dark p-4 mt-4" style="display:none; color: white;"></div>
+
+</div>
+
+<script>
+    let jugador1 = "", jugador2 = "";
+    let modo = "";
+    let turnoActual = 1;
+    let turnoBloqueado = false;
+
+    async function iniciarJuego() {
+        jugador1 = document.getElementById("j1").value || "Jugador 1";
+        jugador2 = document.getElementById("j2").value || "Jugador 2";
+        modo = document.getElementById("modo").value;
+
+        await fetch('/api/iniciar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ Jugador1: jugador1, Jugador2: jugador2 })
+        });
+
+        document.getElementById("configuracion").style.display = "none";
+        document.getElementById("zonaJuego").style.display = "block";
+        actualizarTurno();
+        await actualizarTablero();
+    }
+
+    function actualizarTurno() {
+        document.getElementById("turno").innerText =
+            "Turno de: " + (turnoActual === 1 ? jugador1 : jugador2);
+        document.getElementById("mensajeDisparo").innerText = "";
+        turnoBloqueado = false;
+        document.getElementById("btnCambiarTurno").style.display = "none";
+    }
+
+    async function disparar(x, y) {
+        if (turnoBloqueado) {
+            document.getElementById("mensajeDisparo").style.color= "red";
+            document.getElementById("mensajeDisparo").innerText = "Debes presionar SIGUIENTE TURNO antes de disparar.";
+            return;
+        }
+        
+        const res = await fetch('/api/disparar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ X: x, Y: y })
+        });
+        const data = await res.json();
+        
+        console.log(data);
+        
+        if(data.terminado === true)
+        {
+            document.getElementById("mensajeDisparo").style.color= "green";
+            document.getElementById("mensajeDisparo").innerText = "JUEGO TERMINADO";
+            return;
+        }
+
+        await actualizarTablero();
+
+        // mostrar mensaje debajo del tablero
+        document.getElementById("mensajeDisparo").innerText =
+            data.resultado || "Agua...";
+        document.getElementById("mensajeDisparo").style.color= data.resultado === "Barco hundido" || data.resultado === "Tiro acertado"? "Green" : "Red";
+        
+
+        // control de botón siguiente turno según modo
+        if (modo === "DISPARO" || (modo === "RACHAS" && !data.resultado)) {
+            document.getElementById("btnCambiarTurno").style.display = "block";
+            turnoBloqueado = true;
+        }
+    }
+
+    async function cambiarTurno() {
+        await fetch('/api/cambiarturno', { method: 'POST' });
+        turnoActual = turnoActual === 1 ? 2 : 1;
+        actualizarTurno();
+        await actualizarTablero();
+    }
+
+
+    async function actualizarTablero() {
+        const res = await fetch('/api/imprimir', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ X: 0, Y: 0 }) // dummy
+        });
+        const data = await res.json();
+        const resultado =  data.tablero;
+        console.log(resultado);
+        // mostrar informe final si final=true
+        if (resultado.trimStart().toLowerCase().startsWith("jugador")) 
+        {
+            document.getElementById("informeFinal").innerHTML = formatearInformeFinal(resultado);
+            document.getElementById("informeFinal").style.display = "block";
+        }
+
+        const mapa = obtenerMapa(resultado);
+        const tableroDiv = document.getElementById("tablero");
+        tableroDiv.innerHTML = "";
+        
+        // Cada fila tiene un índice al inicio (columna vertical) que hay que eliminar
+        mapa.forEach((fila, y) => {
+
+            fila.forEach((valor, x) => {
+                const celda = document.createElement("div");
+                celda.classList.add("celda");
+
+                let icono = "";
+                switch(valor.trim()) {
+                    case "g": icono = "🚢"; break;   // barco
+                    case "d": icono = "🚢"; break;   // destructor
+                    case "c": icono = "🚢"; break;   // barco hundido (c)
+                    case "X": icono = "☠️"; break;   // barco hundido (X)
+                    case "x": icono = "💥"; break;
+                    case "o": icono = "🌊"; break;   // agua
+                    case " ": icono = ""; break;     // vacío
+                    default: icono = valor.trim();
+                }
+
+                celda.textContent = icono;
+
+                // evento de disparo
+                celda.onclick = () => disparar(x, y);
+
+                tableroDiv.appendChild(celda);
+            });
+        });
+
+    }
+
+    function obtenerMapa(tableroString) {
+        const lineas = tableroString.split("\n");
+
+        // Buscar la línea que comienza con " |0|1|2|3|4|5|6|7|8|9|"
+        const indiceMapa = lineas.findIndex(l => l.trim().startsWith("|0|1|2|3|4|5|6|7|8|9|"));
+
+        if (indiceMapa === -1) return []; // No se encontró el mapa
+
+        // Tomar las 10 líneas siguientes del tablero
+        const filasTablero = lineas.slice(indiceMapa + 1, indiceMapa + 11);
+
+        // Convertir cada línea en un array de valores
+        return filasTablero.map(fila => fila.split("|").slice(1, 11).map(v => v.trim()));
+    }
+
+    function formatearInformeFinal(texto) {
+
+        const partes = texto.split("\n");
+
+        // --- Separar informe del mapa ---
+        const idxMapa = partes.findIndex(l =>
+            l.replace(/^\s+/, "").startsWith("|0|1|2|3|4|5|6|7|8|9|")
+        );
+
+        const informeBruto = partes.slice(0, idxMapa);
+        const mapa = partes.slice(idxMapa).join("\n");
+
+        // --- Localizar posición del bloque "Barcos Hundidos:" ---
+        const idxBH = informeBruto.findIndex(l => l.trim() === "Barcos Hundidos:");
+
+        // Parte superior del informe (sin barcos)
+        const informeArriba = informeBruto.slice(0, idxBH);
+
+        // Extraer solo líneas de barcos, sin el texto original
+        const barcos = [];
+        for (let i = idxBH + 1; i < informeBruto.length; i++) {
+            const linea = informeBruto[i].trim();
+            if (linea === "") continue;
+            barcos.push(`<li>${linea}</li>`);
+        }
+
+        // --- Formatear parte superior ---
+        let htmlInforme =
+            informeArriba.join("\n")
+                .replace(/^Jugador (.*)/m, `<p><strong>Jugador:</strong> $1</p>`)
+                .replace(/^Total disparos: (.*)/m, `<p><strong>Total disparos:</strong> $1</p>`)
+                .replace(/^Fallos: (.*)/m, `<p><strong>Fallos:</strong> $1</p>`)
+                .replace(/^Acertados: (.*)/m, `<p><strong>Acertados:</strong> $1</p>`);
+
+        // --- Insertar lista bonita ---
+        htmlInforme += `
+        <h3>🚢 Barcos Hundidos:</h3>
+        <ul>
+            ${barcos.join("\n")}
+        </ul>
+    `;
+
+        // --- Retornar informe final en HTML ---
+        return `
+        <div class="reporte">
+            <h2>📄 Informe Final</h2>
+            ${htmlInforme}
+            <h3>🗺 Mapa Final:</h3>
+            <pre class="mapa">${mapa}</pre>
+        </div>
+    `;
+    }
+
+
+
+</script>
+
+</body>
+</html>

@@ -108,20 +108,14 @@ while (!juegoTerminado)
     }
     
     tablero = juego.Imprimir();
-    if(juegoTerminado) 
-        Console.WriteLine("--- INFORME DE JUEGO DEL GANADOR---");
-    else
+    
+    if(juegoTerminado == false) 
         Console.WriteLine("--- TABLERO DE JUEGO DEL ENEMIGO---");
     
     Console.WriteLine(tablero);
     Console.WriteLine("------------------------");
 
-    if (juegoTerminado)
-    {
-        juego.FinalizarTurno();
-        jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
-    }
-    else if (modoJuego.Equals("DISPARO X TURNO") || (modoJuego.Equals("RACHAS DE ACIERTOS") && string.IsNullOrEmpty(resultadoDisparo)))
+    if (juegoTerminado == false && (modoJuego.Equals("DISPARO X TURNO") || (modoJuego.Equals("RACHAS DE ACIERTOS") && string.IsNullOrEmpty(resultadoDisparo))))
     {
         while (comando != "SIGUIENTE TURNO")
         {
@@ -129,13 +123,17 @@ while (!juegoTerminado)
             comando = Console.ReadLine();
         }
         
-        juego.FinalizarTurno();
-        jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
+        try
+        {
+            juego.FinalizarTurno();
+            jugadorTurnoActual = jugadorTurnoActual.Equals(nombrePrimerUsuario)? nombreSegundoUsuario : nombrePrimerUsuario;
+        }
+        catch (Exception ex)
+        {
+            juegoTerminado = true;
+        }
     } 
 }
 
-tablero = juego.Imprimir();
-Console.WriteLine("--- INFORME DE JUEGO DEL PERDEDOR---");
-Console.WriteLine(tablero);
 Console.WriteLine("------------------------");
 Console.WriteLine("JUEGO TERMINADO MUCHAS GRACIAS");

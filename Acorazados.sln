@@ -4,7 +4,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcorazadosTests", "Acorazad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acorazados.Dominio", "Acorazados.Dominio\Acorazados.Dominio.csproj", "{324C9627-B8A8-4B7D-8AB3-8CA8041742A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acorazados.App", "Acorazados.App\Acorazados.App.csproj", "{346E48FD-1B7C-4CB6-9377-1CBE4FC0FA91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acorazados.AppConsola", "Acorazados.AppConsola\Acorazados.AppConsola.csproj", "{346E48FD-1B7C-4CB6-9377-1CBE4FC0FA91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acorazados.AppWeb", "Acorazados.AppWeb\Acorazados.AppWeb.csproj", "{383DC2F3-DBB8-4A86-863A-C6A7DDA783F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{346E48FD-1B7C-4CB6-9377-1CBE4FC0FA91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{346E48FD-1B7C-4CB6-9377-1CBE4FC0FA91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{346E48FD-1B7C-4CB6-9377-1CBE4FC0FA91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{383DC2F3-DBB8-4A86-863A-C6A7DDA783F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{383DC2F3-DBB8-4A86-863A-C6A7DDA783F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{383DC2F3-DBB8-4A86-863A-C6A7DDA783F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{383DC2F3-DBB8-4A86-863A-C6A7DDA783F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
