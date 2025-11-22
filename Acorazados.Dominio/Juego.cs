@@ -196,6 +196,9 @@ public class Juego
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorUno))
             throw new ArgumentException(ConstantesJuego.MensajeBarcosEnMismaPosicion);
         
+        if (ValidarBarcoEnDiagonal(_tripulacionJugadorUno))
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosEnDiagonal);
+        
         if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
             throw new ArgumentException(ConstantesJuego.MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
@@ -211,8 +214,11 @@ public class Juego
         if (ValidarBarcosEnMismaPosicion(_tripulacionJugadorDos))
             throw new ArgumentException(ConstantesJuego.MensajeBarcosEnMismaPosicion);
 
-        if (ValidarBarcoEnDiagonal(_tripulacionJugadorUno) || ValidarBarcoEnDiagonal(_tripulacionJugadorDos))
+        if (ValidarBarcoEnDiagonal(_tripulacionJugadorDos))
             throw new ArgumentException(ConstantesJuego.MensajeBarcosEnDiagonal);
+        
+        if (ValidarBarcoConSaltosEnCoordenadas(_tripulacionJugadorDos))
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosConSaltosEnCoordenadas);
     }
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
@@ -311,20 +317,43 @@ public class Juego
             var todasCoordenadas = new List<(int x, int y)>();
             ObtenerCoordenadasTripulacion([barco], todasCoordenadas);
 
-            var mismaFila = todasCoordenadas.All(coordenada => coordenada.x == todasCoordenadas[0].x);
-            var mismaColumna = todasCoordenadas.All(coordenada => coordenada.y == todasCoordenadas[0].y);
-
-            if (!mismaFila && !mismaColumna)
+            if (ValidarCoordenadasDiferenteFilaODiferenteColumna(todasCoordenadas))
                 barcoEnDiagonal = true;
-            
-            if(mismaFila
-                   ? todasCoordenadas.Select(c => c.y).OrderBy(n => n).Select((val, idx) => val - idx).Distinct().Count() != 1
-                   : todasCoordenadas.Select(c => c.x).OrderBy(n => n).Select((val, idx) => val - idx).Distinct().Count() != 1)
-                throw new ArgumentException("Las coordenadas de un barco deben ser consecutivas");
         }
 
         return barcoEnDiagonal;
     }
+
+    private static bool ValidarCoordenadasDiferenteFilaODiferenteColumna(List<(int x, int y)> todasCoordenadas)
+    {
+        var mismaFila = todasCoordenadas.All(coordenada => coordenada.x == todasCoordenadas[0].x);
+        var mismaColumna = todasCoordenadas.All(coordenada => coordenada.y == todasCoordenadas[0].y);
+
+        return !mismaFila && !mismaColumna;
+    }
+
+    private bool ValidarBarcoConSaltosEnCoordenadas(List<Barco> barcos)
+    {
+        bool barcoConSaltosEnCoordenadas = false;
+        foreach (var barco in barcos.Where(b => b is Destructor or Portaaviones))
+        {
+            var todasCoordenadas = new List<(int x, int y)>();
+            ObtenerCoordenadasTripulacion([barco], todasCoordenadas);
+            
+            if (todasCoordenadas.Count <= 1) return false;
+            
+            if (ValidarCoordenadasDiferenteFilaODiferenteColumna(todasCoordenadas))
+                return true;
+
+            return CoordenadasConsecutivasEnX(todasCoordenadas);
+        }
+
+        return barcoConSaltosEnCoordenadas;
+    }
+
+    private static bool CoordenadasConsecutivasEnX(List<(int x, int y)> todasCoordenadas) =>
+        todasCoordenadas.Select(c => c.x).OrderBy(n => n).Select((val, idx) => val - idx).Distinct()
+            .Count() != 1;
 
     private static void ObtenerCoordenadasTripulacion(List<Barco> barcos, List<(int x, int y)> todasCoordenadas)
     {

@@ -1645,7 +1645,7 @@ Barcos Hundidos:
     [Theory]
     [ClassData(typeof(DatosTripulacionJugadoresClassData))]
     public void
-        Si_AgregoDosJugadoresYUnJugadorTieneUnBarcoConUnaCoordenadaConSaltosEInicioJuego_Debe_ArrojarExcepcion(
+        Si_AgregoDosJugadoresYJugadorDosTieneUnBarcoConUnaCoordenadaConSaltosEInicioJuego_Debe_ArrojarExcepcion(
             DatosTripulacionJugadores datosTripulacionJugadores)
     {
         _juego.AgregarJugador(TipoJugador.Uno, "Pepe");
