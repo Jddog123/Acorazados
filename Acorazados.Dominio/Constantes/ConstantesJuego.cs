@@ -19,6 +19,7 @@ public static class ConstantesJuego
     public const string MensajeJugadorUnoRequerido = "Debe agregar al jugador uno";
     public const string MensajeJugadorDosRequerido = "Debe agregar al jugador dos";
     public const string MensajeBarcosEnDiagonal = "Solo se pueden colocar barcos en posiciones horizontales o verticales";
+    public const string MensajeBarcosConSaltosEnCoordenadas = "Las coordenadas de un barco deben ser consecutivas"; 
     public const string MensajeJuegoTerminado = "El juego ya termino";
     public const string MensajeDisparoFueraDelTablero = "Disparo fuera del tablero";
 }

@@ -15,35 +15,18 @@ public class Portaaviones : Barco
             throw new ArgumentException(MensajeLongitudBarcoPortaaviones);
     }
     
-    public override bool EstaFueraDeLimites(int limiteInferior, int limiteSuperior)
-    {
-        return Coordenadas.Any(coor =>
+    public override bool EstaFueraDeLimites(int limiteInferior, int limiteSuperior) =>
+        Coordenadas.Any(coor =>
             coor.x < limiteInferior || coor.x > limiteSuperior ||
             coor.y < limiteInferior || coor.y > limiteSuperior);
-    }
-    
-    public override bool SeEncuentraEnCoordenada(int x, int y)
-    {
-        return Coordenadas.Any(coor => coor.x == x && coor.y == y);
-    }
-    
-    public override bool EstaHundido()
-    {
-        return DisparosAcertados == Coordenadas.Count;
-    }
 
-    public override void RegistrarDañoRecibido()
-    {
-        DisparosAcertados += 1;
-    }
-    
-    public override string ObtenerDescripcion()
-    {
-        return "Portaavion";
-    }
-    
-    public override Coordenada ObtenerCoordenadaMinima()
-    {
-        return new Coordenada(Coordenadas.Min().x, Coordenadas.Min().y);
-    }
+    public override bool SeEncuentraEnCoordenada(int x, int y) => Coordenadas.Any(coor => coor.x == x && coor.y == y);
+
+    public override bool EstaHundido() => DisparosAcertados == Coordenadas.Count;
+
+    public override void RegistrarDañoRecibido() => DisparosAcertados += 1;
+
+    public override string ObtenerDescripcion() => "Portaavion";
+
+    public override Coordenada ObtenerCoordenadaMinima() => new(Coordenadas.Min().x, Coordenadas.Min().y);
 }

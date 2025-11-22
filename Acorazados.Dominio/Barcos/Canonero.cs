@@ -17,34 +17,17 @@ public class Canonero : Barco
         CoordenadaY = coordenadaY.Value;
     }
     
-    public override bool EstaFueraDeLimites(int limiteInferior, int limiteSuperior)
-    {
-        return CoordenadaX < limiteInferior || CoordenadaX > limiteSuperior ||
-               CoordenadaY < limiteInferior || CoordenadaY > limiteSuperior;
-    }
-    
-    public override bool SeEncuentraEnCoordenada(int x, int y)
-    {
-        return CoordenadaX == x && CoordenadaY == y;
-    }
-    
-    public override bool EstaHundido()
-    {
-        return Hundido;
-    }
+    public override bool EstaFueraDeLimites(int limiteInferior, int limiteSuperior) =>
+        CoordenadaX < limiteInferior || CoordenadaX > limiteSuperior ||
+        CoordenadaY < limiteInferior || CoordenadaY > limiteSuperior;
 
-    public override void RegistrarDañoRecibido()
-    {
-        Hundido = true;
-    }
+    public override bool SeEncuentraEnCoordenada(int x, int y) => CoordenadaX == x && CoordenadaY == y;
 
-    public override string ObtenerDescripcion()
-    {
-        return "Cañonero";
-    }
+    public override bool EstaHundido() => Hundido;
 
-    public override Coordenada ObtenerCoordenadaMinima()
-    {
-        return new Coordenada(CoordenadaX, CoordenadaY);
-    }
+    public override void RegistrarDañoRecibido() => Hundido = true;
+
+    public override string ObtenerDescripcion() => "Cañonero";
+
+    public override Coordenada ObtenerCoordenadaMinima() => new(CoordenadaX, CoordenadaY);
 }
