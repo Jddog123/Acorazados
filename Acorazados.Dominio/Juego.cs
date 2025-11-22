@@ -19,25 +19,19 @@ public class Juego
 
     public void AgregarJugador(TipoJugador tipoJugador, string nombre)
     {
-        if (tipoJugador == TipoJugador.Uno)
-        {
-            _jugadorUno = new Jugador(nombre, new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
-        }
+        if (tipoJugador == TipoJugador.Uno) InstanciarJugadorUno(nombre);
 
-        if (tipoJugador == TipoJugador.Dos)
-        {
-            _jugadorDos = new Jugador(nombre, new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
-        }
+        if (tipoJugador == TipoJugador.Dos) InstanciarJugadorDos(nombre);
     }
 
     public void Iniciar(List<Barco> tripulacionJugadorUno, List<Barco> tripulacionJugadorDos)
     {
         if (_jugadorUno == null)
             throw new ArgumentException(ConstantesJuego.MensajeJugadorUnoRequerido);
-        
+
         if (_jugadorDos == null)
             throw new ArgumentException(ConstantesJuego.MensajeJugadorDosRequerido);
-        
+
         _tripulacionJugadorUno = tripulacionJugadorUno;
         _tripulacionJugadorDos = tripulacionJugadorDos;
 
@@ -55,9 +49,8 @@ public class Juego
 
         if (_JuegoTerminado)
             throw new Exception(ConstantesJuego.MensajeJuegoTerminado);
-        
-        if ( coordenadaX < ConstantesJuego.LimiteInferiorPlataforma || coordenadaX > ConstantesJuego.LimiteSuperiorPlataforma ||
-             coordenadaY < ConstantesJuego.LimiteInferiorPlataforma || coordenadaY > ConstantesJuego.LimiteSuperiorPlataforma)
+
+        if (DisparoEstaFueraDelMapa(coordenadaX, coordenadaY))
             throw new ArgumentException(ConstantesJuego.MensajeDisparoFueraDelTablero);
 
         _jugadorTurnoActual.SumarDisparoAEstadistica();
@@ -118,85 +111,38 @@ public class Juego
         {
             AgregarTableroAInforme(informe);
         }
+
         return informe.ToString();
     }
 
     public void FinalizarTurno()
     {
-        if (_jugadorTurnoActual._nombre.Equals(_jugadorUno._nombre))
+        if (JugadorTurnoActualEsJugadorUno())
         {
-            _jugadorTurnoActual = _jugadorDos;
-            _jugadorTurnoADisparar = _jugadorUno;
-            _tripulacionJugadorADisparar = _tripulacionJugadorUno;
+            AsignarTurnoActualJugadorDos();
         }
         else
         {
-            _jugadorTurnoActual = _jugadorUno;
-            _jugadorTurnoADisparar = _jugadorDos;
-            _tripulacionJugadorADisparar = _tripulacionJugadorDos;
+            AsignarTurnoActualJugadorUno();
         }
     }
 
-    private void JuegoEstaTerminado()
+
+    private void AsignarTurnoActualJugadorUno()
     {
-        _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() ==
-                          ConstantesJuego.CantidadBarcosHundidosParaGanar ||
-                          _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() ==
-                          ConstantesJuego.CantidadBarcosHundidosParaGanar;
+        _jugadorTurnoActual = _jugadorUno;
+        _jugadorTurnoADisparar = _jugadorDos;
+        _tripulacionJugadorADisparar = _tripulacionJugadorDos;
     }
 
-    private void AgregarTableroAInforme(StringBuilder informe)
+    private void AsignarTurnoActualJugadorDos()
     {
-        informe.AppendLine();
-        informe.Append(" |0|1|2|3|4|5|6|7|8|9|");
-        informe.AppendLine();
-
-        for (int fila = 0; fila < 10; fila++)
-        {
-            informe.Append(fila + "|");
-            for (int columna = 0; columna < 10; columna++)
-            {
-                char valorCasilla = (_jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila) != '\0'
-                    ? _jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila)
-                    : ' ');
-                informe.Append(valorCasilla + "|");
-            }
-
-            informe.AppendLine();
-        }
+        _jugadorTurnoActual = _jugadorDos;
+        _jugadorTurnoADisparar = _jugadorUno;
+        _tripulacionJugadorADisparar = _tripulacionJugadorUno;
     }
 
-    private void AgregarEstadisticaJugadorAInforme(StringBuilder informe, bool ganador)
-    {
-        var estadisticasJugador = _jugadorTurnoActual.ObtenerEstadisticasJugador();
-        informe.Append(ganador ? "JUGADOR GANADOR" : "JUGADOR PERDEDOR");
-        informe.AppendLine();
-        informe.Append("Jugador " + _jugadorTurnoActual._nombre);
-        informe.AppendLine();
-        informe.Append("Total disparos: " + estadisticasJugador.totalDisparos);
-        informe.AppendLine();
-        informe.Append("Fallos: " + estadisticasJugador.totalFallos);
-        informe.AppendLine();
-        informe.Append("Acertados: " + estadisticasJugador.totalAciertos);
-        informe.AppendLine();
-        informe.Append("Barcos Hundidos:");
-        informe.AppendLine();
-
-        foreach (var barcoHundido in estadisticasJugador.barcosHundidos)
-        {
-            var coordenadasMinimas = barcoHundido.ObtenerCoordenadaMinima();
-            informe.Append(barcoHundido.ObtenerDescripcion() + ": (" + coordenadasMinimas.x + "," +
-                           coordenadasMinimas.y + ")");
-            informe.AppendLine();
-        }
-    }
-
-    private Barco? ObtenerBarcoPor(int coordenadaX, int coordenadaY)
-    {
-        var barco = _tripulacionJugadorADisparar.FirstOrDefault(barco =>
-            barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
-        return barco;
-    }
+    private bool JugadorTurnoActualEsJugadorUno() => _jugadorTurnoActual._nombre.Equals(_jugadorUno._nombre);
 
     private void AsignarTripulacionesTablero()
     {
@@ -204,11 +150,19 @@ public class Juego
         _jugadorDos._tablero.AsignarTripulacion(_tripulacionJugadorDos);
     }
 
+    private static bool DisparoEstaFueraDelMapa(int coordenadaX, int coordenadaY) =>
+        coordenadaX < ConstantesJuego.LimiteInferiorPlataforma ||
+        coordenadaX > ConstantesJuego.LimiteSuperiorPlataforma ||
+        coordenadaY < ConstantesJuego.LimiteInferiorPlataforma ||
+        coordenadaY > ConstantesJuego.LimiteSuperiorPlataforma;
+
     private void HundirCañoneroEnTablero(int coordenadaX, int coordenadaY) =>
         _jugadorTurnoADisparar._tablero.MarcaCanoneroHundidoEnPlataforma(coordenadaX, coordenadaY);
 
     private void AcertarDisparoDestructorOPortaavionesEnTablero(int coordenadaX, int coordenadaY) =>
         _jugadorTurnoADisparar._tablero.MarcaCoordenadaAcertadaEnPlataforma(coordenadaX, coordenadaY);
+
+    private static void AgregarSaltoDeLinea(StringBuilder informe) => informe.AppendLine();
 
     private void HundirPortaavionEnTablero(Portaaviones barco) =>
         _jugadorTurnoADisparar._tablero.MarcaPortaAvionHundidoEnPlataforma(barco);
@@ -218,6 +172,12 @@ public class Juego
 
     private void DispararAlMarEnElTablero(int coordenadaX, int coordenadaY) =>
         _jugadorTurnoADisparar._tablero.MarcaDisparoAlMarEnPlataforma(coordenadaX, coordenadaY);
+
+    private void InstanciarJugadorDos(string nombre) => _jugadorDos = new Jugador(nombre,
+        new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
+
+    private void InstanciarJugadorUno(string nombre) => _jugadorUno = new Jugador(nombre,
+        new Tablero(new char[ConstantesJuego.LongitudPlataforma, ConstantesJuego.LongitudPlataforma]));
 
     private void ValidacionesTripulacionJugadores()
     {
@@ -256,24 +216,92 @@ public class Juego
     }
 
     private bool ValidarCantidadBarcosPortaaviones(List<Barco> barcos) =>
-        barcos.Count(barco => barco.GetType() == typeof(Portaaviones)) != ConstantesJuego.CantidadMaximaPorJugadorPortaaviones;
+        barcos.Count(barco => barco.GetType() == typeof(Portaaviones)) !=
+        ConstantesJuego.CantidadMaximaPorJugadorPortaaviones;
 
     private bool ValidarCantidadBarcosDestructores(List<Barco> barcos) =>
-        barcos.Count(barco => barco.GetType() == typeof(Destructor)) != ConstantesJuego.CantidadMaximaPorJugadorDestructor;
+        barcos.Count(barco => barco.GetType() == typeof(Destructor)) !=
+        ConstantesJuego.CantidadMaximaPorJugadorDestructor;
 
     private bool ValidarCantidadBarcosCanoneros(List<Barco> barcos) =>
         barcos.Count(barco => barco.GetType() == typeof(Canonero)) != ConstantesJuego.CantidadMaximaPorJugadorCanonero;
 
     private bool ValidarLimitesPlataforma(List<Barco> barcos) =>
-        barcos.Any(barco => barco.EstaFueraDeLimites(ConstantesJuego.LimiteInferiorPlataforma, ConstantesJuego.LimiteSuperiorPlataforma));
+        barcos.Any(barco =>
+            barco.EstaFueraDeLimites(ConstantesJuego.LimiteInferiorPlataforma,
+                ConstantesJuego.LimiteSuperiorPlataforma));
 
     private bool ValidarBarcosEnMismaPosicion(List<Barco> barcos)
     {
         var todasCoordenadas = new List<(int x, int y)>();
         ObtenerCoordenadasTripulacion(barcos, todasCoordenadas);
-        
+
         return todasCoordenadas.GroupBy(coordenada => (coordenada.x, coordenada.y)).Any(group => group.Count() > 1);
     }
+
+    private void JuegoEstaTerminado()
+    {
+        _JuegoTerminado = _tripulacionJugadorUno.Where(barco => barco.EstaHundido()).Count() ==
+                          ConstantesJuego.CantidadBarcosHundidosParaGanar ||
+                          _tripulacionJugadorDos.Where(barco => barco.EstaHundido()).Count() ==
+                          ConstantesJuego.CantidadBarcosHundidosParaGanar;
+    }
+
+    private void AgregarTableroAInforme(StringBuilder informe)
+    {
+        AgregarSaltoDeLinea(informe);
+        informe.Append(" |0|1|2|3|4|5|6|7|8|9|");
+        AgregarSaltoDeLinea(informe);
+
+        for (int fila = 0; fila < 10; fila++)
+        {
+            informe.Append(fila + "|");
+            for (int columna = 0; columna < 10; columna++)
+            {
+                char valorCasilla = ObtenerValorCasilla(columna, fila);
+                informe.Append(valorCasilla + "|");
+            }
+
+            AgregarSaltoDeLinea(informe);
+        }
+    }
+    
+    private void AgregarEstadisticaJugadorAInforme(StringBuilder informe, bool ganador)
+    {
+        var estadisticasJugador = _jugadorTurnoActual.ObtenerEstadisticasJugador();
+        informe.Append(ganador ? "JUGADOR GANADOR" : "JUGADOR PERDEDOR");
+        AgregarSaltoDeLinea(informe);
+        informe.Append("Jugador " + _jugadorTurnoActual._nombre);
+        AgregarSaltoDeLinea(informe);
+        informe.Append("Total disparos: " + estadisticasJugador.totalDisparos);
+        AgregarSaltoDeLinea(informe);
+        informe.Append("Fallos: " + estadisticasJugador.totalFallos);
+        AgregarSaltoDeLinea(informe);
+        informe.Append("Acertados: " + estadisticasJugador.totalAciertos);
+        AgregarSaltoDeLinea(informe);
+        informe.Append("Barcos Hundidos:");
+        AgregarSaltoDeLinea(informe);
+
+        foreach (var barcoHundido in estadisticasJugador.barcosHundidos)
+        {
+            var coordenadasMinimas = barcoHundido.ObtenerCoordenadaMinima();
+            informe.Append(barcoHundido.ObtenerDescripcion() + ": (" + coordenadasMinimas.x + "," +
+                           coordenadasMinimas.y + ")");
+            informe.AppendLine();
+        }
+    }
+
+    private Barco? ObtenerBarcoPor(int coordenadaX, int coordenadaY)
+    {
+        var barco = _tripulacionJugadorADisparar.FirstOrDefault(barco =>
+            barco.SeEncuentraEnCoordenada(coordenadaX, coordenadaY));
+        return barco;
+    }
+
+    private char ObtenerValorCasilla(int columna, int fila) =>
+        (_jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila) != '\0'
+            ? _jugadorTurnoADisparar._tablero.ObtenerValorCasilla(columna, fila)
+            : ' ');
 
     private bool ValidarBarcoEnDiagonal(List<Barco> barcos)
     {
@@ -292,7 +320,7 @@ public class Juego
 
         return barcoEnDiagonal;
     }
-    
+
     private static void ObtenerCoordenadasTripulacion(List<Barco> barcos, List<(int x, int y)> todasCoordenadas)
     {
         foreach (var barco in barcos)

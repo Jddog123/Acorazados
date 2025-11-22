@@ -18,21 +18,15 @@ public class Tablero
         {
             if (barco is Canonero canonero)
             {
-                _casillas[canonero.CoordenadaX, canonero.CoordenadaY] = ConstantesTablero.LetraTableroCanonero;
+                AsignarLetraCanonero(canonero);
             }
             else if (barco is Destructor destructor)
             {
-                foreach (var coordenadas in destructor.Coordenadas)
-                {
-                    _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroDestructor;
-                }
+                AsignarLetrasDestructor(destructor);
             }
             else if (barco is Portaaviones portaaviones)
             {
-                foreach (var coordenadas in portaaviones.Coordenadas)
-                {
-                    _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroPortaaviones;
-                }
+                AsignarLetrasPortaavion(portaaviones);
             }
         }
     }
@@ -48,6 +42,24 @@ public class Tablero
     public void MarcaCanoneroHundidoEnPlataforma(int coordenadaX, int coordenadaY) =>
         _casillas[coordenadaX, coordenadaY] = ConstantesTablero.LetraTableroBarcoHundido;
     
+    private void AsignarLetrasPortaavion(Portaaviones portaaviones)
+    {
+        foreach (var coordenadas in portaaviones.Coordenadas)
+        {
+            _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroPortaaviones;
+        }
+    }
+
+    private void AsignarLetrasDestructor(Destructor destructor)
+    {
+        foreach (var coordenadas in destructor.Coordenadas)
+        {
+            _casillas[coordenadas.x, coordenadas.y] = ConstantesTablero.LetraTableroDestructor;
+        }
+    }
+
+    private void AsignarLetraCanonero(Canonero canonero) => _casillas[canonero.CoordenadaX, canonero.CoordenadaY] = ConstantesTablero.LetraTableroCanonero;
+
     public void MarcaDestructorHundidoEnPlataforma(Destructor destructor)
     {
         foreach (var destructorCoordenada in destructor.Coordenadas)
