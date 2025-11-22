@@ -199,6 +199,9 @@ public class Juego
         if (ValidarBarcoEnDiagonal(_tripulacionJugadorUno))
             throw new ArgumentException(ConstantesJuego.MensajeBarcosEnDiagonal);
         
+        if (ValidarBarcoConSaltosEnCoordenadas(_tripulacionJugadorUno))
+            throw new ArgumentException(ConstantesJuego.MensajeBarcosConSaltosEnCoordenadas);
+        
         if (ValidarLimitesPlataforma(_tripulacionJugadorDos))
             throw new ArgumentException(ConstantesJuego.MensajeBarcoFueraDelLimiteDeLaPlataforma);
 
@@ -334,26 +337,28 @@ public class Juego
 
     private bool ValidarBarcoConSaltosEnCoordenadas(List<Barco> barcos)
     {
-        bool barcoConSaltosEnCoordenadas = false;
         foreach (var barco in barcos.Where(b => b is Destructor or Portaaviones))
         {
             var todasCoordenadas = new List<(int x, int y)>();
-            ObtenerCoordenadasTripulacion([barco], todasCoordenadas);
-            
-            if (todasCoordenadas.Count <= 1) return false;
-            
-            if (ValidarCoordenadasDiferenteFilaODiferenteColumna(todasCoordenadas))
-                return true;
+            ObtenerCoordenadasTripulacion(new List<Barco> { barco }, todasCoordenadas);
 
-            return CoordenadasConsecutivasEnX(todasCoordenadas);
+            var mismaFila = todasCoordenadas.All(c => c.x == todasCoordenadas[0].x);
+            var tieneSaltos = CoordenadaTieneSaltos(mismaFila, todasCoordenadas);
+
+            if (tieneSaltos)
+                return true;
         }
 
-        return barcoConSaltosEnCoordenadas;
+        return false;
     }
 
-    private static bool CoordenadasConsecutivasEnX(List<(int x, int y)> todasCoordenadas) =>
-        todasCoordenadas.Select(c => c.x).OrderBy(n => n).Select((val, idx) => val - idx).Distinct()
-            .Count() != 1;
+    private static bool CoordenadaTieneSaltos(bool mismaFila, List<(int x, int y)> todasCoordenadas)
+    {
+        var tieneSaltos = mismaFila
+            ? todasCoordenadas.Max(c => c.y) - todasCoordenadas.Min(c => c.y) + 1 != todasCoordenadas.Count
+            : todasCoordenadas.Max(c => c.x) - todasCoordenadas.Min(c => c.x) + 1 != todasCoordenadas.Count;
+        return tieneSaltos;
+    }
 
     private static void ObtenerCoordenadasTripulacion(List<Barco> barcos, List<(int x, int y)> todasCoordenadas)
     {
