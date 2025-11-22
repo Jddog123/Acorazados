@@ -1667,4 +1667,30 @@ Barcos Hundidos:
         result.Should().ThrowExactly<ArgumentException>()
             .WithMessage("Las coordenadas de un barco deben ser consecutivas");
     }
+    
+    [Theory]
+    [ClassData(typeof(DatosTripulacionJugadoresClassData))]
+    public void
+        Si_AgregoDosJugadoresYJugadorUnoTieneUnBarcoConUnaCoordenadaConSaltosEInicioJuego_Debe_ArrojarExcepcion(
+            DatosTripulacionJugadores datosTripulacionJugadores)
+    {
+        _juego.AgregarJugador(TipoJugador.Uno, "Pepe");
+        _juego.AgregarJugador(TipoJugador.Dos, "Maria");
+
+        var listaBarcosJugadorUno = new List<Barco>
+        {
+            new Canonero(8, 0),
+            new Canonero(9, 0),
+            new Canonero(7, 0),
+            new Canonero(6, 0),
+            new Destructor([(9, 1), (8, 1), (7, 1)]),
+            new Destructor([(9, 2), (6, 2), (5, 2)]),
+            new Portaaviones([(1, 3), (1, 5), (1, 6), (1, 7)])
+        };
+
+        Action result = () => _juego.Iniciar(listaBarcosJugadorUno, datosTripulacionJugadores.tripulacionJugadorDos);
+
+        result.Should().ThrowExactly<ArgumentException>()
+            .WithMessage("Las coordenadas de un barco deben ser consecutivas");
+    }
 }
