@@ -107,11 +107,17 @@ public class Juego
 
         if (_JuegoTerminado)
         {
-            AgregarEstadisticaJugadorAInforme(informe);
+            AgregarEstadisticaJugadorAInforme(informe, true);
+            AgregarTableroAInforme(informe);
+            informe.AppendLine();
+            FinalizarTurno();
+            AgregarEstadisticaJugadorAInforme(informe, false);
+            AgregarTableroAInforme(informe);
         }
-
-        AgregarTableroAInforme(informe);
-
+        else
+        {
+            AgregarTableroAInforme(informe);
+        }
         return informe.ToString();
     }
 
@@ -160,9 +166,10 @@ public class Juego
         }
     }
 
-    private void AgregarEstadisticaJugadorAInforme(StringBuilder informe)
+    private void AgregarEstadisticaJugadorAInforme(StringBuilder informe, bool ganador)
     {
         var estadisticasJugador = _jugadorTurnoActual.ObtenerEstadisticasJugador();
+        informe.Append(ganador ? "JUGADOR GANADOR" : "JUGADOR PERDEDOR");
         informe.AppendLine();
         informe.Append("Jugador " + _jugadorTurnoActual._nombre);
         informe.AppendLine();
